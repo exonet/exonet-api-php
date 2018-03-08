@@ -1,0 +1,45 @@
+{
+    "name": "exonet/exonet-api-php",
+    "type": "library",
+    "description": "PHP implementation of the Exonet API.",
+    "keywords": [
+        "exonet",
+        "exonet-api-php"
+    ],
+    "homepage": "https://github.com/exonet/exonet-api-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Exonet",
+            "email": "support@exonet.nl",
+            "homepage": "https://exonet.nl",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "~7.1",
+        "guzzlehttp/guzzle": "~6.0",
+        "psr/log": "^1.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^7",
+        "symfony/var-dumper": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Exonet\\Api\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Exonet\\Api\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --testdox tests/"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
