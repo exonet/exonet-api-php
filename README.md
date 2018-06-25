@@ -30,6 +30,16 @@ $certificates = $exonetApi->resource('certificates')->get();
 
 Please see the `/docs` folder for complete documentation and additional examples.
 
+## Examples
+
+The `/examples` directory contains ready to use scripts to help you get started. These examples can be executed with your personal access token. One of them gets a ticket with it's emails and prints the details.
+
+```bash
+$ php examples/ticket_details.php <YOUR-TOKEN>
+```
+
+This should make two API calls and print the ticket and email details for one of your tickets.
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
