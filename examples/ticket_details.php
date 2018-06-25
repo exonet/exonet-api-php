@@ -1,4 +1,5 @@
 <?php
+
 // Run this script using: php examples/ticket_details.php <YOUR-TOKEN>
 
 require __DIR__.'/../vendor/autoload.php';
