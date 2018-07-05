@@ -9,7 +9,7 @@ The Exonet API Client allows easy usage of the Exonet API.
 
 ## Install
 
-Via Composer 
+Via Composer
 
 ``` bash
 $ composer require exonet/exonet-api-php
