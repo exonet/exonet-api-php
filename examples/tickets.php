@@ -13,7 +13,7 @@ $exonetApi = new Exonet\Api\Client($authentication);
 // Get all tickets that the used token can access.
 $allTickets = $exonetApi->resource('tickets')->get();
 
-// Get all tickets that are considered 'open' by Exonet  and this token is allowed to access.
+// Get all tickets that are considered 'open' by Exonet and this token is allowed to access.
 $openTickets = $exonetApi->resource('tickets')->filter('open')->get();
 
 renderTickets('ID and subject of all tickets:', $allTickets);
