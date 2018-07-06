@@ -57,11 +57,11 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Whether an offset exists
+     * Whether an offset exists.
      *
      * @param mixed $offset An offset to check for.
      *
-     * @return boolean true on success or false on failure.
+     * @return bool true on success or false on failure.
      */
     public function offsetExists($offset) : bool
     {
@@ -98,7 +98,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Offset to unset
+     * Offset to unset.
      *
      * @param mixed $offset The offset to unset.
      */
