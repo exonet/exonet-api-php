@@ -14,7 +14,7 @@ $exonetApi = new Exonet\Api\Client($authentication);
  * call something like `$ticket = $exonetApi->resource('tickets')->get('VX09kwR3KxNo');` to get a single ticket
  * by it's ID.
  */
-$tickets = $exonetApi->resource('tickets')->get();
+$tickets = $exonetApi->resource('tickets')->size(1)->get();
 
 // Show this message when there are no tickets available.
 if (empty($tickets)) {

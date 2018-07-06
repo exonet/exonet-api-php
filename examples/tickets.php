@@ -10,13 +10,12 @@ $authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
 
 $exonetApi = new Exonet\Api\Client($authentication);
 
-// Get all tickets that the used token can access.
-$allTickets = $exonetApi->resource('tickets')->get();
+// Show all tickets, limited to 10.
+$allTickets = $exonetApi->resource('tickets')->size(10)->get();
+renderTickets('ID and subject of all tickets (with a limit of 10):', $allTickets);
 
-// Get all tickets that are considered 'open' by Exonet and this token is allowed to access.
+// Show all tickets that are considered 'open' according to Exonet.
 $openTickets = $exonetApi->resource('tickets')->filter('open')->get();
-
-renderTickets('ID and subject of all tickets:', $allTickets);
 renderTickets('ID and subject of open tickets:', $openTickets);
 
 /**
