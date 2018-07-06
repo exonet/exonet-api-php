@@ -8,6 +8,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 [Compare v0.1.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v0.1.0...develop)
 ### Added
 - Ready to use examples to get ticket details.
+- The ApiResourceSet now supports ArrayAccess.
 
 ## [v0.1.0](https://github.com/exonet/exonet-api-php/releases/tag/v0.1.0) - 2018-03-08
 ### Added
