@@ -12,7 +12,7 @@ class ApiResourceSetTest extends TestCase
                 'type' => 'unitTest1',
                 'id' => 'testId1',
                 'attributes' => [
-                    'hello' => 'world',
+                    'hello' => 'world1',
                 ],
                 'relationships' => [
                     'testRelation' => [
@@ -25,7 +25,7 @@ class ApiResourceSetTest extends TestCase
                 'type' => 'unitTest2',
                 'id' => 'testId2',
                 'attributes' => [
-                    'hello' => 'world',
+                    'hello' => 'world2',
                 ],
                 'relationships' => [
                     'testRelation' => [
@@ -67,5 +67,39 @@ class ApiResourceSetTest extends TestCase
             // Iterating with no data should not hit this lines and also throw no errors.
             $this->fail();
         }
+    }
+
+    public function testArrayAccessMethods()
+    {
+        $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
+
+        $this->assertSame(
+            'world1',
+            reset($resourceSetClass->getIterator())['hello']
+        );
+
+        // Test isset with an offset that should not exist.
+        $this->assertFalse(isset($resourceSetClass[55]));
+
+        // Set a new offset.
+        $resourceSetClass[55] = new ApiResource([]);
+
+        // Test isset with an offset that should now exist.
+        $this->assertTrue(isset($resourceSetClass[55]));
+
+        // Unsetting a value completely removes it from the attribute list.
+        unset($resourceSetClass[1]);
+        $this->assertFalse(isset($resourceSetClass[1]));
+    }
+
+    public function testOffsetSetValidation()
+    {
+        $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
+
+        $this->expectException(\Exonet\Api\Exceptions\ValidationException::class);
+        $this->expectExceptionMessage('Only ApiResources can be set.');
+
+        // Try to set something other than an ApiResource.
+        $resourceSetClass[55] = 'some string';
     }
 }
