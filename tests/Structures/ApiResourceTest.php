@@ -24,7 +24,7 @@ class ApiResourceTest extends TestCase
     {
         $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
 
-        $this->assertSame('unitTest', $resourceClass->type);
+        $this->assertSame('unitTest', $resourceClass->resourceType);
         $this->assertSame('testId', $resourceClass->id);
         $this->assertSame('world', $resourceClass->hello);
 
@@ -54,7 +54,7 @@ class ApiResourceTest extends TestCase
     {
         $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
 
-        $this->assertSame('unitTest', $resourceClass['type']);
+        $this->assertSame('unitTest', $resourceClass['resourceType']);
         $this->assertSame('testId', $resourceClass['id']);
         $this->assertSame('world', $resourceClass['hello']);
 

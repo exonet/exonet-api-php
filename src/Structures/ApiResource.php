@@ -15,7 +15,7 @@ class ApiResource implements ArrayAccess
     /**
      * @var string The resource type.
      */
-    public $type;
+    public $resourceType;
 
     /**
      * @var string The resource ID.
@@ -40,8 +40,7 @@ class ApiResource implements ArrayAccess
     public function __construct($contents)
     {
         $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
-
-        $this->type = $data['type'];
+        $this->resourceType = $data['type'];
         $this->id = $data['id'];
         $this->attributes = $data['attributes'];
         $this->relationships = isset($data['relationships']) ? $this->parseRelations($data['relationships']) : null;
@@ -96,7 +95,7 @@ class ApiResource implements ArrayAccess
     }
 
     /**
-     * Check if the given offset exists as property (for ID or type) or as attribute. Required by the ArrayAccess
+     * Check if the given offset exists as property (for ID or resourceType) or as attribute. Required by the ArrayAccess
      * interface.
      *
      * @param string $offset The offset.
@@ -128,7 +127,7 @@ class ApiResource implements ArrayAccess
      */
     public function offsetSet($offset, $value) : void
     {
-        if ($offset === 'id' || $offset === 'type') {
+        if ($offset === 'id' || $offset === 'resourceType') {
             $this->{$offset} = $value;
 
             return;
