@@ -2,8 +2,6 @@
 
 // Run this script using: php examples/dns_zones.php <YOUR-TOKEN>
 
-use Exonet\Api\Structures\ApiResourceSet;
-
 require __DIR__.'/../vendor/autoload.php';
 
 $authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
