@@ -6,6 +6,11 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## Unreleased
 [Compare v0.2.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v0.2.0...master)
+### Breaking
+- The public property `type` in the `ApiResource` class has been renamed to `resourceType` in order not to conflict with the DNS record resource, which has a `type` attribute.
+
+### Added
+- Two examples for DNS zones and records.
 
 ## [v0.2.0](https://github.com/exonet/exonet-api-php/releases/tag/v0.2.0) - 2018-07-09
 [Compare v0.1.0 - v0.2.0](https://github.com/exonet/backend/compare/v0.1.0...v0.2.0)
