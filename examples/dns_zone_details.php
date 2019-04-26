@@ -34,7 +34,7 @@ foreach ($records as $record) {
         $record->type,
         $record->fqdn,
         $record->ttl,
-        $record->content,
+        $record->content
     );
 }
 echo "\n";
