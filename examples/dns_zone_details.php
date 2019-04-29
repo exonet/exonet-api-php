@@ -30,7 +30,7 @@ $records = $zone->records()->get();
 // Show records.
 foreach ($records as $record) {
     echo sprintf(
-        "%s  %s   %s   %s\n",
+        "%s\t%s\t%s\t%s\n",
         $record->type,
         $record->fqdn,
         $record->ttl,
