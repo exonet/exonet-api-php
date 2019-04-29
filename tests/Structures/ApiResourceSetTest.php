@@ -72,17 +72,22 @@ class ApiResourceSetTest extends TestCase
     public function testArrayAccessMethods()
     {
         $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
+        $resources = $resourceSetClass->getIterator();
 
         $this->assertSame(
             'world1',
-            reset($resourceSetClass->getIterator())['hello']
+            reset($resources)['hello']
         );
 
         // Test isset with an offset that should not exist.
         $this->assertFalse(isset($resourceSetClass[55]));
 
         // Set a new offset.
-        $resourceSetClass[55] = new ApiResource([]);
+        $resourceSetClass[55] = new ApiResource([
+            'id' => 'ABC',
+            'type' => 'some_resource',
+            'attributes' => [],
+        ]);
 
         // Test isset with an offset that should now exist.
         $this->assertTrue(isset($resourceSetClass[55]));

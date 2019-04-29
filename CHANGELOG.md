@@ -5,7 +5,15 @@ All notable changes to `exonet-api-php` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Unreleased
-[Compare v0.2.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v0.2.0...master)
+[Compare v1.0.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v1.0.0...master)
+
+## [v1.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v1.0.0) - 2019-04-29
+[Compare v0.2.0 - v1.0.0](https://github.com/exonet/backend/compare/v0.2.0...v1.0.0)
+### Breaking
+- The public property `type` in the `ApiResource` class has been renamed to `resourceType` in order not to conflict with the DNS record resource, which has a `type` attribute.
+
+### Added
+- Two examples for DNS zones and records.
 
 ## [v0.2.0](https://github.com/exonet/exonet-api-php/releases/tag/v0.2.0) - 2018-07-09
 [Compare v0.1.0 - v0.2.0](https://github.com/exonet/backend/compare/v0.1.0...v0.2.0)

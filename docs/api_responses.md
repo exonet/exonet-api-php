@@ -10,7 +10,7 @@ is returned. The instance of this class contains the requested resources. Traver
 ```php
 $certificates = $client->resource('certificates')->get();
 
-foreach ($certificates as $certificate) {  
+foreach ($certificates as $certificate) {
     // Each item is an instance of an ApiResource.
     echo $certificate->id."\n";
 }
@@ -18,7 +18,7 @@ foreach ($certificates as $certificate) {
 
 ## The `ApiResource` class
 Each resource returned by the API is transformed to an `ApiResource` instance. This makes it possible to have easy access
-to the attributes, type and ID of the resource. Each of these fields can be accessed as if it is a property on the class:
+to the attributes, resourceType and ID of the resource. Each of these fields can be accessed as if it is a property on the class:
 
 ```php
 $certificate = $client->resource('certificates')->get('VX09kwR3KxNo');
@@ -41,7 +41,7 @@ $domainResource = $certificate->domain()->get();
 ```
 
 If you only want the data of the relation in the `ApiResource` itself, you can get it by using the `raw()` method. This
-will return a (multidimensional) array with the resource type and id:
+will return a (multidimensional) array with the resourceType and ID:
 
 ```php
 $domainRelationData = $certificate->domain()->raw();
