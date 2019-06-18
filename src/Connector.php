@@ -6,6 +6,7 @@ namespace Exonet\Api;
 
 use Exonet\Api\Exceptions\ResponseExceptionHandler;
 use Exonet\Api\Structures\ApiResource;
+use Exonet\Api\Structures\ApiResourceIdentifier;
 use Exonet\Api\Structures\ApiResourceSet;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
@@ -74,7 +75,7 @@ class Connector
      *
      * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
      *
-     * @return ApiResource|ApiResourceSet The structured response.
+     * @return ApiResourceIdentifier|ApiResource|ApiResourceSet The structured response.
      */
     private function parseResponse(PsrResponse $response)
     {
@@ -83,11 +84,19 @@ class Connector
         if ($response->getStatusCode() < 300) {
             $contents = $response->getBody()->getContents();
 
-            if (is_array(json_decode($contents)->data)) {
+            $decodedContent = json_decode($contents);
+
+            // Create collection of resources when returned data is an array.
+            if (is_array($decodedContent->data)) {
                 return new ApiResourceSet($contents);
             }
 
-            return new ApiResource($contents);
+            // Convert single item into resource or resource identifier.
+            if (isset($decodedContent->data->attributes)) {
+                return new ApiResource($contents);
+            } else {
+                return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
+            }
         }
 
         (new ResponseExceptionHandler($response))->handle();

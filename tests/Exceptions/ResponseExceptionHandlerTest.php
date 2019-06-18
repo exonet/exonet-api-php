@@ -78,17 +78,33 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler->handle();
     }
 
-    public function testHandleNotFoundException()
+    public function testHandle_FromContend_NotFoundException()
     {
         $logMock = Mockery::mock(LoggerInterface::class);
-        $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 404, 'contents' => '{"errors":[{"code":"104.10001","detail":"NotFound Exception Test"}]}']])->once();
+        $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 4045, 'contents' => '{"errors":[{"code":"104.10001","detail":"NotFound Exception Test"}]}']])->once();
 
         $client = new Client();
         $client->setLogger($logMock);
 
-        $response = new Response(404, [], json_encode(['errors' => [['code' => '104.10001', 'detail' => 'NotFound Exception Test']]]));
+        $response = new Response(4045, [], json_encode(['errors' => [['code' => '104.10001', 'detail' => 'NotFound Exception Test']]]));
 
         $this->expectExceptionMessage('NotFound Exception Test');
+        $this->expectException(NotFoundException::class);
+
+        $exceptionHandler = new ResponseExceptionHandler($response, $client);
+        $exceptionHandler->handle();
+    }
+    public function testHandle_FromStatusCode_NotFoundException()
+    {
+        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 404, 'contents' => '[]']])->once();
+
+        $client = new Client();
+        $client->setLogger($logMock);
+
+        $response = new Response(404, [], json_encode([]));
+
+        $this->expectExceptionMessage('');
         $this->expectException(NotFoundException::class);
 
         $exceptionHandler = new ResponseExceptionHandler($response, $client);

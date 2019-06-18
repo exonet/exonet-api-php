@@ -6,6 +6,8 @@ namespace Exonet\Api;
 
 use Exonet\Api\Auth\AbstractAuth;
 use Exonet\Api\Exceptions\AuthenticationException;
+use Exonet\Api\Structures\ApiResource;
+use Exonet\Api\Structures\ApiResourceIdentifier;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -16,7 +18,7 @@ use Psr\Log\NullLogger;
 class Client implements LoggerAwareInterface
 {
     /**
-     * The version of this package. This is being used for the user-agent header.
+     * The version of this package. Used in the user-agent header.
      */
     public const CLIENT_VERSION = 'v1.0.0';
 
@@ -127,16 +129,23 @@ class Client implements LoggerAwareInterface
     }
 
     /**
-     * Easy way to start building a new API request for the specified resource.
+     * Easy way to start building a new API request for a resource.
      *
-     * @param string $resource The resource name.
+     * Gives a basic request to start making API calls or a resource identifier when an ID is provided.
      *
-     * @return Request The request instance to use.
+     * @param string      $resourceType The resource name.
+     * @param string|null $id           The optional resource ID.
+     *
+     * @return ApiResourceIdentifier|Request A request or resource identifier for the specified resource.
      */
-    public function resource(string $resource) : Request
+    public function resource(string $resourceType, ?string $id = null)
     {
-        $this->log()->debug('Starting new request', ['resource' => $resource]);
+        $this->log()->debug('Starting new request', ['resource' => $resourceType]);
 
-        return new Request($resource);
+        if ($id !== null) {
+            return new ApiResourceIdentifier($resourceType, $id);
+        }
+
+        return new Request($resourceType);
     }
 }

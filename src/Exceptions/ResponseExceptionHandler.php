@@ -63,6 +63,8 @@ class ResponseExceptionHandler
         // First, try to catch known exceptions based on status code.
         if ($this->response->getStatusCode() === 401) {
             throw new AuthenticationException('Unauthenticated');
+        } elseif ($this->response->getStatusCode() === 404) {
+            throw new NotFoundException();
         }
 
         /*
