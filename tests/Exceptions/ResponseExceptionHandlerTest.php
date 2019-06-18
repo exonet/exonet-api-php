@@ -94,6 +94,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler = new ResponseExceptionHandler($response, $client);
         $exceptionHandler->handle();
     }
+
     public function testHandle_FromStatusCode_NotFoundException()
     {
         $logMock = Mockery::mock(LoggerInterface::class);

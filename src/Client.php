@@ -6,7 +6,6 @@ namespace Exonet\Api;
 
 use Exonet\Api\Auth\AbstractAuth;
 use Exonet\Api\Exceptions\AuthenticationException;
-use Exonet\Api\Structures\ApiResource;
 use Exonet\Api\Structures\ApiResourceIdentifier;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;

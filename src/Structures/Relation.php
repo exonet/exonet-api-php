@@ -41,7 +41,7 @@ class Relation
      * @param string $originType   The resource type of the origin resource.
      * @param string $originId     The resource ID of the origin resource.
      */
-    public function __construct(string $relationName, string $originType, string$originId)
+    public function __construct(string $relationName, string $originType, string $originId)
     {
         $this->name = $relationName;
 
@@ -59,10 +59,9 @@ class Relation
      * Pass unknown calls to the Request instance.
      *
      * @param string $methodName      The method to call.
-     * @param array  $arguments The method arguments.
+     * @param array  $arguments       The method arguments.
      *
-     * @return Request|\Exonet\Api\Structures\ApiResource|\Exonet\Api\Structures\ApiResourceSet The request instance or
-     *                                                                                          retrieved resource (set).
+     * @return Request|ApiResource|ApiResourceSet The request instance or retrieved resource (set).
      */
     public function __call($methodName, $arguments)
     {

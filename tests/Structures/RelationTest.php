@@ -26,7 +26,6 @@ class RelationTest extends TestCase
         );
     }
 
-
     public function testCall()
     {
         $relationClass = new Relation('testRelation', 'test_resources', 'ABC1');
