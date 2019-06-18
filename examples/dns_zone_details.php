@@ -23,18 +23,18 @@ if (empty($zones)) {
 $zone = $zones[0];
 
 // Output DNS zone details.
-echo sprintf("\nDNS zone:\t%s\n", $zone->name);
+echo sprintf("\nDNS zone:\t%s\n", $zone->attribute('name'));
 
 // Get the records for this zone.
-$records = $zone->records()->get();
+$records = $zone->related('records')->get();
 // Show records.
 foreach ($records as $record) {
     echo sprintf(
         "%s\t%s\t%s\t%s\n",
-        $record->type,
-        $record->fqdn,
-        $record->ttl,
-        $record->content
+        $record->attribute('type'),
+        $record->attribute('fqdn'),
+        $record->attribute('ttl'),
+        $record->attribute('content')
     );
 }
 echo "\n";

@@ -19,7 +19,7 @@ echo sprintf(
 );
 
 foreach ($zones as $zone) {
-    echo sprintf("%s - %d records\n", $zone->name, count($zone->records()->raw()));
+    echo sprintf("%s - %d records\n", $zone->attribute('name'), count($zone->relationship('records')->getResourceIdentifiers()));
 }
 
 echo "\n";

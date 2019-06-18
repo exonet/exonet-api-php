@@ -24,16 +24,21 @@ if (empty($tickets)) {
 
 $ticket = $tickets[0];
 
-echo sprintf("\nTicket id:\t\t%s", $ticket->id);
-echo sprintf("\nTicket subject:\t\t%s", $ticket->last_message_subject);
-echo sprintf("\nCreated at:\t\t%s", $ticket->created_date);
-echo sprintf("\nLast message date:\t%s", date('l jS \of F Y H:i:s', strtotime($ticket->last_message_date)));
+echo sprintf("\nTicket id:\t\t%s", $ticket->id());
+echo sprintf("\nTicket subject:\t\t%s", $ticket->attribute('last_message_subject'));
+echo sprintf("\nCreated at:\t\t%s", $ticket->attribute('created_date'));
+echo sprintf("\nLast message date:\t%s", date('l jS \of F Y H:i:s', strtotime($ticket->attribute('last_message_date'))));
 echo "\n";
 
 // Get the emails in the ticket.
-$emails = $ticket->emails()->get();
+$emails = $ticket->related('emails')->get();
 
 foreach ($emails as $email) {
-    echo sprintf("\nFrom: %s - To: %s - Subject: %s", $email->from, $email->to, $email->subject ?? '(no subject)');
+    echo sprintf(
+        "\nFrom: %s - To: %s - Subject: %s",
+        $email->attribute('from') ?? '(no from)',
+        $email->attribute('to'),
+        $email->attribute('subject') ?? '(no subject)'
+    );
 }
 echo "\n";
