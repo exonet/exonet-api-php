@@ -58,8 +58,8 @@ class Relation
     /**
      * Pass unknown calls to the Request instance.
      *
-     * @param string $methodName      The method to call.
-     * @param array  $arguments       The method arguments.
+     * @param string $methodName The method to call.
+     * @param array  $arguments  The method arguments.
      *
      * @return Request|ApiResource|ApiResourceSet The request instance or retrieved resource (set).
      */
