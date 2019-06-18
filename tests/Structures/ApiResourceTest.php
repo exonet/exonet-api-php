@@ -20,58 +20,28 @@ class ApiResourceTest extends TestCase
         ],
     ];
 
-    public function testMagicGetSet()
+    public function testResourceIdentifier()
     {
         $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
 
-        $this->assertSame('unitTest', $resourceClass->resourceType);
-        $this->assertSame('testId', $resourceClass->id);
-        $this->assertSame('world', $resourceClass->hello);
-
-        $resourceClass->hello = 'bye';
-        $this->assertSame('bye', $resourceClass->hello);
+        $this->assertSame('unitTest', $resourceClass->type());
+        $this->assertSame('testId', $resourceClass->id());
     }
 
-    public function testIsset()
+    public function testGetSetAttribute()
     {
         $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
 
-        $this->assertTrue(isset($resourceClass->hello));
+        $this->assertSame('world', $resourceClass->attribute('hello'));
 
-        // Test that if the attribute has a null value, 'false' is returned.
-        $resourceClass->hello = null;
-        $this->assertFalse(isset($resourceClass->hello));
+        $resourceClass->attribute('hello', 'bye');
+        $this->assertSame('bye', $resourceClass->attribute('hello'));
     }
 
-    public function testCall()
+    public function testRelated()
     {
         $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
 
-        $this->assertInstanceOf(Relation::class, $resourceClass->testRelation());
-    }
-
-    public function testArrayAccessMethods()
-    {
-        $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
-
-        $this->assertSame('unitTest', $resourceClass['resourceType']);
-        $this->assertSame('testId', $resourceClass['id']);
-        $this->assertSame('world', $resourceClass['hello']);
-
-        $resourceClass['hello'] = 'bye';
-        $resourceClass['id'] = 'newId';
-
-        $this->assertSame('bye', $resourceClass['hello']);
-        $this->assertSame('newId', $resourceClass['id']);
-
-        $this->assertTrue(isset($resourceClass['hello']));
-
-        // Test that if the attribute has a null value, 'false' is returned.
-        $resourceClass['hello'] = null;
-        $this->assertFalse(isset($resourceClass['hello']));
-
-        // Unsetting a value completely removes it from the attribute list.
-        unset($resourceClass['hello']);
-        $this->assertFalse(isset($resourceClass['hello']));
+        $this->assertInstanceOf(Relation::class, $resourceClass->related('testRelation'));
     }
 }

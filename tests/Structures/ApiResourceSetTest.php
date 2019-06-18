@@ -76,7 +76,7 @@ class ApiResourceSetTest extends TestCase
 
         $this->assertSame(
             'world1',
-            reset($resources)['hello']
+            reset($resources)->attribute('hello')
         );
 
         // Test isset with an offset that should not exist.
