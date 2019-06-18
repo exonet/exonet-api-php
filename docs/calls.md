@@ -19,15 +19,15 @@ $certificatesRequest->size(10);
 $certificatesRequest->page(2);
 ```
 
-After setting the parameters you can call the `->get()` method to retrieve the resource:
+After setting the parameters you can call the `->get()` method to retrieve the resources:
 ```php
 $certificates = $certificatesRequest->get();
 ```
 
 ## Getting a single resource by ID
-If you want to get a specific resource by its ID, you can pass it as an argument to the `get` method:
+If you want to get a specific resource by its ID, use the `id()` method to define specify the ID of the resource:
 ```php
-$certificate = $client->resource('certificates')->get('VX09kwR3KxNo');
+$certificate = $client->resource('certificates')->id('VX09kwR3KxNo')->get();
 ```
 
 ---

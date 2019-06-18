@@ -11,7 +11,7 @@ $exonetApi = new Exonet\Api\Client($authentication);
 /*
  * Get a single ticket resource. Because depending on who is authorized, the ticket IDs change, all tickets are
  * retrieved with a limit of 1. From this result, the first ticket is used. In a real world scenario you would
- * call something like `$ticket = $exonetApi->resource('tickets')->get('VX09kwR3KxNo');` to get a single ticket
+ * call something like `$ticket = $exonetApi->resource('tickets')->id('VX09kwR3KxNo')->get();` to get a single ticket
  * by it's ID.
  */
 $tickets = $exonetApi->resource('tickets')->size(1)->get();
