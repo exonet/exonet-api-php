@@ -94,9 +94,9 @@ class Connector
             // Convert single item into resource or resource identifier.
             if (isset($decodedContent->data->attributes)) {
                 return new ApiResource($contents);
-            } else {
-                return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
             }
+
+            return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
         }
 
         (new ResponseExceptionHandler($response))->handle();
