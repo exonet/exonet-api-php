@@ -28,7 +28,7 @@ class Relationship extends Relation
         if (is_array($resourceIdentifiers)) {
             $json = [];
 
-            foreach($resourceIdentifiers as $identifier) {
+            foreach ($resourceIdentifiers as $identifier) {
                 $json[] = [
                     'type' => $identifier->type(),
                     'id' => $identifier->id(),

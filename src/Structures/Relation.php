@@ -56,7 +56,6 @@ class Relation
 
             $this->request = new Request($this->url);
         }
-
     }
 
     /**
@@ -72,6 +71,7 @@ class Relation
         if (is_null($this->request)) {
             throw new InvalidRequestException('No request available, incomplete relation');
         }
+
         return call_user_func_array([$this->request, $methodName], $arguments);
     }
 

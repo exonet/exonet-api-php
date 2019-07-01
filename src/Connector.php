@@ -66,7 +66,7 @@ class Connector
      * Convert the data to JSON and post it to a URL.
      *
      * @param string $urlPath The URL to post to.
-     * @param array  $data An array with data to post to the API.
+     * @param array  $data    An array with data to post to the API.
      *
      * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
      *

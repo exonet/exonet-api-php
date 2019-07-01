@@ -23,7 +23,7 @@ class ApiResource extends ApiResourceIdentifier
      * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
      */
-    public function __construct($type, $contents=[])
+    public function __construct($type, $contents = [])
     {
         $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
         parent::__construct(
@@ -111,8 +111,8 @@ class ApiResource extends ApiResourceIdentifier
         $json = [
             'data' => [
                 'type' => $this->type(),
-                'attributes' => []
-            ]
+                'attributes' => [],
+            ],
         ];
 
         if ($this->id()) {
@@ -120,13 +120,13 @@ class ApiResource extends ApiResourceIdentifier
         }
 
         // Set the attributes in the json.
-        array_walk($this->attributes, function($attributeValue, $attributeName) use (&$json) {
+        array_walk($this->attributes, function ($attributeValue, $attributeName) use (&$json) {
             $json['data']['attributes'][$attributeName] = $attributeValue;
         });
 
         // Set relations.
         if ($this->relationships) {
-            array_walk($this->relationships, function(Relationship $relation, $name) use (&$json) {
+            array_walk($this->relationships, function (Relationship $relation, $name) use (&$json) {
                 $json['data']['relationships'][$name]['data'] = $relation->toJson();
             });
         }
