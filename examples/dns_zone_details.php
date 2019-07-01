@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 $authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
 
-$exonetApi = new Exonet\Api\Client($authentication);
+$exonetApi = new Exonet\Api\Client($authentication, 'https://test-api.exonet.nl');
 
 /*
  * Get a single dns_zone resource. Because depending on who is authorized, the dns_zone IDs change, all dns_zones are

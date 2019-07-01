@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 $authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
 
-$exonetApi = new Exonet\Api\Client($authentication);
+$exonetApi = new Exonet\Api\Client($authentication, 'https://test-api.exonet.nl');
 
 /*
  * Get a single ticket resource. Because depending on who is authorized, the ticket IDs change, all tickets are
