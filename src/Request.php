@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Exonet\Api;
 
+use Exonet\Api\Structures\ApiResource;
 use Exonet\Api\Structures\ApiResourceIdentifier;
+use Exonet\Api\Structures\ApiResourceSet;
 
 /**
  * This class is responsible for building a valid API request that can be passed to the Connector.
@@ -69,6 +71,21 @@ class Request
     public function get(?string $id = null)
     {
         return $this->connector->get($this->prepareUrl($id));
+    }
+
+    /**
+     * Post new data to the API.
+     *
+     * @param array $payload The payload to post to the API.
+     *
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The parsed response transformed to resoures.
+     */
+    public function post(array $payload)
+    {
+        return $this->connector->post(
+            trim(str_replace(Connector::API_URL, '', $this->resource), '/'),
+            $payload
+        );
     }
 
     /**

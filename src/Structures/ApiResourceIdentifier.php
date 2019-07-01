@@ -24,7 +24,7 @@ class ApiResourceIdentifier
     /**
      * @var Request A request instance to make calls to the API.
      */
-    private $request;
+    protected $request;
 
     /**
      * @var Relation[]|null The relationships for this resource.
@@ -37,7 +37,7 @@ class ApiResourceIdentifier
      * @param string $resourceType The resource type.
      * @param string $id           The resource ID.
      */
-    public function __construct(string $resourceType, string $id)
+    public function __construct(string $resourceType, ?string $id = null)
     {
         $this->resourceType = $resourceType;
         $this->id = $id;

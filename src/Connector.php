@@ -68,6 +68,32 @@ class Connector
     }
 
     /**
+     * Convert the data to JSON and post it to a URL.
+     *
+     * @param string $urlPath The URL to post to.
+     * @param array  $data An array with data to post to the API.
+     *
+     * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
+     *
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The response from the API, converted to resources.
+     */
+    public function post(string $urlPath, array $data)
+    {
+        $this->apiClient->log()->debug('Sending [POST] request', ['url' => self::API_URL.$urlPath]);
+
+        $request = new Request(
+            'POST',
+            self::API_URL.$urlPath,
+            $this->getDefaultHeaders(),
+            json_encode($data)
+        );
+
+        $response = $this->httpClient->send($request);
+
+        return $this->parseResponse($response);
+    }
+
+    /**
      * Parse the call response to an ApiResource or ApiResourceSet object or throw the correct error if something went
      * wrong.
      *
@@ -93,7 +119,7 @@ class Connector
 
             // Convert single item into resource or resource identifier.
             if (isset($decodedContent->data->attributes)) {
-                return new ApiResource($contents);
+                return new ApiResource($decodedContent->data->type, $contents);
             }
 
             return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
@@ -112,6 +138,7 @@ class Connector
         return [
             'Authorization' => sprintf('Bearer %s', $this->apiClient->getAuth()->getToken()),
             'Accept' => 'application/vnd.Exonet.v1+json',
+            'Content-Type' => 'application/json',
             'User-Agent' => 'exonet-api-php/'.Client::CLIENT_VERSION,
         ];
     }

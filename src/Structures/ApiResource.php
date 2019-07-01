@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Exonet\Api\Structures;
 
+use Exonet\Api\Exceptions\ExonetApiException;
+
 /**
  * An ApiResource represents a single resource that is retrieved from the API and allows easy access to its attributes
  * and relations.
@@ -13,20 +15,29 @@ class ApiResource extends ApiResourceIdentifier
     /**
      * @var mixed[] The attributes for this resource.
      */
-    private $attributes;
+    private $attributes = [];
 
     /**
      * ApiResource constructor.
      *
+     * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
      */
-    public function __construct($contents)
+    public function __construct($type, $contents=[])
     {
         $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
-        parent::__construct($data['type'], $data['id']);
+        parent::__construct(
+            $type,
+            $data['id'] ?? null
+        );
 
-        $this->attributes = $data['attributes'];
-        $this->relationships = isset($data['relationships']) ? $this->parseRelations($data['relationships']) : null;
+        if (array_key_exists('attributes', $data)) {
+            $this->attributes = $data['attributes'];
+        }
+
+        if (array_key_exists('relationships', $data)) {
+            $this->relationships = $this->parseRelations($data['relationships']);
+        }
     }
 
     /**
@@ -43,7 +54,21 @@ class ApiResource extends ApiResourceIdentifier
             $this->attributes[$attributeName] = $newValue;
         }
 
+        if (!array_key_exists($attributeName, $this->attributes)) {
+            throw new ExonetApiException('Undefined attribute');
+        }
+
         return $this->attributes[$attributeName];
+    }
+
+    /**
+     * Post this resource to the API.
+     *
+     * @return ApiResource The newly created resource.
+     */
+    public function post()
+    {
+        return $this->request->post($this->toJson());
     }
 
     /**
@@ -74,5 +99,38 @@ class ApiResource extends ApiResourceIdentifier
         }
 
         return $parsedRelations;
+    }
+
+    /**
+     * Get the json representation of the resource.
+     *
+     * @return array|null Array that can be used as json.
+     */
+    private function toJson() : array
+    {
+        $json = [
+            'data' => [
+                'type' => $this->type(),
+                'attributes' => []
+            ]
+        ];
+
+        if ($this->id()) {
+            $json['data']['id'] = $this->id();
+        }
+
+        // Set the attributes in the json.
+        array_walk($this->attributes, function($attributeValue, $attributeName) use (&$json) {
+            $json['data']['attributes'][$attributeName] = $attributeValue;
+        });
+
+        // Set relations.
+        if ($this->relationships) {
+            array_walk($this->relationships, function(Relationship $relation, $name) use (&$json) {
+                $json['data']['relationships'][$name]['data'] = $relation->toJson();
+            });
+        }
+
+        return $json;
     }
 }
