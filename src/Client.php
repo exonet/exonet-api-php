@@ -135,11 +135,11 @@ class Client implements LoggerAwareInterface
      */
     public function setApiUrl(string $apiUrl) : self
     {
-        $this->apiUrl = $apiUrl;
-
-        if (substr($this->apiUrl, -1) !== '/') {
-            $this->apiUrl .= '/';
+        if (substr($apiUrl, -1) !== '/') {
+            $apiUrl .= '/';
         }
+
+        $this->apiUrl = $apiUrl;
 
         return $this;
     }
