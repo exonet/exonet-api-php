@@ -6,6 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 $authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
 
+// Make an Exonet API client that connects to the test API.
 $exonetApi = new Exonet\Api\Client($authentication, Exonet\Api\Client::API_TEST_URL);
 
 // Get all DNS zones, limited to 20.

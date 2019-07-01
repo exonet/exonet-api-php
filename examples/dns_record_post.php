@@ -8,7 +8,8 @@ require __DIR__.'/../vendor/autoload.php';
 
 $authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
 
-$exonetApi = new Exonet\Api\Client($authentication);
+// Make an Exonet API client that connects to the test API.
+$exonetApi = new Exonet\Api\Client($authentication, Exonet\Api\Client::API_TEST_URL);
 
 /*
  * Get a single dns_zone resource. Because depending on who is authorized, the dns_zone IDs change, all dns_zones are
