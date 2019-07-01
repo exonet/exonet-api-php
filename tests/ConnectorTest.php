@@ -78,6 +78,7 @@ class ConnectorTest extends TestCase
         /** @var \GuzzleHttp\Psr7\Request $request */
         $request = $apiCalls[0]['request'];
 
+        $this->assertSame('api.exonet.nl', $request->getUri()->getHost());
         $this->assertSame('/test', $request->getUri()->getPath());
         $this->assertSame('Bearer test-token', $request->getHeader('Authorization')[0]);
         $this->assertSame('application/vnd.Exonet.v1+json', $request->getHeader('Accept')[0]);

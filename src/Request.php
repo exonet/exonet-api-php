@@ -119,7 +119,7 @@ class Request
     }
 
     /**
-     * Prepare the URL for the resource, including (optional) ID and query string parameters. Strip the API url, remove
+     * Prepare the URL for the resource, including (optional) ID and query string parameters. Remove
      * excessive slashes and add query string parameters.
      *
      * @param null|string $id The resource ID to get.
@@ -128,11 +128,16 @@ class Request
      */
     private function prepareUrl(?string $id = null) : string
     {
-        return sprintf(
-            '%s/%s?%s',
-            trim(str_replace(Connector::API_URL, '', $this->resource), '/'),
-            $id,
-            http_build_query($this->queryStringParameters)
-        );
+        $url = trim($this->resource, '/');
+        if ($id) {
+            $url .= '/'.$id;
+        }
+
+        $params = http_build_query($this->queryStringParameters);
+        if (!empty($params)) {
+            $url .= '?'.$params;
+        }
+
+        return $url;
     }
 }
