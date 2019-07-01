@@ -67,6 +67,25 @@ class ClientTest extends TestCase
         $client->getAuth()->getToken();
     }
 
+    public function testGetApiUrl_Default()
+    {
+        $client = new Client();
+        $this->assertSame('https://api.exonet.nl/', $client->getApiUrl());
+    }
+
+    public function testGetApiUrl_Given()
+    {
+        $client = new Client(null, 'https://test-api.exonet.nl');
+        $this->assertSame('https://test-api.exonet.nl/', $client->getApiUrl());
+    }
+
+    public function testSetApiUrl()
+    {
+        $client = new Client();
+        $client->setApiUrl('https://test-api.exonet.nl');
+        $this->assertSame('https://test-api.exonet.nl/', $client->getApiUrl());
+    }
+
     public function testLogger()
     {
         $logger = Mockery::mock(LoggerInterface::class);
