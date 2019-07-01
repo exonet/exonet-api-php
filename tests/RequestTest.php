@@ -11,7 +11,7 @@ class RequestTest extends TestCase
 {
     public function testGetRequest()
     {
-        $response = new ApiResource(ApiResourceTest::SIMPLE_RESOURCE);
+        $response = new ApiResource('unitTest', ApiResourceTest::SIMPLE_RESOURCE);
 
         $connectorMock = Mockery::mock(Connector::class);
         $connectorMock
