@@ -49,8 +49,8 @@ class Client implements LoggerAwareInterface
     /**
      * Client constructor.
      *
-     * @param AbstractAuth|null $auth If provided, set the auth instance.
-     * @param string|null $apiUrl If provided, set the host URL
+     * @param AbstractAuth|null $auth   If provided, set the auth instance.
+     * @param string|null       $apiUrl If provided, set the host URL
      */
     public function __construct(?AbstractAuth $auth = null, ?string $apiUrl = null)
     {
