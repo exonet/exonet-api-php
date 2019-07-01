@@ -22,6 +22,16 @@ class Client implements LoggerAwareInterface
     public const CLIENT_VERSION = 'v1.0.0';
 
     /**
+     * The API base URL.
+     */
+    public const API_URL = 'https://api.exonet.nl/';
+
+    /**
+     * The API test base URL.
+     */
+    public const API_TEST_URL = 'https://test-api.exonet.nl/';
+
+    /**
      * @var Client The client instance.
      */
     private static $_instance;
@@ -37,15 +47,23 @@ class Client implements LoggerAwareInterface
     private $logger;
 
     /**
+     * @var string The API URL to connect to.
+     */
+    private $apiUrl;
+
+    /**
      * Client constructor.
      *
-     * @param AbstractAuth|null $auth If provided, set the auth instance.
+     * @param AbstractAuth|null $auth   If provided, set the auth instance.
+     * @param string|null       $apiUrl If provided, set the host URL
      */
-    public function __construct(?AbstractAuth $auth = null)
+    public function __construct(?AbstractAuth $auth = null, ?string $apiUrl = null)
     {
         if ($auth) {
             $this->setAuth($auth);
         }
+
+        $this->setApiUrl($apiUrl ?? self::API_URL);
 
         if (!isset(self::$_instance)) {
             self::$_instance = $this;
@@ -94,6 +112,34 @@ class Client implements LoggerAwareInterface
     public function setAuth(AbstractAuth $auth) : self
     {
         $this->auth = $auth;
+
+        return $this;
+    }
+
+    /**
+     * Get the API URL to connect to.
+     *
+     * @return string The API URL to connect to.
+     */
+    public function getApiUrl() : string
+    {
+        return $this->apiUrl;
+    }
+
+    /**
+     * Set the API URL to use.
+     *
+     * @param string $apiUrl The API Url to use.
+     *
+     * @return self The current Client instance.
+     */
+    public function setApiUrl(string $apiUrl) : self
+    {
+        if (substr($apiUrl, -1) !== '/') {
+            $apiUrl .= '/';
+        }
+
+        $this->apiUrl = $apiUrl;
 
         return $this;
     }

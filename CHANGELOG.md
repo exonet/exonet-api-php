@@ -6,6 +6,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## Unreleased
 [Compare v1.0.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v1.0.0...master)
+### Added
+- Allow the user to define an API URL.
 
 ## [v1.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v1.0.0) - 2019-04-29
 [Compare v0.2.0 - v1.0.0](https://github.com/exonet/backend/compare/v0.2.0...v1.0.0)

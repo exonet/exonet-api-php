@@ -20,11 +20,6 @@ use GuzzleHttp\Psr7\Response as PsrResponse;
 class Connector
 {
     /**
-     * The API base URL.
-     */
-    public const API_URL = 'https://api.exonet.nl/';
-
-    /**
      * @var GuzzleClient The Guzzle client.
      */
     private $httpClient;
@@ -58,9 +53,9 @@ class Connector
      */
     public function get(string $urlPath)
     {
-        $this->apiClient->log()->debug('Sending [GET] request', ['url' => self::API_URL.$urlPath]);
+        $this->apiClient->log()->debug('Sending [GET] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
 
-        $request = new Request('GET', self::API_URL.$urlPath, $this->getDefaultHeaders());
+        $request = new Request('GET', $this->apiClient->getApiUrl().$urlPath, $this->getDefaultHeaders());
 
         $response = $this->httpClient->send($request);
 
