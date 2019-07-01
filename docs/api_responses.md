@@ -12,7 +12,7 @@ $certificates = $client->resource('certificates')->get();
 
 foreach ($certificates as $certificate) {
     // Each item is an instance of an ApiResource.
-    echo $certificate->id."\n";
+    echo $certificate->id()."\n";
 }
 ```
 
@@ -21,30 +21,29 @@ Each resource returned by the API is transformed to an `ApiResource` instance. T
 to the attributes, resourceType and ID of the resource. Each of these fields can be accessed as if it is a property on the class:
 
 ```php
-$certificate = $client->resource('certificates')->get('VX09kwR3KxNo');
+$certificate = $client->resource('certificates')->id('VX09kwR3KxNo')->get();
 
-echo "ID: ".$certificate->id."\n";
-echo "Domain: ".$certificate->domain."\n";
-echo "Wildcard: ".$certificate->wildcard."\n";
+echo "ID: ".$certificate->id()."\n";
+echo "Domain: ".$certificate->attribute('domain')."\n";
+echo "Wildcard: ".$certificate->attribute('wildcard')."\n";
 // etc.
 ```
 
 ## Relations
-A resource can have multiple relations to one or more resources. To access a relation you can call the relation name
-as if it were a method on `ApiResource`. A prepared instance of a new request is returned that can be retrieved by
-calling its `get()` method (thus returning an `ApiResource` or `ApiResourceSet`):
+A resource can have multiple relations to one or more resources. To access a relation you can call the `relation` or `relationship` method on `ApiResource`.
+A prepared instance of a new request is returned that can be retrieved by calling its `get()` method (thus returning an `ApiResource` or `ApiResourceSet`):
 
 ```php
-$certificate = $client->resource('certificates')->get('VX09kwR3KxNo');
+$certificate = $client->resource('certificates')->id('VX09kwR3KxNo')->get();
 
-$domainResource = $certificate->domain()->get();
+$domainResource = $certificate->relation('domain')->get();
 ```
 
-If you only want the data of the relation in the `ApiResource` itself, you can get it by using the `raw()` method. This
-will return a (multidimensional) array with the resourceType and ID:
+If you only want the resource identifiers, you can get it by using the `getResourceIdentifiers()` method. This
+will return a (`ApiResourceSet` with) the ApiResourceIdentifier:
 
 ```php
-$domainRelationData = $certificate->domain()->raw();
+$domainRelation = $certificate->relationship('domain')->getResourceIdentifiers();
 ```
 
 ---

@@ -26,10 +26,10 @@ renderTickets('ID and subject of open tickets:', $openTickets);
  */
 function renderTickets(string $description, ApiResourceSet $ticketList) : void
 {
-    echo sprintf("\n%s (%d)\n%s\n", $description, iterator_count($ticketList), str_repeat('-', strlen($description)));
+    echo sprintf("\n%s (%d)\n%s\n", $description, count($ticketList), str_repeat('-', strlen($description)));
 
     foreach ($ticketList as $ticket) {
-        echo sprintf("%s - %s\n", $ticket->id, $ticket->last_message_subject ?? '(no subject)');
+        echo sprintf("%s - %s\n", $ticket->id(), $ticket->attribute('last_message_subject') ?? '(no subject)');
     }
     echo "\n";
 }

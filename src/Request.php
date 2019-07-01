@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Exonet\Api;
 
+use Exonet\Api\Structures\ApiResourceIdentifier;
+
 /**
  * This class is responsible for building a valid API request that can be passed to the Connector.
  */
@@ -40,6 +42,18 @@ class Request
     {
         $this->resource = $resource;
         $this->connector = $connector ?? new Connector();
+    }
+
+    /**
+     * Create a resource identifier for a request.
+     *
+     * @param string $id The identifier for the resource.
+     *
+     * @return ApiResourceIdentifier The resource identifier.
+     */
+    public function id(string $id)
+    {
+        return new ApiResourceIdentifier($this->resource, $id);
     }
 
     /**

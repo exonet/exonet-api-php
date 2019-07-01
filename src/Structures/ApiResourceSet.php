@@ -6,13 +6,14 @@ namespace Exonet\Api\Structures;
 
 use ArrayAccess;
 use ArrayIterator;
+use Countable;
 use Exonet\Api\Exceptions\ValidationException;
 use IteratorAggregate;
 
 /**
  * An ApiResourceSet is a collection of several ApiResource instances that are retrieved from the API.
  */
-class ApiResourceSet implements IteratorAggregate, ArrayAccess
+class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
 {
     /**
      * @var \Exonet\Api\Structures\ApiResource[] The returned resources.
@@ -32,18 +33,30 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess
     /**
      * ApiResourceSet constructor.
      *
-     * @param string $contents The results from the API as encoded JSON string.
+     * @param string|array $resources The resources from the API as encoded JSON string or a similar array.
      */
-    public function __construct(string $contents)
+    public function __construct($resources)
     {
-        $results = json_decode($contents, true);
-
-        foreach ($results['data'] as $resourceItem) {
-            $this->resources[] = new ApiResource($resourceItem);
+        if (is_string($resources)) {
+            $resources = json_decode($resources, true);
         }
 
-        $this->meta = $results['meta'];
-        $this->links = $results['links'];
+        if (isset($resources['data'])) {
+            foreach ($resources['data'] as $resourceItem) {
+                if (isset($resourceItem['attributes'])) {
+                    $this->resources[] = new ApiResource($resourceItem);
+                } else {
+                    $this->resources[] = new ApiResourceIdentifier($resourceItem['type'], $resourceItem['id']);
+                }
+            }
+        }
+
+        if (isset($resources['meta'])) {
+            $this->meta = $resources['meta'];
+        }
+        if (isset($resources['links'])) {
+            $this->links = $resources['links'];
+        }
     }
 
     /**
@@ -105,5 +118,15 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess
     public function offsetUnset($offset) : void
     {
         unset($this->resources[$offset]);
+    }
+
+    /**
+     * Implementation of the Countable interface.
+     *
+     * @return int The number of resources in this set.
+     */
+    public function count()
+    {
+        return count($this->resources);
     }
 }

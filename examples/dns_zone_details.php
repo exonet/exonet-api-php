@@ -11,7 +11,7 @@ $exonetApi = new Exonet\Api\Client($authentication);
 /*
  * Get a single dns_zone resource. Because depending on who is authorized, the dns_zone IDs change, all dns_zones are
  * retrieved with a limit of 1. From this result, the first DNS zone is used. In a real world scenario you would
- * call something like `$zone = $exonetApi->resource('dns_zones')->get('VX09kwR3KxNo');` to get a single DNS zone
+ * call something like `$zone = $exonetApi->resource('dns_zones')->id('VX09kwR3KxNo')->get();` to get a single DNS zone
  * by it's ID.
  */
 $zones = $exonetApi->resource('dns_zones')->size(1)->get();
@@ -23,18 +23,18 @@ if (empty($zones)) {
 $zone = $zones[0];
 
 // Output DNS zone details.
-echo sprintf("\nDNS zone:\t%s\n", $zone->name);
+echo sprintf("\nDNS zone:\t%s\n", $zone->attribute('name'));
 
 // Get the records for this zone.
-$records = $zone->records()->get();
+$records = $zone->related('records')->get();
 // Show records.
 foreach ($records as $record) {
     echo sprintf(
         "%s\t%s\t%s\t%s\n",
-        $record->type,
-        $record->fqdn,
-        $record->ttl,
-        $record->content
+        $record->attribute('type'),
+        $record->attribute('fqdn'),
+        $record->attribute('ttl'),
+        $record->attribute('content')
     );
 }
 echo "\n";

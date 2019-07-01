@@ -2,34 +2,27 @@
 
 namespace Exonet\Api\Structures;
 
-use ArrayIterator;
 use Exonet\Api\Request;
-use IteratorAggregate;
 
 /**
  * The Relation Class represents a relation of an ApiResource with a predefined request to get the related resource.
  */
-class Relation implements IteratorAggregate
+class Relation
 {
+    /**
+     * @var string Pattern to create the relation url.
+     */
+    protected $urlPattern = '/%s/%s/%s';
+
+    /**
+     * @var string The url for the relation data.
+     */
+    private $url;
+
     /**
      * @var string The name of the relation.
      */
     private $name;
-
-    /**
-     * @var string[] Array with the links.
-     */
-    private $links;
-
-    /**
-     * @var mixed[] (Multi dimensional) array with the relation data.
-     */
-    private $data;
-
-    /**
-     * @var bool Whether or not this relation consists of multiple resources.
-     */
-    private $singleResource;
 
     /**
      * @var Request The prepared request to get the relation data.
@@ -37,62 +30,65 @@ class Relation implements IteratorAggregate
     private $request;
 
     /**
+     * @var ApiResourceSet|ApiResourceIdentifier The related resource identifier or a ApiResourceSet.
+     */
+    private $resourceIdentifiers;
+
+    /**
      * Relation constructor.
      *
-     * @param string $name The name of the relation.
-     * @param array  $data The data array of the relation.
+     * @param string $relationName The name of the relation.
+     * @param string $originType   The resource type of the origin resource.
+     * @param string $originId     The resource ID of the origin resource.
      */
-    public function __construct(string $name, array $data)
+    public function __construct(string $relationName, string $originType, string $originId)
     {
-        $this->name = $name;
-        $this->data = $data['data'];
-        $this->links = $data['links'];
-        $this->singleResource = !isset($data['data'][0]);
+        $this->name = $relationName;
 
-        $this->request = new Request($this->links['related']);
-    }
+        $this->url = sprintf(
+            $this->urlPattern,
+            $originType,
+            $originId,
+            $relationName
+        );
 
-    /**
-     * Return the number of items in this relation.
-     *
-     * @return int The number of items in this relation.
-     */
-    public function count() : int
-    {
-        return $this->singleResource ? 1 : count($this->data);
-    }
-
-    /**
-     * Get the relation data as defined in the resource.
-     *
-     * @return string[]|null The relation data or null if the relation is empty.
-     */
-    public function raw() : ?array
-    {
-        return $this->data;
+        $this->request = new Request($this->url);
     }
 
     /**
      * Pass unknown calls to the Request instance.
      *
-     * @param string $name      The method name.
-     * @param array  $arguments The method arguments.
+     * @param string $methodName The method to call.
+     * @param array  $arguments  The method arguments.
      *
-     * @return Request|\Exonet\Api\Structures\ApiResource|\Exonet\Api\Structures\ApiResourceSet The request instance or
-     *                                                                                          retrieved resource (set).
+     * @return Request|ApiResource|ApiResourceSet The request instance or retrieved resource (set).
      */
-    public function __call($name, $arguments)
+    public function __call($methodName, $arguments)
     {
-        return call_user_func_array([$this->request, $name], $arguments);
+        return call_user_func_array([$this->request, $methodName], $arguments);
     }
 
     /**
-     * Return the data when this class is called as array/in a loop.
+     * Get the resource identifiers for this relation.
      *
-     * @return ArrayIterator The array iterator.
+     * @return ApiResourceSet|ApiResourceIdentifier The resource identifier or a resource set.
      */
-    public function getIterator() : ArrayIterator
+    public function getResourceIdentifiers()
     {
-        return new ArrayIterator($this->singleResource ? [$this->data] : $this->data);
+        return  $this->resourceIdentifiers;
+    }
+
+    /**
+     * Replace the related resource identifiers with new data.
+     *
+     * @param ApiResourceSet|ApiResourceIdentifier $newRelationship A new resource identifier or a new resource set.
+     *
+     * @return $this
+     */
+    public function setResourceIdentifiers($newRelationship)
+    {
+        $this->resourceIdentifiers = $newRelationship;
+
+        return  $this;
     }
 }

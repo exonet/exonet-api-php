@@ -4,33 +4,16 @@ declare(strict_types=1);
 
 namespace Exonet\Api\Structures;
 
-use ArrayAccess;
-
 /**
  * An ApiResource represents a single resource that is retrieved from the API and allows easy access to its attributes
  * and relations.
  */
-class ApiResource implements ArrayAccess
+class ApiResource extends ApiResourceIdentifier
 {
-    /**
-     * @var string The resource type.
-     */
-    public $resourceType;
-
-    /**
-     * @var string The resource ID.
-     */
-    public $id;
-
     /**
      * @var mixed[] The attributes for this resource.
      */
     private $attributes;
-
-    /**
-     * @var Relation[]|null The relationships for this resource.
-     */
-    private $relationships;
 
     /**
      * ApiResource constructor.
@@ -40,125 +23,54 @@ class ApiResource implements ArrayAccess
     public function __construct($contents)
     {
         $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
-        $this->resourceType = $data['type'];
-        $this->id = $data['id'];
+        parent::__construct($data['type'], $data['id']);
+
         $this->attributes = $data['attributes'];
         $this->relationships = isset($data['relationships']) ? $this->parseRelations($data['relationships']) : null;
     }
 
     /**
-     * Get a specific attribute.
+     * Get a specific attribute or set a new value.
      *
-     * @param string $name The name of the attribute to get.
+     * @param string $attributeName The name of the attribute to get.
+     * @param mixed  $newValue      The new attribute value.
      *
      * @return mixed The value of the attribute.
      */
-    public function __get(string $name)
+    public function attribute($attributeName, $newValue = null)
     {
-        return $this->attributes[$name];
-    }
-
-    /**
-     * Set the value of an attribute.
-     *
-     * @param string $name  The name of the attribute.
-     * @param mixed  $value The new attribute value.
-     */
-    public function __set(string $name, $value) : void
-    {
-        $this->attributes[$name] = $value;
-    }
-
-    /**
-     * Check if the given $name is set.
-     *
-     * @param string $name The name.
-     *
-     * @return bool True when the attribute exists and is set.
-     */
-    public function __isset(string $name) : bool
-    {
-        return isset($this->attributes[$name]);
-    }
-
-    /**
-     * Get a relation. Arguments will be ignored.
-     *
-     * @param string $name      The name of the relation.
-     * @param mixed  $arguments Arguments passed, will be ignored.
-     *
-     * @return Relation The relation.
-     */
-    public function __call(string $name, $arguments) : Relation
-    {
-        return $this->relationships[$name];
-    }
-
-    /**
-     * Check if the given offset exists as property (for ID or resourceType) or as attribute. Required by the ArrayAccess
-     * interface.
-     *
-     * @param string $offset The offset.
-     *
-     * @return bool True when the offset exists.
-     */
-    public function offsetExists($offset) : bool
-    {
-        return property_exists($this, $offset) || isset($this->attributes[$offset]);
-    }
-
-    /**
-     * Get the given offset. Required by the ArrayAccess interface.
-     *
-     * @param string $offset The offset.
-     *
-     * @return mixed The offset value.
-     */
-    public function offsetGet($offset)
-    {
-        return $this->{$offset} ?? $this->attributes[$offset];
-    }
-
-    /**
-     * Set the given offset. Required by the ArrayAccess interface.
-     *
-     * @param string $offset The offset to set.
-     * @param mixed  $value  The offset value.
-     */
-    public function offsetSet($offset, $value) : void
-    {
-        if ($offset === 'id' || $offset === 'resourceType') {
-            $this->{$offset} = $value;
-
-            return;
+        if ($newValue) {
+            $this->attributes[$attributeName] = $newValue;
         }
 
-        $this->attributes[$offset] = $value;
+        return $this->attributes[$attributeName];
     }
 
     /**
-     * Unset the given offset. Required by the ArrayAccess interface.
+     * Parse relationships found in the resource into related resource identifiers.
      *
-     * @param mixed $offset The offset to unset.
+     * @param string[] $relationships The relationship data.
+     *
+     * @return Relation[] The parsed relationships.
      */
-    public function offsetUnset($offset) : void
-    {
-        unset($this->attributes[$offset]);
-    }
-
-    /**
-     * Parse the relations to a Relation class.
-     *
-     * @param string[] $relations The relations.
-     *
-     * @return Relation[] The parsed relations.
-     */
-    private function parseRelations(array $relations) : array
+    private function parseRelations(array $relationships) : array
     {
         $parsedRelations = [];
 
-        foreach ($relations as $relationName => $relationData) {
-            $parsedRelations[$relationName] = new Relation($relationName, $relationData);
+        foreach ($relationships as $relationName => $relation) {
+            $relationship = new Relationship($relationName, $this->type(), $this->id());
+
+            if (isset($relation['data']['type'])) {
+                $relationship->setResourceIdentifiers(
+                    new ApiResourceIdentifier($relation['data']['type'], $relation['data']['id'])
+                );
+            } elseif (!empty($relation['data'])) {
+                $relationship->setResourceIdentifiers(
+                    new ApiResourceSet($relation)
+                );
+            }
+
+            $parsedRelations[$relationName] = $relationship;
         }
 
         return $parsedRelations;
