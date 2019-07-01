@@ -74,11 +74,11 @@ class Connector
      */
     public function post(string $urlPath, array $data)
     {
-        $this->apiClient->log()->debug('Sending [POST] request', ['url' => self::API_URL.$urlPath]);
+        $this->apiClient->log()->debug('Sending [POST] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
 
         $request = new Request(
             'POST',
-            self::API_URL.$urlPath,
+            $this->apiClient->getApiUrl().$urlPath,
             $this->getDefaultHeaders(),
             json_encode($data)
         );

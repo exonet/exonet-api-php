@@ -83,7 +83,7 @@ class Request
     public function post(array $payload)
     {
         return $this->connector->post(
-            trim(str_replace(Connector::API_URL, '', $this->resource), '/'),
+            trim($this->resource, '/'),
             $payload
         );
     }
