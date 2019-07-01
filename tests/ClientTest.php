@@ -75,15 +75,15 @@ class ClientTest extends TestCase
 
     public function testGetApiUrl_Given()
     {
-        $client = new Client(null, 'https://test-api.exonet.nl');
+        $client = new Client(null, Client::API_TEST_URL);
         $this->assertSame('https://test-api.exonet.nl/', $client->getApiUrl());
     }
 
     public function testSetApiUrl()
     {
         $client = new Client();
-        $client->setApiUrl('https://test-api.exonet.nl');
-        $this->assertSame('https://test-api.exonet.nl/', $client->getApiUrl());
+        $client->setApiUrl('https://unit-test.example.com');
+        $this->assertSame('https://unit-test.example.com/', $client->getApiUrl());
     }
 
     public function testLogger()

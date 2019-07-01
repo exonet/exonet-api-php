@@ -27,6 +27,11 @@ class Client implements LoggerAwareInterface
     public const API_URL = 'https://api.exonet.nl/';
 
     /**
+     * The API test base URL.
+     */
+    public const API_TEST_URL = 'https://test-api.exonet.nl/';
+
+    /**
      * @var Client The client instance.
      */
     private static $_instance;
