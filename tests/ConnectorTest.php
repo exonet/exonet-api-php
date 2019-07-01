@@ -109,4 +109,31 @@ class ConnectorTest extends TestCase
         $connectorClass = new Connector($handler);
         $connectorClass->get('test');
     }
+
+    public function testPost()
+    {
+        $apiCalls = [];
+        $mock = new MockHandler([new Response(201, [], json_encode($this->singleResource))]);
+
+        $history = Middleware::history($apiCalls);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+
+        new Client(new PersonalAccessToken('test-token'));
+        $connectorClass = new Connector($handler);
+
+        $payload = ['test' => 'demo'];
+
+        $this->assertInstanceOf(ApiResource::class, $connectorClass->post('url', $payload));
+
+        $this->assertCount(1, $apiCalls);
+        /** @var \GuzzleHttp\Psr7\Request $request */
+        $request = $apiCalls[0]['request'];
+
+        $this->assertSame('/url', $request->getUri()->getPath());
+        $this->assertSame('Bearer test-token', $request->getHeader('Authorization')[0]);
+        $this->assertSame('application/vnd.Exonet.v1+json', $request->getHeader('Accept')[0]);
+        $this->assertSame('exonet-api-php/'.Client::CLIENT_VERSION, $request->getHeader('User-Agent')[0]);
+        $this->assertSame('application/json', $request->getHeader('Content-Type')[0]);
+    }
 }

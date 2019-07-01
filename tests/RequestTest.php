@@ -26,4 +26,22 @@ class RequestTest extends TestCase
 
         $this->assertSame($response, $result);
     }
+
+    public function testPostRequest()
+    {
+        $response = new ApiResource('unitTest', ApiResourceTest::SIMPLE_RESOURCE);
+
+        $connectorMock = Mockery::mock(Connector::class);
+        $connectorMock
+            ->shouldReceive('post')
+            ->withArgs(['test', ['test' => 'something']])
+            ->once()
+            ->andReturn($response);
+
+        $requestClass = new Request('/test', $connectorMock);
+
+        $result = $requestClass->post(['test' => 'something']);
+
+        $this->assertSame($response, $result);
+    }
 }
