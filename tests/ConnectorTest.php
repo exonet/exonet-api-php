@@ -75,7 +75,6 @@ class ConnectorTest extends TestCase
         $this->assertInstanceOf(ApiResource::class, $connectorClass->get('test'));
 
         $this->assertCount(1, $apiCalls);
-        /** @var \GuzzleHttp\Psr7\Request $request */
         $request = $apiCalls[0]['request'];
 
         $this->assertSame('api.exonet.nl', $request->getUri()->getHost());
@@ -128,7 +127,6 @@ class ConnectorTest extends TestCase
         $this->assertInstanceOf(ApiResource::class, $connectorClass->post('url', $payload));
 
         $this->assertCount(1, $apiCalls);
-        /** @var \GuzzleHttp\Psr7\Request $request */
         $request = $apiCalls[0]['request'];
 
         $this->assertSame('/url', $request->getUri()->getPath());

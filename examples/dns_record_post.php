@@ -35,7 +35,7 @@ if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
     exit();
 }
 
-// Make the new dns_record that should be added to the zone.
+// Make the new DNS record that should be added to the zone.
 $record = new ApiResource('dns_records');
 $record->attribute('type', 'TXT');
 $record->attribute('name', 'subdomain');
