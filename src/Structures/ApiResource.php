@@ -23,7 +23,7 @@ class ApiResource extends ApiResourceIdentifier
      * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
      */
-    public function __construct($type, $contents = [])
+    public function __construct(string $type, $contents = [])
     {
         $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
         parent::__construct(
