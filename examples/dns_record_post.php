@@ -56,6 +56,7 @@ echo sprintf(
 // POST to API and get the newly created record.
 $newRecord = $record->post();
 
+echo "\nDNS record created:\n";
 echo sprintf(
     "%s\t%s\t%s\t%s\n",
     $newRecord->attribute('type'),
@@ -64,4 +65,15 @@ echo sprintf(
     $newRecord->attribute('content')
 );
 
-echo "\n";
+echo sprintf("\nNew DNS record has ID %s", $newRecord->id());
+
+// Ask user if record should be deleted.
+echo sprintf("\nDo you want to delete this record? [y/n] ");
+if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
+    echo "\nDon't delete record\n";
+    exit();
+}
+
+echo "Delete record";
+$newRecord->delete();
+echo "\nDone.\n";
