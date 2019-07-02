@@ -2,6 +2,7 @@
 
 namespace Exonet\Api\Structures;
 
+use Exonet\Api\Exceptions\InvalidRequestException;
 use Exonet\Api\Request;
 
 /**
@@ -41,18 +42,20 @@ class Relation
      * @param string $originType   The resource type of the origin resource.
      * @param string $originId     The resource ID of the origin resource.
      */
-    public function __construct(string $relationName, string $originType, string $originId)
+    public function __construct(string $relationName, string $originType = null, string $originId = null)
     {
         $this->name = $relationName;
 
-        $this->url = sprintf(
-            $this->urlPattern,
-            $originType,
-            $originId,
-            $relationName
-        );
+        if ($originType && $originId) {
+            $this->url = sprintf(
+                $this->urlPattern,
+                $originType,
+                $originId,
+                $relationName
+            );
 
-        $this->request = new Request($this->url);
+            $this->request = new Request($this->url);
+        }
     }
 
     /**
@@ -65,6 +68,10 @@ class Relation
      */
     public function __call($methodName, $arguments)
     {
+        if (is_null($this->request)) {
+            throw new InvalidRequestException('No request available, incomplete relation');
+        }
+
         return call_user_func_array([$this->request, $methodName], $arguments);
     }
 

@@ -53,13 +53,60 @@ class Connector
      */
     public function get(string $urlPath)
     {
-        $this->apiClient->log()->debug('Sending [GET] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
+        $apiUrl = $this->apiClient->getApiUrl().$urlPath;
+        $this->apiClient->log()->debug('Sending [GET] request', ['url' => $apiUrl]);
 
-        $request = new Request('GET', $this->apiClient->getApiUrl().$urlPath, $this->getDefaultHeaders());
+        $request = new Request('GET', $apiUrl, $this->getDefaultHeaders());
 
         $response = $this->httpClient->send($request);
 
         return $this->parseResponse($response);
+    }
+
+    /**
+     * Convert the data to JSON and post it to a URL.
+     *
+     * @param string $urlPath The URL to post to.
+     * @param array  $data    An array with data to post to the API.
+     *
+     * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
+     *
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The response from the API, converted to resources.
+     */
+    public function post(string $urlPath, array $data)
+    {
+        $apiUrl = $this->apiClient->getApiUrl().$urlPath;
+        $this->apiClient->log()->debug('Sending [POST] request', ['url' => $apiUrl]);
+
+        $request = new Request(
+            'POST',
+            $apiUrl,
+            $this->getDefaultHeaders(),
+            json_encode($data)
+        );
+
+        $response = $this->httpClient->send($request);
+
+        return $this->parseResponse($response);
+    }
+
+    /**
+     * Make a DELETE call to the API.
+     *
+     * @param string $urlPath The url to make the DELETE request to.
+     */
+    public function delete(string $urlPath)
+    {
+        $apiUrl = $this->apiClient->getApiUrl().$urlPath;
+        $this->apiClient->log()->debug('Sending [DELETE] request', ['url' => $apiUrl]);
+
+        $request = new Request(
+            'DELETE',
+            $apiUrl,
+            $this->getDefaultHeaders()
+        );
+
+        $this->httpClient->send($request);
     }
 
     /**
@@ -88,7 +135,7 @@ class Connector
 
             // Convert single item into resource or resource identifier.
             if (isset($decodedContent->data->attributes)) {
-                return new ApiResource($contents);
+                return new ApiResource($decodedContent->data->type, $contents);
             }
 
             return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
@@ -107,6 +154,7 @@ class Connector
         return [
             'Authorization' => sprintf('Bearer %s', $this->apiClient->getAuth()->getToken()),
             'Accept' => 'application/vnd.Exonet.v1+json',
+            'Content-Type' => 'application/json',
             'User-Agent' => 'exonet-api-php/'.Client::CLIENT_VERSION,
         ];
     }

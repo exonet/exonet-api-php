@@ -44,7 +44,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
         if (isset($resources['data'])) {
             foreach ($resources['data'] as $resourceItem) {
                 if (isset($resourceItem['attributes'])) {
-                    $this->resources[] = new ApiResource($resourceItem);
+                    $this->resources[] = new ApiResource($resourceItem['type'], $resourceItem);
                 } else {
                     $this->resources[] = new ApiResourceIdentifier($resourceItem['type'], $resourceItem['id']);
                 }
@@ -127,6 +127,10 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      */
     public function count()
     {
+        if (empty($this->resources)) {
+            return 0;
+        }
+
         return count($this->resources);
     }
 }

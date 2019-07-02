@@ -11,7 +11,7 @@ class RequestTest extends TestCase
 {
     public function testGetRequest()
     {
-        $response = new ApiResource(ApiResourceTest::SIMPLE_RESOURCE);
+        $response = new ApiResource('unitTest', ApiResourceTest::SIMPLE_RESOURCE);
 
         $connectorMock = Mockery::mock(Connector::class);
         $connectorMock
@@ -25,5 +25,37 @@ class RequestTest extends TestCase
         $result = $requestClass->size(1)->page(2)->filter('unit', 'test')->filter('test')->filter('multi', ['a', 'b', 'c'])->get();
 
         $this->assertSame($response, $result);
+    }
+
+    public function testPostRequest()
+    {
+        $response = new ApiResource('unitTest', ApiResourceTest::SIMPLE_RESOURCE);
+
+        $connectorMock = Mockery::mock(Connector::class);
+        $connectorMock
+            ->shouldReceive('post')
+            ->withArgs(['test', ['test' => 'something']])
+            ->once()
+            ->andReturn($response);
+
+        $requestClass = new Request('/test', $connectorMock);
+
+        $result = $requestClass->post(['test' => 'something']);
+
+        $this->assertSame($response, $result);
+    }
+
+    public function testDeleteRequest()
+    {
+        $connectorMock = Mockery::mock(Connector::class);
+        $connectorMock
+            ->shouldReceive('delete')
+            ->withArgs(['test/id999'])
+            ->once()
+            ->andReturnNull();
+
+        $request = new Request('/test', $connectorMock);
+
+        $this->assertNull($request->delete('id999'));
     }
 }

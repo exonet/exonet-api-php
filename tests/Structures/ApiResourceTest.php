@@ -20,17 +20,9 @@ class ApiResourceTest extends TestCase
         ],
     ];
 
-    public function testResourceIdentifier()
-    {
-        $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
-
-        $this->assertSame('unitTest', $resourceClass->type());
-        $this->assertSame('testId', $resourceClass->id());
-    }
-
     public function testGetSetAttribute()
     {
-        $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
+        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
 
         $this->assertSame('world', $resourceClass->attribute('hello'));
 
@@ -40,7 +32,7 @@ class ApiResourceTest extends TestCase
 
     public function testRelated()
     {
-        $resourceClass = new ApiResource(self::SIMPLE_RESOURCE);
+        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
 
         $this->assertInstanceOf(Relation::class, $resourceClass->related('testRelation'));
     }

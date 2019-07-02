@@ -83,11 +83,14 @@ class ApiResourceSetTest extends TestCase
         $this->assertFalse(isset($resourceSetClass[55]));
 
         // Set a new offset.
-        $resourceSetClass[55] = new ApiResource([
-            'id' => 'ABC',
-            'type' => 'some_resource',
-            'attributes' => [],
-        ]);
+        $resourceSetClass[55] = new ApiResource(
+            'some_resource',
+            [
+                'id' => 'ABC',
+                'type' => 'some_resource',
+                'attributes' => [],
+            ]
+        );
 
         // Test isset with an offset that should now exist.
         $this->assertTrue(isset($resourceSetClass[55]));
