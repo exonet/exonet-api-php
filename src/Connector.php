@@ -53,9 +53,10 @@ class Connector
      */
     public function get(string $urlPath)
     {
-        $this->apiClient->log()->debug('Sending [GET] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
+        $apiUrl = $this->apiClient->getApiUrl().$urlPath;
+        $this->apiClient->log()->debug('Sending [GET] request', ['url' => $apiUrl]);
 
-        $request = new Request('GET', $this->apiClient->getApiUrl().$urlPath, $this->getDefaultHeaders());
+        $request = new Request('GET', $apiUrl, $this->getDefaultHeaders());
 
         $response = $this->httpClient->send($request);
 
@@ -74,11 +75,12 @@ class Connector
      */
     public function post(string $urlPath, array $data)
     {
-        $this->apiClient->log()->debug('Sending [POST] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
+        $apiUrl = $this->apiClient->getApiUrl().$urlPath;
+        $this->apiClient->log()->debug('Sending [POST] request', ['url' => $apiUrl]);
 
         $request = new Request(
             'POST',
-            $this->apiClient->getApiUrl().$urlPath,
+            $apiUrl,
             $this->getDefaultHeaders(),
             json_encode($data)
         );
@@ -95,11 +97,12 @@ class Connector
      */
     public function delete(string $urlPath)
     {
-        $this->apiClient->log()->debug('Sending [DELETE] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
+        $apiUrl = $this->apiClient->getApiUrl().$urlPath;
+        $this->apiClient->log()->debug('Sending [DELETE] request', ['url' => $apiUrl]);
 
         $request = new Request(
             'DELETE',
-            $this->apiClient->getApiUrl().$urlPath,
+            $apiUrl,
             $this->getDefaultHeaders()
         );
 
