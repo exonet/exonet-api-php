@@ -9,6 +9,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Added
 - Allow the user to define an API URL.
 - Making POST request to create new resources.
+- Making DELETE request to remove a resource.
 
 ## [v1.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v1.0.0) - 2019-04-29
 [Compare v0.2.0 - v1.0.0](https://github.com/exonet/backend/compare/v0.2.0...v1.0.0)

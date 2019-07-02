@@ -74,6 +74,6 @@ if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
     exit();
 }
 
-echo "Delete record";
+echo 'Delete record';
 $newRecord->delete();
 echo "\nDone.\n";
