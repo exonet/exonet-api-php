@@ -89,6 +89,24 @@ class Connector
     }
 
     /**
+     * Make a DELETE call to the API.
+     *
+     * @param string $urlPath The url to make the DELETE request to.
+     */
+    public function delete(string $urlPath)
+    {
+        $this->apiClient->log()->debug('Sending [POST] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
+
+        $request = new Request(
+            'DELETE',
+            $this->apiClient->getApiUrl().$urlPath,
+            $this->getDefaultHeaders()
+        );
+
+        $this->httpClient->send($request);
+    }
+
+    /**
      * Parse the call response to an ApiResource or ApiResourceSet object or throw the correct error if something went
      * wrong.
      *

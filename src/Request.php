@@ -89,6 +89,18 @@ class Request
     }
 
     /**
+     * Delete a resource.
+     *
+     * @param string $id The ID of the resource to delete.
+     */
+    public function delete(string $id)
+    {
+        $this->connector->delete(
+            trim($this->resource, '/').'/'.$id
+        );
+    }
+
+    /**
      * Set the page size for the request. This is the maximum number of resources that is returned in a single call.
      *
      * @param int $pageSize The page size.

@@ -79,6 +79,14 @@ class ApiResourceIdentifier
     }
 
     /**
+     * Delete this resource from the API.
+     */
+    public function delete()
+    {
+        $this->request->delete($this->id());
+    }
+
+    /**
      * Get a relation definition to another resource.
      *
      * @param string $name The name of the relation.
