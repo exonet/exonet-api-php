@@ -20,14 +20,6 @@ class ApiResourceTest extends TestCase
         ],
     ];
 
-    public function testResourceIdentifier()
-    {
-        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
-
-        $this->assertSame('unitTest', $resourceClass->type());
-        $this->assertSame('testId', $resourceClass->id());
-    }
-
     public function testGetSetAttribute()
     {
         $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);

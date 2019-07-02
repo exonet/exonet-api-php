@@ -44,4 +44,18 @@ class RequestTest extends TestCase
 
         $this->assertSame($response, $result);
     }
+
+    public function testDeleteRequest()
+    {
+        $connectorMock = Mockery::mock(Connector::class);
+        $connectorMock
+            ->shouldReceive('delete')
+            ->withArgs(['test/id999'])
+            ->once()
+            ->andReturnNull();
+
+        $request = new Request('/test', $connectorMock);
+
+        $this->assertNull($request->delete('id999'));
+    }
 }
