@@ -34,15 +34,16 @@ class ApiResourceIdentifier
     /**
      * ApiResourceIdentifier constructor.
      *
-     * @param string $resourceType The resource type.
-     * @param string $id           The resource ID.
+     * @param string  $resourceType The resource type.
+     * @param string  $id           The resource ID.
+     * @param Request $request      The optional request instance to use.
      */
-    public function __construct(string $resourceType, ?string $id = null)
+    public function __construct(string $resourceType, ?string $id = null, ?Request $request = null)
     {
         $this->resourceType = $resourceType;
         $this->id = $id;
 
-        $this->request = new Request($resourceType);
+        $this->request = $request ?? new Request($resourceType);
     }
 
     /**
