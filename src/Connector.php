@@ -95,7 +95,7 @@ class Connector
      */
     public function delete(string $urlPath)
     {
-        $this->apiClient->log()->debug('Sending [POST] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
+        $this->apiClient->log()->debug('Sending [DELETE] request', ['url' => $this->apiClient->getApiUrl().$urlPath]);
 
         $request = new Request(
             'DELETE',
