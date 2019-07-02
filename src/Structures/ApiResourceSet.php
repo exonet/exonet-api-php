@@ -127,6 +127,10 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      */
     public function count()
     {
+        if (empty($this->resources)) {
+            return 0;
+        }
+
         return count($this->resources);
     }
 }
