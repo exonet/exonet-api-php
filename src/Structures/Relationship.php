@@ -26,21 +26,20 @@ class Relationship extends Relation
         }
 
         if (is_array($resourceIdentifiers)) {
-            $json = [];
-
-            foreach ($resourceIdentifiers as $identifier) {
-                $json[] = [
-                    'type' => $identifier->type(),
-                    'id' => $identifier->id(),
-                ];
-            }
-        } else {
-            $json = [
-                'type' => $resourceIdentifiers->type(),
-                'id' => $resourceIdentifiers->id(),
-            ];
+            return array_map(
+                function ($identifier) {
+                    return [
+                        'type' => $identifier->type(),
+                        'id' => $identifier->id(),
+                    ];
+                },
+                $resourceIdentifiers
+            );
         }
 
-        return $json;
+        return [
+            'type' => $resourceIdentifiers->type(),
+            'id' => $resourceIdentifiers->id(),
+        ];
     }
 }
