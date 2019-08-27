@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Exonet\Api;
 
-use Exonet\Api\Structures\ApiResource;
-use Exonet\Api\Structures\ApiResourceIdentifier;
-use Exonet\Api\Structures\ApiResourceSet;
+use Exonet\Api\Structures\Resource;
+use Exonet\Api\Structures\ResourceIdentifier;
+use Exonet\Api\Structures\ResourceSet;
 
 /**
  * This class is responsible for building a valid API request that can be passed to the Connector.
@@ -51,11 +51,11 @@ class Request
      *
      * @param string $id The identifier for the resource.
      *
-     * @return ApiResourceIdentifier The resource identifier.
+     * @return ResourceIdentifier The resource identifier.
      */
     public function id(string $id)
     {
-        return new ApiResourceIdentifier($this->resource, $id);
+        return new ResourceIdentifier($this->resource, $id);
     }
 
     /**
@@ -63,10 +63,10 @@ class Request
      *
      * @param null|string $id Optional ID to get a specific resource.
      *
-     * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
-     *
-     * @return \Exonet\Api\Structures\ApiResource|\Exonet\Api\Structures\ApiResourceSet The requested data transformed
+     * @return \Exonet\Api\Structures\Resource|\Exonet\Api\Structures\ResourceSet The requested data transformed
      *                                                                                  to a single or multiple resources.
+     *@throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
+     *
      */
     public function get(?string $id = null)
     {

@@ -6,7 +6,7 @@ use Exonet\Api\Exceptions\InvalidRequestException;
 use Exonet\Api\Request;
 
 /**
- * The Relation Class represents a relation of an ApiResource with a predefined request to get the related resource.
+ * The Relation Class represents a relation of an Resource with a predefined request to get the related resource.
  */
 class Relation
 {
@@ -31,7 +31,7 @@ class Relation
     private $request;
 
     /**
-     * @var ApiResourceSet|ApiResourceIdentifier The related resource identifier or a ApiResourceSet.
+     * @var ResourceSet|ResourceIdentifier The related resource identifier or a ResourceSet.
      */
     private $resourceIdentifiers;
 
@@ -64,7 +64,7 @@ class Relation
      * @param string $methodName The method to call.
      * @param array  $arguments  The method arguments.
      *
-     * @return Request|ApiResource|ApiResourceSet The request instance or retrieved resource (set).
+     * @return Request|Resource|ResourceSet The request instance or retrieved resource (set).
      */
     public function __call($methodName, $arguments)
     {
@@ -78,7 +78,7 @@ class Relation
     /**
      * Get the resource identifiers for this relation.
      *
-     * @return ApiResourceSet|ApiResourceIdentifier The resource identifier or a resource set.
+     * @return ResourceSet|ResourceIdentifier The resource identifier or a resource set.
      */
     public function getResourceIdentifiers()
     {
@@ -88,7 +88,7 @@ class Relation
     /**
      * Replace the related resource identifiers with new data.
      *
-     * @param ApiResourceSet|ApiResourceIdentifier $newRelationship A new resource identifier or a new resource set.
+     * @param ResourceSet|ResourceIdentifier $newRelationship A new resource identifier or a new resource set.
      *
      * @return $this
      */

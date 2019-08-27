@@ -4,7 +4,7 @@ namespace Exonet\Api\Structures;
 
 use PHPUnit\Framework\TestCase;
 
-class ApiResourceTest extends TestCase
+class ResourceTest extends TestCase
 {
     public const SIMPLE_RESOURCE = [
         'type' => 'unitTest',
@@ -22,7 +22,7 @@ class ApiResourceTest extends TestCase
 
     public function testGetSetAttribute()
     {
-        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
+        $resourceClass = new Resource('unitTest', self::SIMPLE_RESOURCE);
 
         $this->assertSame('world', $resourceClass->attribute('hello'));
 
@@ -32,7 +32,7 @@ class ApiResourceTest extends TestCase
 
     public function testRelated()
     {
-        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
+        $resourceClass = new Resource('unitTest', self::SIMPLE_RESOURCE);
 
         $this->assertInstanceOf(Relation::class, $resourceClass->related('testRelation'));
     }

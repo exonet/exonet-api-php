@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Exonet\Api;
 
 use Exonet\Api\Exceptions\ResponseExceptionHandler;
-use Exonet\Api\Structures\ApiResource;
-use Exonet\Api\Structures\ApiResourceIdentifier;
-use Exonet\Api\Structures\ApiResourceSet;
+use Exonet\Api\Structures\Resource;
+use Exonet\Api\Structures\ResourceIdentifier;
+use Exonet\Api\Structures\ResourceSet;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
@@ -110,38 +110,39 @@ class Connector
     }
 
     /**
-     * Parse the call response to an ApiResource or ApiResourceSet object or throw the correct error if something went
+     * Parse the call response to an Resource or ResourceSet object or throw the correct error if something went
      * wrong.
      *
      * @param PsrResponse $response The call response.
      *
      * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
      *
-     * @return ApiResourceIdentifier|ApiResource|ApiResourceSet The structured response.
+     * @return ResourceIdentifier|Resource|ResourceSet The structured response.
      */
     private function parseResponse(PsrResponse $response)
     {
-        $this->apiClient->log()->debug('Request completed', ['statusCode' => $response->getStatusCode()]);
+        $this->apiClient()->log()->debug('Request completed', ['statusCode' => $response->getStatusCode()]);
 
-        if ($response->getStatusCode() < 300) {
-            $contents = $response->getBody()->getContents();
-
-            $decodedContent = json_decode($contents);
-
-            // Create collection of resources when returned data is an array.
-            if (is_array($decodedContent->data)) {
-                return new ApiResourceSet($contents);
-            }
-
-            // Convert single item into resource or resource identifier.
-            if (isset($decodedContent->data->attributes)) {
-                return new ApiResource($decodedContent->data->type, $contents);
-            }
-
-            return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
+        if ($response->getStatusCode() >= 300) {
+            (new ResponseExceptionHandler($response))->handle();
         }
 
-        (new ResponseExceptionHandler($response))->handle();
+        $contents = $response->getBody()->getContents();
+
+        $decodedContent = json_decode($contents);
+
+        // Create collection of resources when returned data is an array.
+        if (is_array($decodedContent->data)) {
+            return new ResourceSet($contents);
+        }
+
+        // Convert single item into resource or resource identifier.
+        if (isset($decodedContent->data->attributes)) {
+            return new Resource($decodedContent->data->type, $contents);
+        }
+
+        return new ResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
+    }
     }
 
     /**

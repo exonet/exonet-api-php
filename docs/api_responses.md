@@ -1,9 +1,9 @@
 # Using API Responses
-There are two types of API responses upon a successful request. If a single resource is requested then an `ApiResource` is 
-returned, if multiple resources are requested then an `ApiResourceSet` is returned.
+There are two types of API responses upon a successful request. If a single resource is requested then an `Resource` is 
+returned, if multiple resources are requested then an `ResourceSet` is returned.
 
-## The `ApiResourceSet` class
-When the API returns multiple resources, for example when getting an overview page, an instance of the `ApiResourceSet` class
+## The `ResourceSet` class
+When the API returns multiple resources, for example when getting an overview page, an instance of the `ResourceSet` class
 is returned. The instance of this class contains the requested resources. Traverse each individual resource by using a
 `foreach`-loop on the instance:
 
@@ -11,13 +11,13 @@ is returned. The instance of this class contains the requested resources. Traver
 $certificates = $client->resource('certificates')->get();
 
 foreach ($certificates as $certificate) {
-    // Each item is an instance of an ApiResource.
+    // Each item is an instance of an Resource.
     echo $certificate->id()."\n";
 }
 ```
 
-## The `ApiResource` class
-Each resource returned by the API is transformed to an `ApiResource` instance. This makes it possible to have easy access
+## The `Resource` class
+Each resource returned by the API is transformed to an `Resource` instance. This makes it possible to have easy access
 to the attributes, resourceType and ID of the resource. Each of these fields can be accessed as if it is a property on the class:
 
 ```php
@@ -30,8 +30,8 @@ echo "Wildcard: ".$certificate->attribute('wildcard')."\n";
 ```
 
 ## Relations
-A resource can have multiple relations to one or more resources. To access a relation you can call the `relation` or `relationship` method on `ApiResource`.
-A prepared instance of a new request is returned that can be retrieved by calling its `get()` method (thus returning an `ApiResource` or `ApiResourceSet`):
+A resource can have multiple relations to one or more resources. To access a relation you can call the `relation` or `relationship` method on `Resource`.
+A prepared instance of a new request is returned that can be retrieved by calling its `get()` method (thus returning an `Resource` or `ResourceSet`):
 
 ```php
 $certificate = $client->resource('certificates')->id('VX09kwR3KxNo')->get();
@@ -40,7 +40,7 @@ $domainResource = $certificate->relation('domain')->get();
 ```
 
 If you only want the resource identifiers, you can get it by using the `getResourceIdentifiers()` method. This
-will return a (`ApiResourceSet` with) the ApiResourceIdentifier:
+will return a (`ResourceSet` with) the ResourceIdentifier:
 
 ```php
 $domainRelation = $certificate->relationship('domain')->getResourceIdentifiers();

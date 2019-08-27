@@ -6,11 +6,11 @@ use Exonet\Api\Request;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class ApiResourceIdentifierTest extends TestCase
+class ResourceIdentifierTest extends TestCase
 {
     public function testTypeAndId()
     {
-        $resource = new ApiResourceIdentifier('unitTest', 'id4');
+        $resource = new ResourceIdentifier('unitTest', 'id4');
 
         $this->assertSame('unitTest', $resource->type());
         $this->assertSame('id4', $resource->id());
@@ -22,11 +22,11 @@ class ApiResourceIdentifierTest extends TestCase
         $requestMock->shouldReceive('get')
             ->once()
             ->withArgs(['xV42'])
-            ->andReturn(new ApiResource('unitTest'));
+            ->andReturn(new Resource('unitTest'));
 
-        $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
+        $resourceIdentifier = new ResourceIdentifier('unitTest', 'xV42', $requestMock);
 
-        $this->assertInstanceOf(ApiResource::class, $resourceIdentifier->get());
+        $this->assertInstanceOf(Resource::class, $resourceIdentifier->get());
     }
 
     public function testDelete()
@@ -37,7 +37,7 @@ class ApiResourceIdentifierTest extends TestCase
             ->withArgs(['xV42'])
             ->andReturnNull();
 
-        $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
+        $resourceIdentifier = new ResourceIdentifier('unitTest', 'xV42', $requestMock);
 
         $this->assertNull($resourceIdentifier->delete());
     }

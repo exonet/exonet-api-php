@@ -4,7 +4,7 @@ namespace Exonet\Api\Structures;
 
 use PHPUnit\Framework\TestCase;
 
-class ApiResourceSetTest extends TestCase
+class ResourceSetTest extends TestCase
 {
     private $resourceSetData = [
         'data' => [
@@ -45,10 +45,10 @@ class ApiResourceSetTest extends TestCase
 
     public function testGetIterator()
     {
-        $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
+        $resourceSetClass = new ResourceSet(json_encode($this->resourceSetData));
 
         foreach ($resourceSetClass as $resource) {
-            $this->assertInstanceOf(ApiResource::class, $resource);
+            $this->assertInstanceOf(Resource::class, $resource);
         }
     }
 
@@ -57,7 +57,7 @@ class ApiResourceSetTest extends TestCase
      */
     public function testGetItratorWithNoData()
     {
-        $resourceSetClass = new ApiResourceSet(json_encode([
+        $resourceSetClass = new ResourceSet(json_encode([
             'data' => [],
             'meta' => ['count' => 0],
             'links' => ['self' => 'http://set.test'],
@@ -71,7 +71,7 @@ class ApiResourceSetTest extends TestCase
 
     public function testArrayAccessMethods()
     {
-        $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
+        $resourceSetClass = new ResourceSet(json_encode($this->resourceSetData));
         $resources = $resourceSetClass->getIterator();
 
         $this->assertSame(
@@ -83,7 +83,7 @@ class ApiResourceSetTest extends TestCase
         $this->assertFalse(isset($resourceSetClass[55]));
 
         // Set a new offset.
-        $resourceSetClass[55] = new ApiResource(
+        $resourceSetClass[55] = new Resource(
             'some_resource',
             [
                 'id' => 'ABC',
@@ -102,12 +102,12 @@ class ApiResourceSetTest extends TestCase
 
     public function testOffsetSetValidation()
     {
-        $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
+        $resourceSetClass = new ResourceSet(json_encode($this->resourceSetData));
 
         $this->expectException(\Exonet\Api\Exceptions\ValidationException::class);
         $this->expectExceptionMessage('Only ApiResources can be set.');
 
-        // Try to set something other than an ApiResource.
+        // Try to set something other than an Resource.
         $resourceSetClass[55] = 'some string';
     }
 }

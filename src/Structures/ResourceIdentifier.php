@@ -9,7 +9,7 @@ use Exonet\Api\Request;
 /**
  * An ApiResourceID is a way to identify a single resource.
  */
-class ApiResourceIdentifier
+class ResourceIdentifier
 {
     /**
      * @var string The resource type.
@@ -31,8 +31,10 @@ class ApiResourceIdentifier
      */
     protected $relationships;
 
+    protected $changedRelationships = [];
+
     /**
-     * ApiResourceIdentifier constructor.
+     * ResourceIdentifier constructor.
      *
      * @param string  $resourceType The resource type.
      * @param string  $id           The resource ID.
@@ -69,9 +71,9 @@ class ApiResourceIdentifier
     /**
      * Make a GET request to the resource.
      *
+     * @return Resource|ResourceSet A resource or resource set.
      * @throws ExonetApiException The exception.
      *
-     * @return ApiResource|ApiResourceSet A resource or resource set.
      */
     public function get()
     {
@@ -101,17 +103,33 @@ class ApiResourceIdentifier
     /**
      * Get a relationship definition to another resource.
      *
-     * @param string $name The name of the relationship.
+     * @param string                     $name The name of the relationship.
+     * @param ApiResourceIdentifier|null $resource
      *
-     * @return Relation|Relationship
+     * @return Relation|Relationship|$this
      */
-    public function relationship(string $name)
+    public function relationship(string $name, $resource = null)
     {
         // Check if the relationship is already defined. If not, create it now.
         if (!isset($this->relationships[$name])) {
             $this->relationships[$name] = new Relationship($name, $this->type(), $this->id());
         }
 
+        // If there are two arguments given, set the value.
+        if (func_num_args() === 2) {
+            $this->relationships[$name]->setResourceIdentifiers($resource);
+            $this->changedRelationships[] = $name;
+
+            return $this;
+        }
+
         return $this->relationships[$name];
+    }
+
+    public function resetChangedRelationhips()
+    {
+        $this->changedRelationships = [];
+
+        return $this;
     }
 }
