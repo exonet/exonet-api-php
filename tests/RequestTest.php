@@ -45,6 +45,22 @@ class RequestTest extends TestCase
         $this->assertSame($response, $result);
     }
 
+    public function testPatchRequest()
+    {
+        $connectorMock = Mockery::mock(Connector::class);
+        $connectorMock
+            ->shouldReceive('patch')
+            ->withArgs(['test/abc', ['test' => 'something']])
+            ->once()
+            ->andReturnTrue();
+
+        $requestClass = new Request('/test', $connectorMock);
+
+        $result = $requestClass->patch('abc', ['test' => 'something']);
+
+        $this->assertTrue($result);
+    }
+
     public function testDeleteRequest()
     {
         $connectorMock = Mockery::mock(Connector::class);
