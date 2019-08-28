@@ -67,6 +67,21 @@ echo sprintf(
 
 echo sprintf("\nNew DNS record has ID %s", $newRecord->id());
 
+// Ask user if record should be updated.
+echo sprintf("\n\nDo you want to patch this record? [y/n] ");
+if ('Y' === strtoupper(trim(fgets(STDIN)))) {
+    $newRecord->attribute('content', 'Exonet API PATCH example '.microtime());
+    $newRecord->patch();
+    echo "\nDNS record patched:\n";
+    echo sprintf(
+        "%s\t%s\t%s\t%s\n",
+        $newRecord->attribute('type'),
+        $newRecord->attribute('fqdn'),
+        $newRecord->attribute('ttl'),
+        $newRecord->attribute('content')
+    );
+}
+
 // Ask user if record should be deleted.
 echo sprintf("\nDo you want to delete this record? [y/n] ");
 if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
