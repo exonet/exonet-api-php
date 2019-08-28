@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Exonet\Api\Structures;
 
 use Exonet\Api\Exceptions\ExonetApiException;
+use Exonet\Api\Request;
 
 /**
  * An Resource represents a single resource that is retrieved from the API and allows easy access to its attributes
@@ -24,8 +25,9 @@ class Resource extends ResourceIdentifier
      *
      * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
+     * @param Request $request      The optional request instance to use.
      */
-    public function __construct(string $type, $contents = [])
+    public function __construct(string $type, $contents = [], ?Request $request = null)
     {
         $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
 
@@ -34,10 +36,7 @@ class Resource extends ResourceIdentifier
             $data['id'] = $contents;
         }
 
-        parent::__construct(
-            $type,
-            $data['id'] ?? null
-        );
+        parent::__construct($type, $data['id'] ?? null, $request);
 
         if (array_key_exists('attributes', $data)) {
             $this->attributes = $data['attributes'];
@@ -54,7 +53,7 @@ class Resource extends ResourceIdentifier
      * @param string $attributeName The name of the attribute to get.
      * @param mixed  $newValue      The new attribute value.
      *
-     * @return mixed The value of the attribute or the ApiResource class when setting an attribute.
+     * @return mixed The value of the attribute or the Resource class when setting an attribute.
      */
     public function attribute($attributeName, $newValue = null)
     {
@@ -76,24 +75,40 @@ class Resource extends ResourceIdentifier
     /**
      * Post this resource to the API.
      *
-     * @return ApiResource The newly created resource.
+     * @return Resource|ResourceIdentifier[]|ResourceSet[] The newly created resource or an array with responses when
+     *                                                     posting relationships, keyed by the relation name.
      */
     public function post()
     {
-        return $this->request->post($this->toJson());
+        // If there are changed attributes, assume it s a new resource.
+        if (!empty($this->changedAttributes)) {
+            return $this->request->post($this->toJson());
+        }
+
+        $responses = [];
+        if (!empty($this->changedRelationships)) {
+            $relations = $this->toJson(false, true);
+            foreach($relations['data']['relationships'] as $relationName => $relationData) {
+                $responses[$relationName] = $this->request->post($relationData, $this->id().'/relationships/'.$relationName);
+            }
+        }
+
+        return $responses;
     }
 
     /**
-     * Patch this resource to the API.
+     * Patch this resource to the API. For now this must be done in multiple calls if also relations are changed.
      *
      * @return bool True when the patch has succeeded.
      */
     public function patch() : bool
     {
+        // Patch the attributes.
         if (!empty($this->changedAttributes)) {
             $this->request->patch($this->id(), $this->toJson(true));
         }
 
+        // Patch the relations.
         if (!empty($this->changedRelationships)) {
             $relations = $this->toJson(false, true);
             foreach($relations['data']['relationships'] as $relationName => $relationData) {
@@ -102,13 +117,6 @@ class Resource extends ResourceIdentifier
         }
 
         return true;
-    }
-
-    public function resetChangedAttributes()
-    {
-        $this->changedAttributes = [];
-
-        return $this;
     }
 
     /**
@@ -144,14 +152,16 @@ class Resource extends ResourceIdentifier
     /**
      * Get the json representation of the resource.
      *
-     * @return array|null Array that can be used as json.
+     * @param bool $onlyChangedAttributes When true, only return the attributes that are changed.
+     * @param bool $onlyChangedRelations When true, only return the relations that are changed.
+     *
+     * @return array Array that can be used as json.
      */
-    private function toJson(bool $onlyChangedAttributes = false, $onlyChangedRelations = false) : array
+    protected function toJson(bool $onlyChangedAttributes = false, $onlyChangedRelations = false) : array
     {
         $json = [
             'data' => [
                 'type' => $this->type(),
-                'attributes' => [],
             ],
         ];
 
@@ -161,6 +171,7 @@ class Resource extends ResourceIdentifier
 
         // Set the attributes in the json.
         if ($this->attributes && $onlyChangedRelations === false) {
+            $json['data']['attributes'] = [];
             array_walk(
                 $this->attributes,
                 function ($attributeValue, $attributeName) use ($onlyChangedAttributes, &$json) {
@@ -175,8 +186,16 @@ class Resource extends ResourceIdentifier
         if ($this->relationships && $onlyChangedAttributes === false) {
             array_walk(
                 $this->relationships,
-                function (Relationship $relation, $name) use ($onlyChangedRelations, &$json) {
+                function ($relation, $name) use ($onlyChangedRelations, &$json) {
                     if ($onlyChangedRelations === false || in_array($name, $this->changedRelationships, true)) {
+                        if (is_array($relation)) {
+                            foreach ($relation as $relationData) {
+                                $json['data']['relationships'][$name]['data'][] = $relationData->toJson();
+                            }
+
+                            return;
+                        }
+
                         $json['data']['relationships'][$name]['data'] = $relation->toJson();
                     }
                 }
