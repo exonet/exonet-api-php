@@ -1,5 +1,5 @@
 # Using API Responses
-There are two types of API responses upon a successful request. If a single resource is requested then an `Resource` is 
+There are two types of API responses upon a successful request. If a single resource is requested then an [`Resource`](resources.md) is 
 returned, if multiple resources are requested then an `ResourceSet` is returned.
 
 ## The `ResourceSet` class
@@ -16,8 +16,8 @@ foreach ($certificates as $certificate) {
 }
 ```
 
-## The `Resource` class
-Each resource returned by the API is transformed to an `Resource` instance. This makes it possible to have easy access
+## The [`Resource`](resources.md) class
+Each resource returned by the API is transformed to an [`Resource`](resources.md) instance. This makes it possible to have easy access
 to the attributes, resourceType and ID of the resource. Each of these fields can be accessed as if it is a property on the class:
 
 ```php
