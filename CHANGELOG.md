@@ -6,6 +6,15 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## Unreleased
 [Compare v2.0.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.0.0...master)
+### Breaking
+- The `Api` prefix has been removed from the following classes:
+  - `ApiResourceSet` --> `ResourceSet`
+  - `ApiResource` --> `Resource`
+  - `ApiResourceIdentifier` --> `ResourceIdentifier`
+
+### Added
+- Support for patching resources and relationships.
+- Exceptions thrown by the package are extended with the `status` as the exception code, the `code` as detailed code and an array containing the returned variables.
 
 ## [v2.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.0.0) - 2019-07-02
 [Compare v2.0.0 - v1.0.0](https://github.com/exonet/backend/compare/v1.0.0...v2.0.0)
