@@ -64,7 +64,6 @@ class Request
      * @param null|string $id Optional ID to get a specific resource.
      *
      * @return ApiResource|ApiResourceSet The requested data transformed to a single or multiple resources.
-     *
      */
     public function get(?string $id = null)
     {

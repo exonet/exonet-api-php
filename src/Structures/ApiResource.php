@@ -76,7 +76,7 @@ class ApiResource extends ApiResourceIdentifier
      * Post this resource to the API.
      *
      * @return ApiResource|ApiResourceIdentifier[]|ApiResourceSet[] The newly created resource or an array with responses when
-     *                                                     posting relationships, keyed by the relation name.
+     *                                                              posting relationships, keyed by the relation name.
      */
     public function post()
     {
