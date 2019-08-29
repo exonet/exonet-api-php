@@ -74,7 +74,7 @@ class Request
     /**
      * Post new data to the API.
      *
-     * @param array       $payload The payload to post to the API.
+     * @param array       $payload   The payload to post to the API.
      * @param string|null $appendUrl (Optional) String to append to the URL.
      *
      * @return Resource|ResourceIdentifier|ResourceSet The parsed response transformed to resources.
@@ -90,7 +90,7 @@ class Request
     /**
      * Patch data to the API.
      *
-     * @param string $id The ID of the resource to patch.
+     * @param string $id      The ID of the resource to patch.
      * @param array  $payload The payload to post to the API.
      *
      * @return bool True when succeeded.

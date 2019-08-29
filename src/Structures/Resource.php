@@ -25,7 +25,7 @@ class Resource extends ResourceIdentifier
      *
      * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
-     * @param Request $request      The optional request instance to use.
+     * @param Request        $request  The optional request instance to use.
      */
     public function __construct(string $type, $contents = [], ?Request $request = null)
     {
@@ -88,7 +88,7 @@ class Resource extends ResourceIdentifier
         $responses = [];
         if (!empty($this->changedRelationships)) {
             $relations = $this->toJson(false, true);
-            foreach($relations['data']['relationships'] as $relationName => $relationData) {
+            foreach ($relations['data']['relationships'] as $relationName => $relationData) {
                 $responses[$relationName] = $this->request->post($relationData, $this->id().'/relationships/'.$relationName);
             }
         }
@@ -111,7 +111,7 @@ class Resource extends ResourceIdentifier
         // Patch the relations.
         if (!empty($this->changedRelationships)) {
             $relations = $this->toJson(false, true);
-            foreach($relations['data']['relationships'] as $relationName => $relationData) {
+            foreach ($relations['data']['relationships'] as $relationName => $relationData) {
                 $this->request->patch($this->id().'/relationships/'.$relationName, $relationData);
             }
         }
@@ -153,7 +153,7 @@ class Resource extends ResourceIdentifier
      * Get the json representation of the resource.
      *
      * @param bool $onlyChangedAttributes When true, only return the attributes that are changed.
-     * @param bool $onlyChangedRelations When true, only return the relations that are changed.
+     * @param bool $onlyChangedRelations  When true, only return the relations that are changed.
      *
      * @return array Array that can be used as json.
      */

@@ -48,8 +48,8 @@ class ResourceTest extends TestCase
             'data' => [
                 'type' => 'unitTest',
                 'attributes' => ['hello' => 'world'],
-                'relationships' => ['testRelation' => ['data' => ['type' => 'relationType', 'id' => 'relationId']]]
-            ]
+                'relationships' => ['testRelation' => ['data' => ['type' => 'relationType', 'id' => 'relationId']]],
+            ],
         ];
         $request = Mockery::mock(Request::class);
         $request->shouldReceive('post')->with($postData)->once()->andReturn(self::SIMPLE_RESOURCE);
@@ -63,7 +63,7 @@ class ResourceTest extends TestCase
     public function testPostChangedRelation()
     {
         $postData = [
-            'data' => ['type' => 'relationType', 'id' => 'relationId2']
+            'data' => ['type' => 'relationType', 'id' => 'relationId2'],
         ];
         $request = Mockery::mock(Request::class);
         $request
@@ -81,7 +81,7 @@ class ResourceTest extends TestCase
     {
         $patchAttribute = ['data' => ['type' => 'unitTest', 'id' => 'abc', 'attributes' => ['another' => 'attribute']]];
         $patchRelation = ['data' => ['type' => 'relationType', 'id' => 'relationId']];
-        $patchMultiRelation = ['data' => [['type' => 'relationType1', 'id' => 'relationId1'],['type' => 'relationType2', 'id' => 'relationId2']]];
+        $patchMultiRelation = ['data' => [['type' => 'relationType1', 'id' => 'relationId1'], ['type' => 'relationType2', 'id' => 'relationId2']]];
         $request = Mockery::mock(Request::class);
         $request->shouldReceive('patch')->with('abc', $patchAttribute)->once()->andReturnTrue();
         $request->shouldReceive('patch')->with('abc/relationships/testRelation', $patchRelation)->once()->andReturnTrue();

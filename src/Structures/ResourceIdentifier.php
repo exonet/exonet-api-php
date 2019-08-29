@@ -123,7 +123,7 @@ class ResourceIdentifier
     /**
      * Get a relationship definition to another resource.
      *
-     * @param string                                  $name The name of the relationship.
+     * @param string                                  $name     The name of the relationship.
      * @param ResourceIdentifier|ResourceIdentifier[] $resource
      *
      * @return Relation|Relationship|$this The requested relation data or the current resource when setting a relation.

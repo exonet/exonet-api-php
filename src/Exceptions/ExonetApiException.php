@@ -28,7 +28,8 @@ class ExonetApiException extends Exception
      * @param string|null    $detailCode (Optional) The detailed error code.
      * @param array          $variables  (Optional) Array with detailed information if provided by the API.
      */
-    public function __construct($message = '', $code = 0, Throwable $previous = null, $detailCode = null, $variables = []) {
+    public function __construct($message = '', $code = 0, Throwable $previous = null, $detailCode = null, $variables = [])
+    {
         parent::__construct($message, $code, $previous);
         $this->detailCode = $detailCode;
         $this->variables = $variables;
