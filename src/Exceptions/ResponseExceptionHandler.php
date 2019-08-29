@@ -90,7 +90,13 @@ class ResponseExceptionHandler
 
         $errorCode = substr($error['code'], 0, 3);
         if (isset($this->errorCodes[$errorCode])) {
-            return new $this->errorCodes[$errorCode]($error['detail']);
+            return new $this->errorCodes[$errorCode](
+                $error['detail'] ?? null,
+                $error['status'] ?? 0,
+                null,
+                $error['code'] ?? null,
+                $error['variables'] ?? []
+            );
         }
 
         return null;
