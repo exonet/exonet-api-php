@@ -6,7 +6,7 @@ namespace Exonet\Api;
 
 use Exonet\Api\Auth\AbstractAuth;
 use Exonet\Api\Exceptions\AuthenticationException;
-use Exonet\Api\Structures\ResourceIdentifier;
+use Exonet\Api\Structures\ApiResourceIdentifier;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -181,14 +181,14 @@ class Client implements LoggerAwareInterface
      * @param string      $resourceType The resource name.
      * @param string|null $id           The optional resource ID.
      *
-     * @return ResourceIdentifier|Request A request or resource identifier for the specified resource.
+     * @return ApiResourceIdentifier|Request A request or resource identifier for the specified resource.
      */
     public function resource(string $resourceType, ?string $id = null)
     {
         $this->log()->debug('Starting new request', ['resource' => $resourceType]);
 
         if ($id !== null) {
-            return new ResourceIdentifier($resourceType, $id);
+            return new ApiResourceIdentifier($resourceType, $id);
         }
 
         return new Request($resourceType);

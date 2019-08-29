@@ -9,7 +9,7 @@ use Exonet\Api\Request;
 /**
  * An ApiResourceID is a way to identify a single resource.
  */
-class ResourceIdentifier
+class ApiResourceIdentifier
 {
     /**
      * @var string The resource type.
@@ -37,7 +37,7 @@ class ResourceIdentifier
     protected $changedRelationships = [];
 
     /**
-     * ResourceIdentifier constructor.
+     * ApiResourceIdentifier constructor.
      *
      * @param string  $resourceType The resource type.
      * @param string  $id           The resource ID.
@@ -74,7 +74,7 @@ class ResourceIdentifier
     /**
      * Make a GET request to the resource.
      *
-     * @return Resource|ResourceSet A resource or resource set.
+     * @return ApiResource|ApiResourceSet A resource or resource set.
      */
     public function get()
     {
@@ -123,8 +123,8 @@ class ResourceIdentifier
     /**
      * Get a relationship definition to another resource.
      *
-     * @param string                                  $name     The name of the relationship.
-     * @param ResourceIdentifier|ResourceIdentifier[] $resource
+     * @param string                                        $name     The name of the relationship.
+     * @param ApiResourceIdentifier|ApiResourceIdentifier[] $resource
      *
      * @return Relation|Relationship|$this The requested relation data or the current resource when setting a relation.
      */

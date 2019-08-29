@@ -6,17 +6,17 @@ namespace Exonet\Api;
 
 use Exonet\Api\Exceptions\ExonetApiException;
 use Exonet\Api\Exceptions\ResponseExceptionHandler;
-use Exonet\Api\Structures\Resource;
-use Exonet\Api\Structures\ResourceIdentifier;
-use Exonet\Api\Structures\ResourceSet;
+use Exonet\Api\Structures\ApiResource;
+use Exonet\Api\Structures\ApiResourceIdentifier;
+use Exonet\Api\Structures\ApiResourceSet;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 
 /**
- * This class is responsible for making the calls to the Exonet API and returning the retrieved data as Resource or
- * ResourceSet.
+ * This class is responsible for making the calls to the Exonet API and returning the retrieved data as ApiResource or
+ * ApiResourceSet.
  */
 class Connector
 {
@@ -52,7 +52,7 @@ class Connector
      *
      * @param string $urlPath The URL path to GET.
      *
-     * @return Resource|ResourceSet The requested URL path transformed to a single or multiple resources.
+     * @return ApiResource|ApiResourceSet The requested URL path transformed to a single or multiple resources.
      */
     public function get(string $urlPath)
     {
@@ -72,7 +72,7 @@ class Connector
      * @param string $urlPath The URL to post to.
      * @param array  $data    An array with data to post to the API.
      *
-     * @return Resource|ResourceIdentifier|ResourceSet The response from the API, converted to resources.
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The response from the API, converted to resources.
      */
     public function post(string $urlPath, array $data)
     {
@@ -138,14 +138,14 @@ class Connector
     }
 
     /**
-     * Parse the call response to an Resource or ResourceSet object or throw the correct error if something went
+     * Parse the call response to an ApiResource or ApiResourceSet object or throw the correct error if something went
      * wrong.
      *
      * @param PsrResponse $response The call response.
      *
-     * @throws ExonetApiException If there was a problem with the request.
+     * @return ApiResourceIdentifier|ApiResource|ApiResourceSet The structured response.
+     *@throws ExonetApiException If there was a problem with the request.
      *
-     * @return ResourceIdentifier|Resource|ResourceSet The structured response.
      */
     private function parseResponse(PsrResponse $response)
     {
@@ -161,15 +161,15 @@ class Connector
 
         // Create collection of resources when returned data is an array.
         if (is_array($decodedContent->data)) {
-            return new ResourceSet($contents);
+            return new ApiResourceSet($contents);
         }
 
         // Convert single item into resource or resource identifier.
         if (isset($decodedContent->data->attributes)) {
-            return new Resource($decodedContent->data->type, $contents);
+            return new ApiResource($decodedContent->data->type, $contents);
         }
 
-        return new ResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
+        return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
     }
 
     /**

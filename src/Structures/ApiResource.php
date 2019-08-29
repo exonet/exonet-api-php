@@ -8,10 +8,10 @@ use Exonet\Api\Exceptions\ExonetApiException;
 use Exonet\Api\Request;
 
 /**
- * An Resource represents a single resource that is retrieved from the API and allows easy access to its attributes
+ * An ApiResource represents a single resource that is retrieved from the API and allows easy access to its attributes
  * and relations.
  */
-class Resource extends ResourceIdentifier
+class ApiResource extends ApiResourceIdentifier
 {
     /**
      * @var mixed[] The attributes for this resource.
@@ -21,7 +21,7 @@ class Resource extends ResourceIdentifier
     private $changedAttributes = [];
 
     /**
-     * Resource constructor.
+     * ApiResource constructor.
      *
      * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
@@ -53,7 +53,7 @@ class Resource extends ResourceIdentifier
      * @param string $attributeName The name of the attribute to get.
      * @param mixed  $newValue      The new attribute value.
      *
-     * @return mixed The value of the attribute or the Resource class when setting an attribute.
+     * @return mixed The value of the attribute or the ApiResource class when setting an attribute.
      */
     public function attribute($attributeName, $newValue = null)
     {
@@ -75,7 +75,7 @@ class Resource extends ResourceIdentifier
     /**
      * Post this resource to the API.
      *
-     * @return Resource|ResourceIdentifier[]|ResourceSet[] The newly created resource or an array with responses when
+     * @return ApiResource|ApiResourceIdentifier[]|ApiResourceSet[] The newly created resource or an array with responses when
      *                                                     posting relationships, keyed by the relation name.
      */
     public function post()
@@ -135,11 +135,11 @@ class Resource extends ResourceIdentifier
 
             if (isset($relation['data']['type'])) {
                 $relationship->setResourceIdentifiers(
-                    new ResourceIdentifier($relation['data']['type'], $relation['data']['id'])
+                    new ApiResourceIdentifier($relation['data']['type'], $relation['data']['id'])
                 );
             } elseif (!empty($relation['data'])) {
                 $relationship->setResourceIdentifiers(
-                    new ResourceSet($relation)
+                    new ApiResourceSet($relation)
                 );
             }
 

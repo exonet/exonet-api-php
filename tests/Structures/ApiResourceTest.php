@@ -7,7 +7,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class ResourceTest extends TestCase
+class ApiResourceTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -27,7 +27,7 @@ class ResourceTest extends TestCase
 
     public function testGetSetAttribute()
     {
-        $resourceClass = new Resource('unitTest', self::SIMPLE_RESOURCE);
+        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
 
         $this->assertSame('world', $resourceClass->attribute('hello'));
 
@@ -37,7 +37,7 @@ class ResourceTest extends TestCase
 
     public function testRelated()
     {
-        $resourceClass = new Resource('unitTest', self::SIMPLE_RESOURCE);
+        $resourceClass = new ApiResource('unitTest', self::SIMPLE_RESOURCE);
 
         $this->assertInstanceOf(Relation::class, $resourceClass->related('testRelation'));
     }
@@ -54,9 +54,9 @@ class ResourceTest extends TestCase
         $request = Mockery::mock(Request::class);
         $request->shouldReceive('post')->with($postData)->once()->andReturn(self::SIMPLE_RESOURCE);
 
-        $resource = new Resource('unitTest', [], $request);
+        $resource = new ApiResource('unitTest', [], $request);
         $resource->attribute('hello', 'world');
-        $resource->relationship('testRelation', new ResourceIdentifier('relationType', 'relationId'));
+        $resource->relationship('testRelation', new ApiResourceIdentifier('relationType', 'relationId'));
         $this->assertSame(self::SIMPLE_RESOURCE, $resource->post());
     }
 
@@ -72,8 +72,8 @@ class ResourceTest extends TestCase
             ->once()
             ->andReturn(self::SIMPLE_RESOURCE['relationships']['testRelation']);
 
-        $resource = new Resource('unitTest', self::SIMPLE_RESOURCE, $request);
-        $resource->relationship('testRelation', new ResourceIdentifier('relationType', 'relationId2'));
+        $resource = new ApiResource('unitTest', self::SIMPLE_RESOURCE, $request);
+        $resource->relationship('testRelation', new ApiResourceIdentifier('relationType', 'relationId2'));
         $this->assertArrayHasKey('testRelation', $resource->post());
     }
 
@@ -87,10 +87,10 @@ class ResourceTest extends TestCase
         $request->shouldReceive('patch')->with('abc/relationships/testRelation', $patchRelation)->once()->andReturnTrue();
         $request->shouldReceive('patch')->with('abc/relationships/multiRelation', $patchMultiRelation)->once()->andReturnTrue();
 
-        $resource = new Resource('unitTest', 'abc', $request);
+        $resource = new ApiResource('unitTest', 'abc', $request);
         $resource->attribute('another', 'attribute');
-        $resource->relationship('testRelation', new ResourceIdentifier('relationType', 'relationId'));
-        $resource->relationship('multiRelation', [new ResourceIdentifier('relationType1', 'relationId1'), new ResourceIdentifier('relationType2', 'relationId2')]);
+        $resource->relationship('testRelation', new ApiResourceIdentifier('relationType', 'relationId'));
+        $resource->relationship('multiRelation', [new ApiResourceIdentifier('relationType1', 'relationId1'), new ApiResourceIdentifier('relationType2', 'relationId2')]);
         $this->assertTrue($resource->patch());
     }
 }

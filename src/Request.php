@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Exonet\Api;
 
-use Exonet\Api\Structures\Resource;
-use Exonet\Api\Structures\ResourceIdentifier;
-use Exonet\Api\Structures\ResourceSet;
+use Exonet\Api\Structures\ApiResource;
+use Exonet\Api\Structures\ApiResourceIdentifier;
+use Exonet\Api\Structures\ApiResourceSet;
 
 /**
  * This class is responsible for building a valid API request that can be passed to the Connector.
@@ -51,11 +51,11 @@ class Request
      *
      * @param string $id The identifier for the resource.
      *
-     * @return ResourceIdentifier The resource identifier.
+     * @return ApiResourceIdentifier The resource identifier.
      */
-    public function id(string $id) : ResourceIdentifier
+    public function id(string $id) : ApiResourceIdentifier
     {
-        return new ResourceIdentifier($this->resource, $id);
+        return new ApiResourceIdentifier($this->resource, $id);
     }
 
     /**
@@ -63,7 +63,7 @@ class Request
      *
      * @param null|string $id Optional ID to get a specific resource.
      *
-     * @return Resource|ResourceSet The requested data transformed to a single or multiple resources.
+     * @return ApiResource|ApiResourceSet The requested data transformed to a single or multiple resources.
      *
      */
     public function get(?string $id = null)
@@ -77,7 +77,7 @@ class Request
      * @param array       $payload   The payload to post to the API.
      * @param string|null $appendUrl (Optional) String to append to the URL.
      *
-     * @return Resource|ResourceIdentifier|ResourceSet The parsed response transformed to resources.
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The parsed response transformed to resources.
      */
     public function post(array $payload, string $appendUrl = null)
     {

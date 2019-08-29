@@ -2,7 +2,7 @@
 
 // Run this script using: php examples/dns_record_post.php <YOUR-TOKEN>
 
-use Exonet\Api\Structures\Resource;
+use Exonet\Api\Structures\ApiResource;
 
 require __DIR__.'/../vendor/autoload.php';
 
@@ -36,7 +36,7 @@ if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
 }
 
 // Make the new DNS record that should be added to the zone.
-$record = new Resource('dns_records');
+$record = new ApiResource('dns_records');
 $record->attribute('type', 'TXT');
 $record->attribute('name', 'subdomain');
 $record->attribute('content', '"Exonet API script '.microtime().'"');

@@ -2,8 +2,8 @@
 
 namespace Exonet\Api;
 
-use Exonet\Api\Structures\Resource;
-use Exonet\Api\Structures\ResourceTest;
+use Exonet\Api\Structures\ApiResource;
+use Exonet\Api\Structures\ApiResourceTest;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +11,7 @@ class RequestTest extends TestCase
 {
     public function testGetRequest()
     {
-        $response = new Resource('unitTest', ResourceTest::SIMPLE_RESOURCE);
+        $response = new ApiResource('unitTest', ApiResourceTest::SIMPLE_RESOURCE);
 
         $connectorMock = Mockery::mock(Connector::class);
         $connectorMock
@@ -29,7 +29,7 @@ class RequestTest extends TestCase
 
     public function testPostRequest()
     {
-        $response = new Resource('unitTest', ResourceTest::SIMPLE_RESOURCE);
+        $response = new ApiResource('unitTest', ApiResourceTest::SIMPLE_RESOURCE);
 
         $connectorMock = Mockery::mock(Connector::class);
         $connectorMock

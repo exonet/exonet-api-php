@@ -11,12 +11,12 @@ use Exonet\Api\Exceptions\ValidationException;
 use IteratorAggregate;
 
 /**
- * An ResourceSet is a collection of several Resource instances that are retrieved from the API.
+ * An ApiResourceSet is a collection of several ApiResource instances that are retrieved from the API.
  */
-class ResourceSet implements IteratorAggregate, ArrayAccess, Countable
+class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
 {
     /**
-     * @var \Exonet\Api\Structures\Resource[] The returned resources.
+     * @var \Exonet\Api\Structures\ApiResource[] The returned resources.
      */
     private $resources;
 
@@ -31,7 +31,7 @@ class ResourceSet implements IteratorAggregate, ArrayAccess, Countable
     private $links;
 
     /**
-     * ResourceSet constructor.
+     * ApiResourceSet constructor.
      *
      * @param string|array $resources The resources from the API as encoded JSON string or a similar array.
      */
@@ -44,9 +44,9 @@ class ResourceSet implements IteratorAggregate, ArrayAccess, Countable
         if (isset($resources['data'])) {
             foreach ($resources['data'] as $resourceItem) {
                 if (isset($resourceItem['attributes'])) {
-                    $this->resources[] = new Resource($resourceItem['type'], $resourceItem);
+                    $this->resources[] = new ApiResource($resourceItem['type'], $resourceItem);
                 } else {
-                    $this->resources[] = new ResourceIdentifier($resourceItem['type'], $resourceItem['id']);
+                    $this->resources[] = new ApiResourceIdentifier($resourceItem['type'], $resourceItem['id']);
                 }
             }
         }
@@ -99,11 +99,11 @@ class ResourceSet implements IteratorAggregate, ArrayAccess, Countable
      * @param mixed $offset The offset to assign the value to.
      * @param mixed $value  The value to set.
      *
-     * @throws ValidationException if the provided $value is not an Resource.
+     * @throws ValidationException if the provided $value is not an ApiResource.
      */
     public function offsetSet($offset, $value) : void
     {
-        if (!$value instanceof Resource) {
+        if (!$value instanceof ApiResource) {
             throw new ValidationException('Only ApiResources can be set.');
         }
 

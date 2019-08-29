@@ -7,13 +7,13 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class ResourceIdentifierTest extends TestCase
+class ApiResourceIdentifierTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     public function testTypeAndId()
     {
-        $resource = new ResourceIdentifier('unitTest', 'id4');
+        $resource = new ApiResourceIdentifier('unitTest', 'id4');
 
         $this->assertSame('unitTest', $resource->type());
         $this->assertSame('id4', $resource->id());
@@ -25,11 +25,11 @@ class ResourceIdentifierTest extends TestCase
         $requestMock->shouldReceive('get')
             ->once()
             ->withArgs(['xV42'])
-            ->andReturn(new Resource('unitTest'));
+            ->andReturn(new ApiResource('unitTest'));
 
-        $resourceIdentifier = new ResourceIdentifier('unitTest', 'xV42', $requestMock);
+        $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
 
-        $this->assertInstanceOf(Resource::class, $resourceIdentifier->get());
+        $this->assertInstanceOf(ApiResource::class, $resourceIdentifier->get());
     }
 
     public function testDeleteResource()
@@ -40,7 +40,7 @@ class ResourceIdentifierTest extends TestCase
             ->withArgs(['xV42'])
             ->andReturnNull();
 
-        $resourceIdentifier = new ResourceIdentifier('unitTest', 'xV42', $requestMock);
+        $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
 
         $this->assertNull($resourceIdentifier->delete());
     }
@@ -58,9 +58,9 @@ class ResourceIdentifierTest extends TestCase
             ->withArgs(['xV42/relationships/test2', ['data' => [['type' => 'testRelation2', 'id' => 'testId2']]]])
             ->andReturnNull();
 
-        $resourceIdentifier = new ResourceIdentifier('unitTest', 'xV42', $requestMock);
-        $resourceIdentifier->relationship('test', new ResourceIdentifier('testRelation', 'testId'));
-        $resourceIdentifier->relationship('test2', [new ResourceIdentifier('testRelation2', 'testId2')]);
+        $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
+        $resourceIdentifier->relationship('test', new ApiResourceIdentifier('testRelation', 'testId'));
+        $resourceIdentifier->relationship('test2', [new ApiResourceIdentifier('testRelation2', 'testId2')]);
 
         $this->assertNull($resourceIdentifier->delete());
     }

@@ -4,8 +4,8 @@ namespace Exonet\Api;
 
 use Exonet\Api\Auth\PersonalAccessToken;
 use Exonet\Api\Exceptions\AuthenticationException;
-use Exonet\Api\Structures\Resource;
-use Exonet\Api\Structures\ResourceSet;
+use Exonet\Api\Structures\ApiResource;
+use Exonet\Api\Structures\ApiResourceSet;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -72,7 +72,7 @@ class ConnectorTest extends TestCase
         new Client(new PersonalAccessToken('test-token'));
         $connectorClass = new Connector($handler);
 
-        $this->assertInstanceOf(Resource::class, $connectorClass->get('test'));
+        $this->assertInstanceOf(ApiResource::class, $connectorClass->get('test'));
 
         $this->assertCount(1, $apiCalls);
         $request = $apiCalls[0]['request'];
@@ -93,7 +93,7 @@ class ConnectorTest extends TestCase
         new Client(new PersonalAccessToken('test-token'));
         $connectorClass = new Connector($handler);
 
-        $this->assertInstanceOf(ResourceSet::class, $connectorClass->get('test'));
+        $this->assertInstanceOf(ApiResourceSet::class, $connectorClass->get('test'));
     }
 
     public function testGetInvalidResponse()
@@ -124,7 +124,7 @@ class ConnectorTest extends TestCase
 
         $payload = ['test' => 'demo'];
 
-        $this->assertInstanceOf(Resource::class, $connectorClass->post('url', $payload));
+        $this->assertInstanceOf(ApiResource::class, $connectorClass->post('url', $payload));
 
         $this->assertCount(1, $apiCalls);
         $request = $apiCalls[0]['request'];

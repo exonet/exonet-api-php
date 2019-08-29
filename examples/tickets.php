@@ -2,7 +2,7 @@
 
 // Run this script using: php examples/tickets.php <YOUR-TOKEN>
 
-use Exonet\Api\Structures\ResourceSet;
+use Exonet\Api\Structures\ApiResourceSet;
 
 require __DIR__.'/../vendor/autoload.php';
 
@@ -22,10 +22,10 @@ renderTickets('ID and subject of open tickets:', $openTickets);
 /**
  * Helper function to render ticket lists.
  *
- * @param string      $description The description of the list.
- * @param ResourceSet $ticketList  The resource set containing ticket resources.
+ * @param string         $description The description of the list.
+ * @param ApiResourceSet $ticketList  The resource set containing ticket resources.
  */
-function renderTickets(string $description, ResourceSet $ticketList) : void
+function renderTickets(string $description, ApiResourceSet $ticketList) : void
 {
     echo sprintf("\n%s (%d)\n%s\n", $description, count($ticketList), str_repeat('-', strlen($description)));
 
