@@ -1,4 +1,4 @@
-# Resources
+# API Resources
 
 ## Getting data from a resource
 Get data from the attributes or relationships of a resource. See [making API calls](calls.md) for more information on 
@@ -10,7 +10,7 @@ $dnsRecord = $client->resource('dns_records')->get('VX09kwR3KxNo');
 // Show an attribute value:
 echo $dnsRecord->attribute('name');
 
-// Get a related value, in this case the name of the DNS zone:
+// Get a related value, in this example the name of the DNS zone:
 echo $dnsRecord->related('zone')->get()->attribute('name');
 ```
 

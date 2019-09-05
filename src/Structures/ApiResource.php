@@ -25,7 +25,7 @@ class ApiResource extends ApiResourceIdentifier
      *
      * @param string         $type     The resource type.
      * @param mixed[]|string $contents The contents of the resource, as (already decoded) array or encoded JSON.
-     * @param Request        $request  The optional request instance to use.
+     * @param Request|null   $request  The optional request instance to use.
      */
     public function __construct(string $type, $contents = [], ?Request $request = null)
     {
@@ -55,7 +55,7 @@ class ApiResource extends ApiResourceIdentifier
      *
      * @return mixed The value of the attribute or the ApiResource class when setting an attribute.
      */
-    public function attribute($attributeName, $newValue = null)
+    public function attribute(string $attributeName, $newValue = null)
     {
         // If there are two arguments given, set the value.
         if (func_num_args() === 2) {
@@ -80,7 +80,7 @@ class ApiResource extends ApiResourceIdentifier
      */
     public function post()
     {
-        // If there are changed attributes, assume it s a new resource.
+        // If there are changed attributes, assume it's a new resource.
         if (!empty($this->changedAttributes)) {
             return $this->request->post($this->toJson());
         }

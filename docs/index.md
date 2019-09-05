@@ -6,9 +6,9 @@
 - [Making API calls](calls.md)
   - [Getting a single resource by ID](calls.md##getting-a-single-resource-by-id)
 - [API Responses](api_responses.md)
-  - [The `ApiResourceSet` class](api_responses.md#the-resourceset-class)
-  - [The `ApiResource` class](api_responses.md#the-resource-class)
+  - [The `ApiResourceSet` class](api_responses.md#the-apiresourceset-class)
+  - [The `ApiResource` class](api_responses.md#the-apiresource-class)
   - [Relations](api_responses.md#relations)
-- [Resources](resources.md)
+- [API Resources](api_resources.md)
   
   [Using this package &raquo;](using.md)

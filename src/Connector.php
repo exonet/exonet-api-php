@@ -143,7 +143,7 @@ class Connector
      *
      * @param PsrResponse $response The call response.
      *
-     *@throws ExonetApiException If there was a problem with the request.
+     * @throws ExonetApiException If there was a problem with the request.
      *
      * @return ApiResourceIdentifier|ApiResource|ApiResourceSet The structured response.
      */
