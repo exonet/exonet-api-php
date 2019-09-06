@@ -37,8 +37,8 @@ class Request
     /**
      * Request constructor.
      *
-     * @param null|string                $resource  The resource to get.
-     * @param \Exonet\Api\Connector|null $connector Optional connector instance to use.
+     * @param null|string    $resource  The resource to get.
+     * @param Connector|null $connector Optional connector instance to use.
      */
     public function __construct(string $resource, ?Connector $connector = null)
     {
@@ -53,7 +53,7 @@ class Request
      *
      * @return ApiResourceIdentifier The resource identifier.
      */
-    public function id(string $id)
+    public function id(string $id) : ApiResourceIdentifier
     {
         return new ApiResourceIdentifier($this->resource, $id);
     }
@@ -63,10 +63,7 @@ class Request
      *
      * @param null|string $id Optional ID to get a specific resource.
      *
-     * @throws \Exonet\Api\Exceptions\ExonetApiException If there was a problem with the request.
-     *
-     * @return \Exonet\Api\Structures\ApiResource|\Exonet\Api\Structures\ApiResourceSet The requested data transformed
-     *                                                                                  to a single or multiple resources.
+     * @return ApiResource|ApiResourceSet The requested data transformed to a single or multiple resources.
      */
     public function get(?string $id = null)
     {
@@ -76,14 +73,31 @@ class Request
     /**
      * Post new data to the API.
      *
-     * @param array $payload The payload to post to the API.
+     * @param array       $payload   The payload to post to the API.
+     * @param string|null $appendUrl (Optional) String to append to the URL.
      *
-     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The parsed response transformed to resoures.
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The parsed response transformed to resources.
      */
-    public function post(array $payload)
+    public function post(array $payload, string $appendUrl = null)
     {
         return $this->connector->post(
-            trim($this->resource, '/'),
+            trim($this->resource, '/').'/'.$appendUrl,
+            $payload
+        );
+    }
+
+    /**
+     * Patch data to the API.
+     *
+     * @param string $id      The ID of the resource to patch.
+     * @param array  $payload The payload to post to the API.
+     *
+     * @return bool True when succeeded.
+     */
+    public function patch(string $id, array $payload) : bool
+    {
+        return $this->connector->patch(
+            trim($this->resource, '/').'/'.$id,
             $payload
         );
     }
@@ -91,12 +105,14 @@ class Request
     /**
      * Delete a resource.
      *
-     * @param string $id The ID of the resource to delete.
+     * @param string $id   The ID of the resource to delete.
+     * @param array  $data (Optional) Data to send along with the request.
      */
-    public function delete(string $id)
+    public function delete(string $id, array $data = []) : void
     {
         $this->connector->delete(
-            trim($this->resource, '/').'/'.$id
+            trim($this->resource, '/').'/'.$id,
+            $data
         );
     }
 

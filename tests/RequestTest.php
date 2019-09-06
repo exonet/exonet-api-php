@@ -34,7 +34,7 @@ class RequestTest extends TestCase
         $connectorMock = Mockery::mock(Connector::class);
         $connectorMock
             ->shouldReceive('post')
-            ->withArgs(['test', ['test' => 'something']])
+            ->withArgs(['test/', ['test' => 'something']])
             ->once()
             ->andReturn($response);
 
@@ -45,12 +45,28 @@ class RequestTest extends TestCase
         $this->assertSame($response, $result);
     }
 
+    public function testPatchRequest()
+    {
+        $connectorMock = Mockery::mock(Connector::class);
+        $connectorMock
+            ->shouldReceive('patch')
+            ->withArgs(['test/abc', ['test' => 'something']])
+            ->once()
+            ->andReturnTrue();
+
+        $requestClass = new Request('/test', $connectorMock);
+
+        $result = $requestClass->patch('abc', ['test' => 'something']);
+
+        $this->assertTrue($result);
+    }
+
     public function testDeleteRequest()
     {
         $connectorMock = Mockery::mock(Connector::class);
         $connectorMock
             ->shouldReceive('delete')
-            ->withArgs(['test/id999'])
+            ->withArgs(['test/id999', []])
             ->once()
             ->andReturnNull();
 

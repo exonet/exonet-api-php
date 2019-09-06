@@ -9,5 +9,6 @@
   - [The `ApiResourceSet` class](api_responses.md#the-apiresourceset-class)
   - [The `ApiResource` class](api_responses.md#the-apiresource-class)
   - [Relations](api_responses.md#relations)
+- [API Resources](api_resources.md)
   
   [Using this package &raquo;](using.md)
