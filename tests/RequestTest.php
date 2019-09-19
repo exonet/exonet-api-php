@@ -68,10 +68,10 @@ class RequestTest extends TestCase
             ->shouldReceive('delete')
             ->withArgs(['test/id999', []])
             ->once()
-            ->andReturnNull();
+            ->andReturnTrue();
 
         $request = new Request('/test', $connectorMock);
 
-        $this->assertNull($request->delete('id999'));
+        $this->assertTrue($request->delete('id999'));
     }
 }
