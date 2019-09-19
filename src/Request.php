@@ -87,12 +87,13 @@ class Request
     }
 
     /**
-     * Patch data to the API.
+     * Patch data to the API. Will return 'true' when successful. If not successful an exception
+     * is thrown.
      *
      * @param string $id      The ID of the resource to patch.
      * @param array  $payload The payload to post to the API.
      *
-     * @return bool True when succeeded.
+     * @return true When the patch succeeded.
      */
     public function patch(string $id, array $payload) : bool
     {
@@ -103,14 +104,16 @@ class Request
     }
 
     /**
-     * Delete a resource.
+     * Delete a resource. Will return 'true' when successful. If not successful an exception is thrown.
      *
      * @param string $id   The ID of the resource to delete.
      * @param array  $data (Optional) Data to send along with the request.
+     *
+     * @return true When the delete was successful.
      */
-    public function delete(string $id, array $data = []) : void
+    public function delete(string $id, array $data = []) : bool
     {
-        $this->connector->delete(
+        return $this->connector->delete(
             trim($this->resource, '/').'/'.$id,
             $data
         );
