@@ -97,9 +97,10 @@ class ApiResource extends ApiResourceIdentifier
     }
 
     /**
-     * Patch this resource to the API. For now this must be done in multiple calls if also relations are changed.
+     * Patch this resource to the API. For now this must be done in multiple calls if also relations are changed. If not
+     * successful an exception is thrown.
      *
-     * @return bool True when the patch has succeeded.
+     * @return true When the patch succeeded.
      */
     public function patch() : bool
     {

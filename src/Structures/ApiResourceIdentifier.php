@@ -82,15 +82,15 @@ class ApiResourceIdentifier
     }
 
     /**
-     * Delete this resource from the API.
+     * Delete this resource from the API.  Will return 'true' when successful. If not successful an exception is thrown.
+     *
+     * @return true When the delete was successful.
      */
-    public function delete() : void
+    public function delete() : bool
     {
         // If there are no changed relationships, perform a 'normal' delete.
         if (empty($this->changedRelationships)) {
-            $this->request->delete($this->id());
-
-            return;
+            return $this->request->delete($this->id());
         }
 
         // If there are changed relationships, transform them to JSON and send a DELETE to the relationship endpoint.
@@ -106,6 +106,8 @@ class ApiResourceIdentifier
 
             $this->request->delete($this->id().'/relationships/'.$relationship, ['data' => $relationData]);
         }
+
+        return true;
     }
 
     /**

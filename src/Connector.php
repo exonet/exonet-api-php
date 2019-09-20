@@ -92,12 +92,13 @@ class Connector
     }
 
     /**
-     * Convert the data to JSON and patch it to a URL.
+     * Convert the data to JSON and patch it to a URL. Will return 'true' when successful. If not successful an exception
+     * is thrown.
      *
      * @param string $urlPath The URL to patch to.
      * @param array  $data    An array with data to patch to the API.
      *
-     * @return bool True when the patch succeeded.
+     * @return true When the patch succeeded.
      */
     public function patch(string $urlPath, array $data) : bool
     {
@@ -117,12 +118,14 @@ class Connector
     }
 
     /**
-     * Make a DELETE call to the API.
+     * Make a DELETE call to the API. Will return 'true' when successful. If not successful an exception is thrown.
      *
      * @param string $urlPath The url to make the DELETE request to.
      * @param array  $data    (Optional) The data to send along with the DELETE request.
+     *
+     * @return true When the delete was successful.
      */
-    public function delete(string $urlPath, array $data = []) : void
+    public function delete(string $urlPath, array $data = []) : bool
     {
         $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
         $this->apiClient()->log()->debug('Sending [DELETE] request', ['url' => $apiUrl]);
@@ -135,6 +138,8 @@ class Connector
         );
 
         self::httpClient()->send($request);
+
+        return true;
     }
 
     /**

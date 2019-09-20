@@ -176,8 +176,9 @@ class ConnectorTest extends TestCase
 
         $payload = ['test' => 'demo'];
 
-        $connectorClass->delete('url', $payload);
+        $result = $connectorClass->delete('url', $payload);
 
+        $this->assertTrue($result);
         $this->assertCount(1, $apiCalls);
         $request = $apiCalls[0]['request'];
 

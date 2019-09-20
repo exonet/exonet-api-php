@@ -38,11 +38,11 @@ class ApiResourceIdentifierTest extends TestCase
         $requestMock->shouldReceive('delete')
             ->once()
             ->withArgs(['xV42'])
-            ->andReturnNull();
+            ->andReturnTrue();
 
         $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
 
-        $this->assertNull($resourceIdentifier->delete());
+        $this->assertTrue($resourceIdentifier->delete());
     }
 
     public function testDeleteRelation()
@@ -51,17 +51,17 @@ class ApiResourceIdentifierTest extends TestCase
         $requestMock->shouldReceive('delete')
             ->once()
             ->withArgs(['xV42/relationships/test', ['data' => ['type' => 'testRelation', 'id' => 'testId']]])
-            ->andReturnNull();
+            ->andReturnTrue();
 
         $requestMock->shouldReceive('delete')
             ->once()
             ->withArgs(['xV42/relationships/test2', ['data' => [['type' => 'testRelation2', 'id' => 'testId2']]]])
-            ->andReturnNull();
+            ->andReturnTrue();
 
         $resourceIdentifier = new ApiResourceIdentifier('unitTest', 'xV42', $requestMock);
         $resourceIdentifier->relationship('test', new ApiResourceIdentifier('testRelation', 'testId'));
         $resourceIdentifier->relationship('test2', [new ApiResourceIdentifier('testRelation2', 'testId2')]);
 
-        $this->assertNull($resourceIdentifier->delete());
+        $this->assertTrue($resourceIdentifier->delete());
     }
 }

@@ -5,16 +5,21 @@ All notable changes to `exonet-api-php` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Unreleased
-[Compare v2.0.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.0.0...master)
+[Compare v2.1.1 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.1.1...master)
+
+## [v2.1.1](https://github.com/exonet/exonet-api-php/releases/tag/v2.1.1) - 2019-09-19
+[Compare v2.1.0 - v2.1.1](https://github.com/exonet/exonet-api-php/compare/v2.1.0...v2.1.1)
+### Changed
+- `DELETE` requests now return `true` when successful. If something went wrong, an exception is still thrown.
 
 ## [v2.1.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.1.0) - 2019-09-06
-[Compare v2.1.0 - v2.0.0](https://github.com/exonet/backend/compare/v2.0.0...v2.1.0)
+[Compare v2.1.0 - v2.0.0](https://github.com/exonet/exonet-api-php/compare/v2.0.0...v2.1.0)
 ### Added
 - Support for patching resources and relationships.
 - Exceptions thrown by the package are extended with the `status` as the exception code, the `code` as detailed code and an array containing the returned variables.
 
 ## [v2.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.0.0) - 2019-07-02
-[Compare v2.0.0 - v1.0.0](https://github.com/exonet/backend/compare/v1.0.0...v2.0.0)
+[Compare v2.0.0 - v1.0.0](https://github.com/exonet/exonet-api-php/compare/v1.0.0...v2.0.0)
 ## Breaking
 - The Client has been refactored to keep consistency between packages in different programming languages. See the updated documentation and examples.
 
@@ -24,7 +29,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Making DELETE request to remove a resource.
 
 ## [v1.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v1.0.0) - 2019-04-29
-[Compare v0.2.0 - v1.0.0](https://github.com/exonet/backend/compare/v0.2.0...v1.0.0)
+[Compare v0.2.0 - v1.0.0](https://github.com/exonet/exonet-api-php/compare/v0.2.0...v1.0.0)
 ### Breaking
 - The public property `type` in the `ApiResource` class has been renamed to `resourceType` in order not to conflict with the DNS record resource, which has a `type` attribute.
 
@@ -32,7 +37,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Two examples for DNS zones and records.
 
 ## [v0.2.0](https://github.com/exonet/exonet-api-php/releases/tag/v0.2.0) - 2018-07-09
-[Compare v0.1.0 - v0.2.0](https://github.com/exonet/backend/compare/v0.1.0...v0.2.0)
+[Compare v0.1.0 - v0.2.0](https://github.com/exonet/exonet-api-php/compare/v0.1.0...v0.2.0)
 ### Added
 - Ready to use examples to get ticket details.
 - The ApiResourceSet now supports ArrayAccess.
