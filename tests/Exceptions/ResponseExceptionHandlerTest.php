@@ -44,7 +44,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler->handle();
     }
 
-    public function testHandleValidationException()
+    public function testHandleValidationException_SingleError()
     {
         $logMock = Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 422, 'contents' => '{"errors":[{"code":"102.10001","detail":"Validation Exception Test"}]}']])->once();
@@ -53,12 +53,47 @@ class ResponseExceptionHandlerTest extends TestCase
         $client->setLogger($logMock);
 
         $response = new Response(422, [], json_encode(['errors' => [['code' => '102.10001', 'detail' => 'Validation Exception Test']]]));
-
-        $this->expectExceptionMessage('Validation Exception Test');
-        $this->expectException(ValidationException::class);
-
         $exceptionHandler = new ResponseExceptionHandler($response, $client);
-        $exceptionHandler->handle();
+
+        $validationTested = false;
+        try {
+            $exceptionHandler->handle();
+        } catch (ValidationException $exception) {
+            $validationTested = true;
+            $this->assertSame($exception->getMessage(), 'There is 1 validation error.');
+            $this->assertCount(1, $exception->getFailedValidations());
+            $this->assertSame('Validation Exception Test', $exception->getFailedValidations()['generic'][0]);
+        }
+
+        if (!$validationTested) {
+            $this->fail('Expected exception is not thrown.');
+        }
+    }
+
+    public function testHandleValidationException_MultipleErrors()
+    {
+        $client = new Client();
+
+        $response = new Response(422, [], json_encode(['errors' => [
+            ['code' => '102.10001', 'detail' => 'Validation Exception Test'],
+            ['code' => '102.10001', 'detail' => 'Validation Exception Test 2', 'variables' => ['field' => 'unitTest']],
+        ]]));
+        $exceptionHandler = new ResponseExceptionHandler($response, $client);
+
+        $validationTested = false;
+        try {
+            $exceptionHandler->handle();
+        } catch (ValidationException $exception) {
+            $validationTested = true;
+            $this->assertSame($exception->getMessage(), 'There are 2 validation errors.');
+            $this->assertCount(2, $exception->getFailedValidations());
+            $this->assertSame('Validation Exception Test', $exception->getFailedValidations()['generic'][0]);
+            $this->assertSame('Validation Exception Test 2', $exception->getFailedValidations()['unitTest'][0]);
+        }
+
+        if (!$validationTested) {
+            $this->fail('Expected exception is not thrown.');
+        }
     }
 
     public function testHandleAuthorizationException()

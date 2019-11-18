@@ -5,7 +5,12 @@ All notable changes to `exonet-api-php` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Unreleased
-[Compare v2.1.1 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.1.1...master)
+[Compare v2.2.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.2.0...master)
+
+## [v2.2.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.2.0) - 2019-11-18
+[Compare v2.1.1 - v2.2.0](https://github.com/exonet/exonet-api-php/compare/v2.1.1...v2.2.0)
+### Changed
+- Extend the `ValidationException` to contain all returned validation errors. See the [docs](./docs/exceptions.md) for more information.
 
 ## [v2.1.1](https://github.com/exonet/exonet-api-php/releases/tag/v2.1.1) - 2019-09-19
 [Compare v2.1.0 - v2.1.1](https://github.com/exonet/exonet-api-php/compare/v2.1.0...v2.1.1)
