@@ -56,6 +56,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler = new ResponseExceptionHandler($response, $client);
 
         $validationTested = false;
+
         try {
             $exceptionHandler->handle();
         } catch (ValidationException $exception) {
@@ -81,6 +82,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler = new ResponseExceptionHandler($response, $client);
 
         $validationTested = false;
+
         try {
             $exceptionHandler->handle();
         } catch (ValidationException $exception) {
