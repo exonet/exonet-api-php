@@ -82,6 +82,11 @@ class ResponseExceptionHandler
      */
     private function parseResponse() : ?ExonetApiException
     {
+        // If there are validation errors, parse them separately to include all failed validations.
+        if ($this->response->getStatusCode() === 422) {
+            return $this->parseValidationErrors();
+        }
+
         $error = json_decode($this->responseBody, true)['errors'][0] ?? null;
 
         if (!$error) {
@@ -100,5 +105,32 @@ class ResponseExceptionHandler
         }
 
         return null;
+    }
+
+    /**
+     * Parse the validation errors to a single exception, but with details for each failed validation rule.
+     *
+     * @return ExonetApiException|null The validation exception with details.
+     */
+    private function parseValidationErrors() : ?ExonetApiException
+    {
+        $errorList = json_decode($this->responseBody, true)['errors'] ?? null;
+        $errorCount = count($errorList);
+
+        // Return if no errors are found.
+        if ($errorList === null || $errorCount === 0) {
+            return null;
+        }
+
+        // Create the exception.
+        $exceptionMessage = $errorCount === 1 ? 'There is %d validation error.' : 'There are %d validation errors.';
+        $exception = new ValidationException(sprintf($exceptionMessage, $errorCount), 422, null, '102.10001');
+
+        // Add each failed validation error to the exception.
+        foreach ($errorList as $error) {
+            $exception->setFailedValidation($error['variables']['field'] ?? null, $error['detail']);
+        }
+
+        return $exception;
     }
 }
