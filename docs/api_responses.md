@@ -1,5 +1,5 @@
 # Using API Responses
-There are two types of API responses upon a successful request. If a single resource is requested then an [`ApiResource`](api_resources.md) is 
+There are two types of API responses upon a successful request. If a single resource is requested then an [`ApiResource`](api_resources.md) is
 returned, if multiple resources are requested then an `ApiResourceSet` is returned.
 
 ## The `ApiResourceSet` class
@@ -15,6 +15,29 @@ foreach ($certificates as $certificate) {
     echo $certificate->id()."\n";
 }
 ```
+
+The get the number of items in a resource set, you can use one of the following methods:
+```php
+$certificates->count(); // Returns the number of resources in the current resource set.
+$certificates->total(); // Returns the total number of resources in the resource set, ignoring pagination.
+```
+
+If `count != total` you can get the next/previous/first/last page by calling one of the pagination methods:
+```php
+// Get the next resource set:
+$certificates->nextPage();
+
+// Get the previous resource set:
+$certificates->previousPage();
+
+// Get the first resource set:
+$certificates->firstPage();
+
+// Get the last resource set:
+$certificates->lastPage();
+```
+
+Each of this methods will return `null` if not available.
 
 ## The [`ApiResource`](api_resources.md) class
 Each resource returned by the API is transformed to an [`ApiResource`](api_resources.md) instance. This makes it possible to have easy access

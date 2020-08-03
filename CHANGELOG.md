@@ -5,7 +5,14 @@ All notable changes to `exonet-api-php` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Unreleased
-[Compare v2.2.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.2.0...master)
+[Compare v2.3.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.3.0...master)
+
+## [v2.3.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.3.0) - 2020-08-04
+[Compare v2.2.0 - v2.3.0](https://github.com/exonet/exonet-api-php/compare/v2.2.0...v2.3.0)
+### Added
+- Add the `total()` method to resource sets to get the total number of resources (and not only the number in the current resource set).
+- Add `nextPage`, `previousPage`, `firstPage` and `lastPage` methods to the `ApiResourceSet` for easy loading of paginated resource sets.
+- Add a `getRecursive` method to the `Request` to get the resource set including recursively the resource sets from the following pages.
 
 ## [v2.2.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.2.0) - 2019-11-19
 [Compare v2.1.1 - v2.2.0](https://github.com/exonet/exonet-api-php/compare/v2.1.1...v2.2.0)
