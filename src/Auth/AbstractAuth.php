@@ -19,7 +19,7 @@ abstract class AbstractAuth
      *
      * @return string The access token.
      */
-    public function getToken() : string
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -29,7 +29,7 @@ abstract class AbstractAuth
      *
      * @param string $token The access token.
      */
-    public function setToken(string $token) : void
+    public function setToken(string $token): void
     {
         $this->token = $token;
     }

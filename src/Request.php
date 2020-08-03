@@ -53,7 +53,7 @@ class Request
      *
      * @return ApiResourceIdentifier The resource identifier.
      */
-    public function id(string $id) : ApiResourceIdentifier
+    public function id(string $id): ApiResourceIdentifier
     {
         return new ApiResourceIdentifier($this->resource, $id);
     }
@@ -105,7 +105,7 @@ class Request
      *
      * @return true When the patch succeeded.
      */
-    public function patch(string $id, array $payload) : bool
+    public function patch(string $id, array $payload): bool
     {
         return $this->connector->patch(
             trim($this->resource, '/').'/'.$id,
@@ -121,7 +121,7 @@ class Request
      *
      * @return true When the delete was successful.
      */
-    public function delete(string $id, array $data = []) : bool
+    public function delete(string $id, array $data = []): bool
     {
         return $this->connector->delete(
             trim($this->resource, '/').'/'.$id,
@@ -136,7 +136,7 @@ class Request
      *
      * @return self This current Request instance.
      */
-    public function size(int $pageSize) : self
+    public function size(int $pageSize): self
     {
         $this->queryStringParameters['page']['size'] = $pageSize;
 
@@ -150,7 +150,7 @@ class Request
      *
      * @return self This current Request instance.
      */
-    public function page(int $pageNumber) : self
+    public function page(int $pageNumber): self
     {
         $this->queryStringParameters['page']['number'] = $pageNumber;
 
@@ -165,7 +165,7 @@ class Request
      *
      * @return self This current Request instance.
      */
-    public function filter(string $name, $value = true) : self
+    public function filter(string $name, $value = true): self
     {
         if (is_array($value)) {
             $value = implode(',', $value);
@@ -181,8 +181,8 @@ class Request
      *
      * @param string $path The URL path, for example '/some/thing/custom'.
      *
-     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet  The requested data transformed to a single or multiple
-     *                                                           resources.
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The requested data transformed to a single or multiple
+     *                                                          resources.
      */
     public function getPath(string $path)
     {
@@ -197,7 +197,7 @@ class Request
      *
      * @return string The fully prepared URL.
      */
-    private function prepareUrl(?string $id = null) : string
+    private function prepareUrl(?string $id = null): string
     {
         $url = trim($this->resource, '/');
         if ($id) {

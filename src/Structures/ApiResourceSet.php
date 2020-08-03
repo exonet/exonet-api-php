@@ -8,7 +8,6 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Exonet\Api\Client;
-use Exonet\Api\Connector;
 use Exonet\Api\Exceptions\ValidationException;
 use Exonet\Api\Request;
 use IteratorAggregate;
@@ -75,7 +74,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return ArrayIterator The array iterator.
      */
-    public function getIterator() : ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->resources ?? []);
     }
@@ -87,7 +86,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return bool true on success or false on failure.
      */
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return isset($this->resources[$offset]);
     }
@@ -112,7 +111,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @throws ValidationException if the provided $value is not an ApiResource.
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         if (!$value instanceof ApiResource) {
             throw new ValidationException('Only ApiResources can be set.');
@@ -126,7 +125,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param mixed $offset The offset to unset.
      */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         unset($this->resources[$offset]);
     }
@@ -150,7 +149,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return int|null The total number of resources.
      */
-    public function total() : ?int
+    public function total(): ?int
     {
         return $this->meta['resources']['total'] ?? null;
     }
@@ -160,7 +159,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return mixed[]|null The meta data.
      */
-    public function meta() : ?array
+    public function meta(): ?array
     {
         return $this->meta;
     }

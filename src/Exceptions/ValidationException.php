@@ -12,7 +12,7 @@ class ValidationException extends ExonetApiException
      * @param string|null $field       The name of the field.
      * @param string      $description The returned error description.
      */
-    public function setFailedValidation(?string $field, string $description) : void
+    public function setFailedValidation(?string $field, string $description): void
     {
         $this->variables[$field ?? 'generic'][] = $description;
     }
@@ -22,7 +22,7 @@ class ValidationException extends ExonetApiException
      *
      * @return array The failed validation details.
      */
-    public function getFailedValidations() : array
+    public function getFailedValidations(): array
     {
         return $this->variables;
     }
