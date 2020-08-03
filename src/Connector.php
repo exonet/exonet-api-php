@@ -67,6 +67,20 @@ class Connector
     }
 
     /**
+     * Get the given URL recursively, based on the value of the 'links.next' value.
+     *
+     * @param string $urlPath The URL path to GET.
+     */
+    public function getRecursive(string $urlPath): ApiResourceSet
+    {
+        $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
+
+        $data = $this->runRecursiveGet($apiUrl);
+
+        return new ApiResourceSet(['data' => $data]);
+    }
+
+    /**
      * Convert the data to JSON and post it to a URL.
      *
      * @param string $urlPath The URL to post to.
@@ -202,6 +216,33 @@ class Connector
     private function apiClient() : Client
     {
         return $this->apiClientInstance ?? Client::getInstance();
+    }
+
+    /**
+     * Get the given URL recursively, based on the value of the 'links.next' value.
+     *
+     * @param string $apiUrl The URL to get.
+     * @param array  $data   The existing data.
+     *
+     * @return array The merged results.
+     */
+    private function runRecursiveGet(string $apiUrl, $data = []): array
+    {
+        $this->apiClient()->log()->debug('Sending recursive [GET] request', ['url' => $apiUrl]);
+
+        $request = new Request('GET', $apiUrl, $this->getDefaultHeaders());
+
+        $response = self::httpClient()->send($request);
+        $contents = $response->getBody()->getContents();
+
+        $decodedContent = json_decode($contents, true);
+        $mergedData = array_merge($data, $decodedContent['data']);
+
+        if ($decodedContent['links']['next'] !== null) {
+            return $this->runRecursiveGet($decodedContent['links']['next'], $mergedData);
+        }
+
+        return $mergedData;
     }
 
     /**

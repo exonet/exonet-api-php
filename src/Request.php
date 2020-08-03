@@ -71,6 +71,16 @@ class Request
     }
 
     /**
+     * Get the resource including all next resources.
+     *
+     * @return ApiResourceSet The requested data.
+     */
+    public function getRecursive(): ApiResourceSet
+    {
+        return $this->connector->getRecursive($this->prepareUrl());
+    }
+
+    /**
      * Post new data to the API.
      *
      * @param array       $payload   The payload to post to the API.
