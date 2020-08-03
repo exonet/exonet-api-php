@@ -75,7 +75,7 @@ class Client implements LoggerAwareInterface
      *
      * @return Client The cache instance.
      */
-    public static function getInstance() : self
+    public static function getInstance(): self
     {
         if (!isset(self::$_instance)) {
             self::$_instance = new self();
@@ -91,7 +91,7 @@ class Client implements LoggerAwareInterface
      *
      * @return AbstractAuth The auth instance.
      */
-    public function getAuth() : AbstractAuth
+    public function getAuth(): AbstractAuth
     {
         if ($this->auth === null) {
             $this->log()->error('No authentication method set.');
@@ -109,7 +109,7 @@ class Client implements LoggerAwareInterface
      *
      * @return self The current Client instance.
      */
-    public function setAuth(AbstractAuth $auth) : self
+    public function setAuth(AbstractAuth $auth): self
     {
         $this->auth = $auth;
 
@@ -121,7 +121,7 @@ class Client implements LoggerAwareInterface
      *
      * @return string The API URL to connect to.
      */
-    public function getApiUrl() : string
+    public function getApiUrl(): string
     {
         return $this->apiUrl;
     }
@@ -133,7 +133,7 @@ class Client implements LoggerAwareInterface
      *
      * @return self The current Client instance.
      */
-    public function setApiUrl(string $apiUrl) : self
+    public function setApiUrl(string $apiUrl): self
     {
         if (substr($apiUrl, -1) !== '/') {
             $apiUrl .= '/';
@@ -149,7 +149,7 @@ class Client implements LoggerAwareInterface
      *
      * @return LoggerInterface The log instance.
      */
-    public function log() : LoggerInterface
+    public function log(): LoggerInterface
     {
         if ($this->logger === null) {
             // If there's no logger set, use the NullLogger.
@@ -166,7 +166,7 @@ class Client implements LoggerAwareInterface
      *
      * @return self The current Client instance.
      */
-    public function setLogger(LoggerInterface $log) : self
+    public function setLogger(LoggerInterface $log): self
     {
         $this->logger = $log;
 

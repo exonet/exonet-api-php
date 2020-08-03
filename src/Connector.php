@@ -114,7 +114,7 @@ class Connector
      *
      * @return true When the patch succeeded.
      */
-    public function patch(string $urlPath, array $data) : bool
+    public function patch(string $urlPath, array $data): bool
     {
         $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
         $this->apiClient()->log()->debug('Sending [PATCH] request', ['url' => $apiUrl]);
@@ -139,7 +139,7 @@ class Connector
      *
      * @return true When the delete was successful.
      */
-    public function delete(string $urlPath, array $data = []) : bool
+    public function delete(string $urlPath, array $data = []): bool
     {
         $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
         $this->apiClient()->log()->debug('Sending [DELETE] request', ['url' => $apiUrl]);
@@ -197,7 +197,7 @@ class Connector
      *
      * @return GuzzleClient The HTTP client instance.
      */
-    private static function httpClient() : GuzzleClient
+    private static function httpClient(): GuzzleClient
     {
         $stackHash = spl_object_hash(self::$guzzleHandlerStack ?? new \stdClass());
         if (!isset(self::$httpClient[$stackHash])) {
@@ -213,7 +213,7 @@ class Connector
      *
      * @return Client The API client.
      */
-    private function apiClient() : Client
+    private function apiClient(): Client
     {
         return $this->apiClientInstance ?? Client::getInstance();
     }
@@ -257,7 +257,7 @@ class Connector
      *
      * @return string[] The headers.
      */
-    private function getDefaultHeaders() : array
+    private function getDefaultHeaders(): array
     {
         return [
             'Authorization' => sprintf('Bearer %s', $this->apiClient()->getAuth()->getToken()),

@@ -40,7 +40,7 @@ class ExonetApiException extends Exception
      *
      * @return string|null The detailed error code.
      */
-    public function getDetailCode() : ?string
+    public function getDetailCode(): ?string
     {
         return $this->detailCode;
     }
@@ -50,7 +50,7 @@ class ExonetApiException extends Exception
      *
      * @return array Array with detailed information if provided by the API.
      */
-    public function getVariables() : array
+    public function getVariables(): array
     {
         return $this->variables;
     }
