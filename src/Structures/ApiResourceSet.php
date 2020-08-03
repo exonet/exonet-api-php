@@ -7,6 +7,8 @@ namespace Exonet\Api\Structures;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
+use Exonet\Api\Client;
+use Exonet\Api\Connector;
 use Exonet\Api\Exceptions\ValidationException;
 use IteratorAggregate;
 
@@ -16,7 +18,7 @@ use IteratorAggregate;
 class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
 {
     /**
-     * @var \Exonet\Api\Structures\ApiResource[] The returned resources.
+     * @var ApiResource[] The returned resources.
      */
     private $resources;
 
@@ -132,5 +134,85 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
         }
 
         return count($this->resources);
+    }
+
+    /**
+     * Get the total number of resources.
+     *
+     * @return int|null The total number of resources.
+     */
+    public function total() : ?int
+    {
+        return $this->meta['resources']['total'] ?? null;
+    }
+
+    /**
+     * Get the meta data.
+     *
+     * @return mixed[]|null The meta data.
+     */
+    public function meta() : ?array
+    {
+        return $this->meta;
+    }
+
+    /**
+     * Get the next page with resources.
+     *
+     * @return ApiResource|ApiResourceSet|null
+     */
+    public function nextPage()
+    {
+        return $this->navigateToLink('next');
+    }
+
+    /**
+     * Get the previous page with resources.
+     *
+     * @return ApiResource|ApiResourceSet|null
+     */
+    public function previousPage()
+    {
+        return $this->navigateToLink('prev');
+    }
+
+    /**
+     * Get the first page with resources.
+     *
+     * @return ApiResource|ApiResourceSet|null
+     */
+    public function firstPage()
+    {
+        return $this->navigateToLink('first');
+    }
+
+    /**
+     * Get the last page with resources.
+     *
+     * @return ApiResource|ApiResourceSet|null
+     */
+    public function lastPage()
+    {
+        return $this->navigateToLink('last');
+    }
+
+    /**
+     * Get the resource for the given link name.
+     *
+     * @param string $linkName The name of the element in the 'links' array.
+     *
+     * @return ApiResource|ApiResourceSet|null
+     */
+    private function navigateToLink(string $linkName)
+    {
+        $linkValue = $this->links[$linkName];
+
+        if ($linkValue === null) {
+            return null;
+        }
+
+        $link = substr($linkValue, strlen(Client::getInstance()->getApiUrl()));
+
+        return (new Connector())->get($link);
     }
 }
