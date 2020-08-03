@@ -233,6 +233,13 @@ class Connector
         $request = new Request('GET', $apiUrl, $this->getDefaultHeaders());
 
         $response = self::httpClient()->send($request);
+
+        $this->apiClient()->log()->debug('Recursive request completed', ['statusCode' => $response->getStatusCode()]);
+
+        if ($response->getStatusCode() >= 300) {
+            (new ResponseExceptionHandler($response))->handle();
+        }
+
         $contents = $response->getBody()->getContents();
 
         $decodedContent = json_decode($contents, true);

@@ -40,7 +40,7 @@ class Request
      * @param null|string    $resource  The resource to get.
      * @param Connector|null $connector Optional connector instance to use.
      */
-    public function __construct(string $resource, ?Connector $connector = null)
+    public function __construct(string $resource = null, ?Connector $connector = null)
     {
         $this->resource = $resource;
         $this->connector = $connector ?? new Connector();
@@ -174,6 +174,19 @@ class Request
         $this->queryStringParameters['filter'][$name] = $value;
 
         return $this;
+    }
+
+    /**
+     * Get a specific path (URL) from the API. This method DOES NOT add anything to the URL except the correct host.
+     *
+     * @param string $path The URL path, for example '/some/thing/custom'.
+     *
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet  The requested data transformed to a single or multiple
+     *                                                           resources.
+     */
+    public function getPath(string $path)
+    {
+        return $this->connector->get($path);
     }
 
     /**
