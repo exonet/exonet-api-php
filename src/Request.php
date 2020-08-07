@@ -177,19 +177,6 @@ class Request
     }
 
     /**
-     * Get a specific path (URL) from the API. This method DOES NOT add anything to the URL except the correct host.
-     *
-     * @param string $path The URL path, for example '/some/thing/custom'.
-     *
-     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The requested data transformed to a single or multiple
-     *                                                          resources.
-     */
-    public function getPath(string $path)
-    {
-        return $this->connector->get($path);
-    }
-
-    /**
      * Prepare the URL for the resource, including (optional) ID and query string parameters. Remove
      * excessive slashes and add query string parameters.
      *
