@@ -150,16 +150,16 @@ class ApiResourceSetTest extends TestCase
         $handler = HandlerStack::create($mock);
         $handler->push($history);
 
-        $resourceSet = new ApiResourceSet($data, new Request('unit_test', new Connector($handler)));
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
         $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->nextPage());
 
-        $resourceSet = new ApiResourceSet($data, new Request('unit_test', new Connector($handler)));
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
         $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->previousPage());
 
-        $resourceSet = new ApiResourceSet($data, new Request('unit_test', new Connector($handler)));
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
         $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->firstPage());
 
-        $resourceSet = new ApiResourceSet($data, new Request('unit_test', new Connector($handler)));
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
         $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->lastPage());
 
         // Test the called URLs.

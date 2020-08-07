@@ -8,8 +8,8 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Exonet\Api\Client;
+use Exonet\Api\Connector;
 use Exonet\Api\Exceptions\ValidationException;
-use Exonet\Api\Request;
 use IteratorAggregate;
 
 /**
@@ -33,19 +33,20 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     private $links;
 
     /**
-     * @var Request|null Class to use for making pagination requests.
+     * @var Connector Class to use for making pagination requests.
      */
-    private $paginationRequest;
+    private $connector;
 
     /**
      * ApiResourceSet constructor.
      *
      * @param string|array $resources The resources from the API as encoded JSON string or a similar array.
-     * @param Request|null $request
+     * @param Connector|null $connector The connector used for pagination requests. If null, the default connect will be
+     *                                  used.
      */
-    public function __construct($resources, Request $request = null)
+    public function __construct($resources, Connector $connector = null)
     {
-        $this->paginationRequest = $request ?? new Request();
+        $this->connector = $connector ?? new Connector();
 
         if (is_string($resources)) {
             $resources = json_decode($resources, true);
@@ -221,6 +222,6 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
 
         $link = substr($linkValue, strlen(Client::getInstance()->getApiUrl()));
 
-        return $this->paginationRequest->getPath($link);
+        return $this->connector->get($link);
     }
 }

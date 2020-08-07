@@ -40,7 +40,7 @@ class Request
      * @param null|string    $resource  The resource to get.
      * @param Connector|null $connector Optional connector instance to use.
      */
-    public function __construct(string $resource = null, ?Connector $connector = null)
+    public function __construct(string $resource, ?Connector $connector = null)
     {
         $this->resource = $resource;
         $this->connector = $connector ?? new Connector();
