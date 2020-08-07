@@ -56,7 +56,7 @@ class ApiResourceIdentifier
      *
      * @return string The resource type.
      */
-    public function type() : string
+    public function type(): string
     {
         return $this->resourceType;
     }
@@ -66,7 +66,7 @@ class ApiResourceIdentifier
      *
      * @return string|null The resource Id.
      */
-    public function id() : ?string
+    public function id(): ?string
     {
         return $this->id;
     }
@@ -86,7 +86,7 @@ class ApiResourceIdentifier
      *
      * @return true When the delete was successful.
      */
-    public function delete() : bool
+    public function delete(): bool
     {
         // If there are no changed relationships, perform a 'normal' delete.
         if (empty($this->changedRelationships)) {
@@ -159,7 +159,7 @@ class ApiResourceIdentifier
     /**
      * Transform the set identifiers for this resource to an array that can be used for JSON.
      */
-    protected function toJson() : array
+    protected function toJson(): array
     {
         return [
             'type' => $this->type(),

@@ -102,7 +102,7 @@ class ApiResource extends ApiResourceIdentifier
      *
      * @return true When the patch succeeded.
      */
-    public function patch() : bool
+    public function patch(): bool
     {
         // Patch the attributes.
         if (!empty($this->changedAttributes)) {
@@ -127,7 +127,7 @@ class ApiResource extends ApiResourceIdentifier
      *
      * @return Relation[] The parsed relationships.
      */
-    private function parseRelations(array $relationships) : array
+    private function parseRelations(array $relationships): array
     {
         $parsedRelations = [];
 
@@ -158,7 +158,7 @@ class ApiResource extends ApiResourceIdentifier
      *
      * @return array Array that can be used as json.
      */
-    protected function toJson(bool $onlyChangedAttributes = false, $onlyChangedRelations = false) : array
+    protected function toJson(bool $onlyChangedAttributes = false, $onlyChangedRelations = false): array
     {
         $json = [
             'data' => [

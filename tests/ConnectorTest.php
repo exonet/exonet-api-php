@@ -56,7 +56,9 @@ class ConnectorTest extends TestCase
                 ],
             ],
             'meta' => [],
-            'links' => [],
+            'links' => [
+                'next' => null,
+            ],
         ];
     }
 
@@ -94,6 +96,26 @@ class ConnectorTest extends TestCase
         $connectorClass = new Connector($handler);
 
         $this->assertInstanceOf(ApiResourceSet::class, $connectorClass->get('test'));
+    }
+
+    public function testGetRecursive()
+    {
+        $responseWithNext = $this->multiResource;
+        $responseWithNext['links']['next'] = 'next.url';
+
+        $mock = new MockHandler([
+            new Response(200, [], json_encode($responseWithNext)),
+            new Response(200, [], json_encode($this->multiResource)),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        new Client(new PersonalAccessToken('test-token'));
+        $connectorClass = new Connector($handler);
+
+        $apiResourceSet = $connectorClass->getRecursive('test');
+        $this->assertInstanceOf(ApiResourceSet::class, $apiResourceSet);
+        $this->assertCount(2, $apiResourceSet);
     }
 
     public function testGetInvalidResponse()

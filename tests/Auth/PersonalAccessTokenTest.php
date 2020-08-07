@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class PersonalAccessTokenTest extends TestCase
 {
-    public function testSetTokenViaConstructor() : void
+    public function testSetTokenViaConstructor(): void
     {
         $token = 'test_token';
 
@@ -15,7 +15,7 @@ class PersonalAccessTokenTest extends TestCase
         $this->assertSame($token, $authClass->getToken());
     }
 
-    public function testSetTokenViaSetter() : void
+    public function testSetTokenViaSetter(): void
     {
         $token = 'test_token';
 

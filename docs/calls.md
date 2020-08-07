@@ -1,5 +1,5 @@
 # Making API calls
-After the client has been initialised, use the `resource` method to define which type of resource you want to get from 
+After the client has been initialised, use the `resource` method to define which type of resource you want to get from
 the API:
 
 ```php
@@ -22,6 +22,19 @@ $certificatesRequest->page(2);
 After setting the parameters you can call the `->get()` method to retrieve the resources:
 ```php
 $certificates = $certificatesRequest->get();
+```
+
+It is also possible to get all resource sets recursively. The package will check the URL defined in `links.next` and as
+long as the value is not `null` it will make an additional request and merge the results:
+
+```php
+$certificates = $certificatesRequest->getRecursive();
+```
+
+Please note that the `getRecursive` method respects pagination and filters. So the following example will get all
+non-expired certificates, starting from page two in batches of ten:
+```php
+$certificates = $certificatesRequest->filter('expired', false)->page(2)->size(10)->getRecursive();
 ```
 
 ## Getting a single resource by ID

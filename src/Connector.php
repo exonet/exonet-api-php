@@ -67,6 +67,20 @@ class Connector
     }
 
     /**
+     * Get the given URL recursively, based on the value of the 'links.next' value.
+     *
+     * @param string $urlPath The URL path to GET.
+     */
+    public function getRecursive(string $urlPath): ApiResourceSet
+    {
+        $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
+
+        $data = $this->runRecursiveGet($apiUrl);
+
+        return new ApiResourceSet(['data' => $data]);
+    }
+
+    /**
      * Convert the data to JSON and post it to a URL.
      *
      * @param string $urlPath The URL to post to.
@@ -100,7 +114,7 @@ class Connector
      *
      * @return true When the patch succeeded.
      */
-    public function patch(string $urlPath, array $data) : bool
+    public function patch(string $urlPath, array $data): bool
     {
         $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
         $this->apiClient()->log()->debug('Sending [PATCH] request', ['url' => $apiUrl]);
@@ -125,7 +139,7 @@ class Connector
      *
      * @return true When the delete was successful.
      */
-    public function delete(string $urlPath, array $data = []) : bool
+    public function delete(string $urlPath, array $data = []): bool
     {
         $apiUrl = $this->apiClient()->getApiUrl().$urlPath;
         $this->apiClient()->log()->debug('Sending [DELETE] request', ['url' => $apiUrl]);
@@ -183,7 +197,7 @@ class Connector
      *
      * @return GuzzleClient The HTTP client instance.
      */
-    private static function httpClient() : GuzzleClient
+    private static function httpClient(): GuzzleClient
     {
         $stackHash = spl_object_hash(self::$guzzleHandlerStack ?? new \stdClass());
         if (!isset(self::$httpClient[$stackHash])) {
@@ -199,9 +213,43 @@ class Connector
      *
      * @return Client The API client.
      */
-    private function apiClient() : Client
+    private function apiClient(): Client
     {
         return $this->apiClientInstance ?? Client::getInstance();
+    }
+
+    /**
+     * Get the given URL recursively, based on the value of the 'links.next' value.
+     *
+     * @param string $apiUrl The URL to get.
+     * @param array  $data   The existing data.
+     *
+     * @return array The merged results.
+     */
+    private function runRecursiveGet(string $apiUrl, $data = []): array
+    {
+        $this->apiClient()->log()->debug('Sending recursive [GET] request', ['url' => $apiUrl]);
+
+        $request = new Request('GET', $apiUrl, $this->getDefaultHeaders());
+
+        $response = self::httpClient()->send($request);
+
+        $this->apiClient()->log()->debug('Recursive request completed', ['statusCode' => $response->getStatusCode()]);
+
+        if ($response->getStatusCode() >= 300) {
+            (new ResponseExceptionHandler($response))->handle();
+        }
+
+        $contents = $response->getBody()->getContents();
+
+        $decodedContent = json_decode($contents, true);
+        $mergedData = array_merge($data, $decodedContent['data']);
+
+        if ($decodedContent['links']['next'] !== null) {
+            return $this->runRecursiveGet($decodedContent['links']['next'], $mergedData);
+        }
+
+        return $mergedData;
     }
 
     /**
@@ -209,7 +257,7 @@ class Connector
      *
      * @return string[] The headers.
      */
-    private function getDefaultHeaders() : array
+    private function getDefaultHeaders(): array
     {
         return [
             'Authorization' => sprintf('Bearer %s', $this->apiClient()->getAuth()->getToken()),

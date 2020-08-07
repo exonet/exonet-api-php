@@ -2,6 +2,13 @@
 
 namespace Exonet\Api\Structures;
 
+use Exonet\Api\Auth\PersonalAccessToken;
+use Exonet\Api\Client;
+use Exonet\Api\Connector;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 class ApiResourceSetTest extends TestCase
@@ -76,7 +83,7 @@ class ApiResourceSetTest extends TestCase
 
         $this->assertSame(
             'world1',
-            reset($resources)->attribute('hello')
+            $resources[0]->attribute('hello')
         );
 
         // Test isset with an offset that should not exist.
@@ -109,5 +116,55 @@ class ApiResourceSetTest extends TestCase
 
         // Try to set something other than an ApiResource.
         $resourceSetClass[55] = 'some string';
+    }
+
+    public function testPaginationLinks()
+    {
+        Client::getInstance()->setAuth(new PersonalAccessToken('test-token'));
+        $apiUrl = Client::getInstance()->getApiUrl();
+        $data = json_encode(
+            [
+                'data' => [],
+                'meta' => ['count' => 0],
+                'links' => [
+                    'next' => $apiUrl.'next.url',
+                    'prev' => $apiUrl.'previous.url',
+                    'first' => $apiUrl.'first.url',
+                    'last' => $apiUrl.'last.url',
+                ],
+            ]
+        );
+
+        $apiCalls = [];
+        $mock = new MockHandler(
+            [
+                new Response(200, [], $data),
+                new Response(200, [], $data),
+                new Response(200, [], $data),
+                new Response(200, [], $data),
+            ]
+        );
+
+        $history = Middleware::history($apiCalls);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
+        $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->nextPage());
+
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
+        $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->previousPage());
+
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
+        $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->firstPage());
+
+        $resourceSet = new ApiResourceSet($data, new Connector($handler));
+        $this->assertInstanceOf(ApiResourceSet::class, $resourceSet->lastPage());
+
+        // Test the called URLs.
+        $this->assertSame('/next.url', $apiCalls[0]['request']->getRequestTarget());
+        $this->assertSame('/previous.url', $apiCalls[1]['request']->getRequestTarget());
+        $this->assertSame('/first.url', $apiCalls[2]['request']->getRequestTarget());
+        $this->assertSame('/last.url', $apiCalls[3]['request']->getRequestTarget());
     }
 }

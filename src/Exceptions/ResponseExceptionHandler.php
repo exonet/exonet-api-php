@@ -53,7 +53,7 @@ class ResponseExceptionHandler
      *
      * @throws ExonetApiException An (extended) instance of ExonetApiException.
      */
-    public function handle() : void
+    public function handle(): void
     {
         $this->client->log()->error(
             'Request failed',
@@ -80,7 +80,7 @@ class ResponseExceptionHandler
      *
      * @return ExonetApiException|null The error class or null if no class can be determined.
      */
-    private function parseResponse() : ?ExonetApiException
+    private function parseResponse(): ?ExonetApiException
     {
         // If there are validation errors, parse them separately to include all failed validations.
         if ($this->response->getStatusCode() === 422) {
@@ -112,7 +112,7 @@ class ResponseExceptionHandler
      *
      * @return ExonetApiException|null The validation exception with details.
      */
-    private function parseValidationErrors() : ?ExonetApiException
+    private function parseValidationErrors(): ?ExonetApiException
     {
         $errorList = json_decode($this->responseBody, true)['errors'] ?? null;
         $errorCount = count($errorList);

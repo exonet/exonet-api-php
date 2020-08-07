@@ -25,7 +25,7 @@ renderTickets('ID and subject of open tickets:', $openTickets);
  * @param string         $description The description of the list.
  * @param ApiResourceSet $ticketList  The resource set containing ticket resources.
  */
-function renderTickets(string $description, ApiResourceSet $ticketList) : void
+function renderTickets(string $description, ApiResourceSet $ticketList): void
 {
     echo sprintf("\n%s (%d)\n%s\n", $description, count($ticketList), str_repeat('-', strlen($description)));
 
