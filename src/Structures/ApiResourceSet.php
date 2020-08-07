@@ -168,7 +168,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Get the next page with resources.
      *
-     * @return ApiResource|ApiResourceSet|null
+     * @return ApiResource|ApiResourceSet|null The next page with resources.
      */
     public function nextPage()
     {
@@ -178,7 +178,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Get the previous page with resources.
      *
-     * @return ApiResource|ApiResourceSet|null
+     * @return ApiResource|ApiResourceSet|null The previous page with resources.
      */
     public function previousPage()
     {
@@ -188,7 +188,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Get the first page with resources.
      *
-     * @return ApiResource|ApiResourceSet|null
+     * @return ApiResource|ApiResourceSet|null The first page with resources.
      */
     public function firstPage()
     {
@@ -198,7 +198,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Get the last page with resources.
      *
-     * @return ApiResource|ApiResourceSet|null
+     * @return ApiResource|ApiResourceSet|null The last page with resources.
      */
     public function lastPage()
     {
@@ -210,7 +210,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param string $linkName The name of the element in the 'links' array.
      *
-     * @return ApiResource|ApiResourceSet|null
+     * @return ApiResource|ApiResourceSet|null The requested page with resources.
      */
     private function navigateToLink(string $linkName)
     {
