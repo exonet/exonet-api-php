@@ -40,7 +40,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     /**
      * ApiResourceSet constructor.
      *
-     * @param string|array $resources The resources from the API as encoded JSON string or a similar array.
+     * @param string|array   $resources The resources from the API as encoded JSON string or a similar array.
      * @param Connector|null $connector The connector used for pagination requests. If null, the default connect will be
      *                                  used.
      */

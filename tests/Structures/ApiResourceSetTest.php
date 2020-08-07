@@ -5,7 +5,6 @@ namespace Exonet\Api\Structures;
 use Exonet\Api\Auth\PersonalAccessToken;
 use Exonet\Api\Client;
 use Exonet\Api\Connector;
-use Exonet\Api\Request;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
