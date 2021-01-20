@@ -220,7 +220,7 @@ class ConnectorTest extends TestCase
                 422,
                 [],
                 '{"errors":[{"status":422,"code":"102.10001","title":"validation.generic","detail":"Validation did not pass.","variables":[]}]}'
-            )
+            ),
         ]);
 
         $history = Middleware::history($apiCalls);
@@ -250,7 +250,7 @@ class ConnectorTest extends TestCase
                 422,
                 [],
                 '{"errors":[{"status":422,"code":"102.10001","title":"validation.generic","detail":"Validation did not pass.","variables":[]}]}'
-            )
+            ),
         ]);
 
         $history = Middleware::history($apiCalls);
