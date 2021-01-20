@@ -4,6 +4,7 @@ namespace Exonet\Api;
 
 use Exonet\Api\Auth\PersonalAccessToken;
 use Exonet\Api\Exceptions\AuthenticationException;
+use Exonet\Api\Exceptions\ValidationException;
 use Exonet\Api\Structures\ApiResource;
 use Exonet\Api\Structures\ApiResourceSet;
 use GuzzleHttp\Handler\MockHandler;
@@ -209,5 +210,65 @@ class ConnectorTest extends TestCase
         $this->assertSame('application/vnd.Exonet.v1+json', $request->getHeader('Accept')[0]);
         $this->assertSame('exonet-api-php/'.Client::CLIENT_VERSION, $request->getHeader('User-Agent')[0]);
         $this->assertSame('application/json', $request->getHeader('Content-Type')[0]);
+    }
+
+    public function testInvalidPatch()
+    {
+        $apiCalls = [];
+        $mock = new MockHandler([
+            new Response(
+                422,
+                [],
+                '{"errors":[{"status":422,"code":"102.10001","title":"validation.generic","detail":"Validation did not pass.","variables":[]}]}'
+            )
+        ]);
+
+        $history = Middleware::history($apiCalls);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+
+        new Client(new PersonalAccessToken('test-token'));
+        $connectorClass = new Connector($handler);
+
+        $payload = ['test' => 'demo'];
+
+        try {
+            $connectorClass->patch('url', $payload);
+        } catch (ValidationException $exception) {
+            $validationTested = true;
+            $this->assertSame($exception->getMessage(), 'There is 1 validation error.');
+            $this->assertCount(1, $exception->getFailedValidations());
+            $this->assertSame('Validation did not pass.', $exception->getFailedValidations()['generic'][0]);
+        }
+    }
+
+    public function testInvalidDelete()
+    {
+        $apiCalls = [];
+        $mock = new MockHandler([
+            new Response(
+                422,
+                [],
+                '{"errors":[{"status":422,"code":"102.10001","title":"validation.generic","detail":"Validation did not pass.","variables":[]}]}'
+            )
+        ]);
+
+        $history = Middleware::history($apiCalls);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+
+        new Client(new PersonalAccessToken('test-token'));
+        $connectorClass = new Connector($handler);
+
+        $payload = ['test' => 'demo'];
+
+        try {
+            $connectorClass->patch('url', $payload);
+        } catch (ValidationException $exception) {
+            $validationTested = true;
+            $this->assertSame($exception->getMessage(), 'There is 1 validation error.');
+            $this->assertCount(1, $exception->getFailedValidations());
+            $this->assertSame('Validation did not pass.', $exception->getFailedValidations()['generic'][0]);
+        }
     }
 }
