@@ -126,7 +126,9 @@ class Connector
             json_encode($data)
         );
 
-        self::httpClient()->send($request);
+        $response = self::httpClient()->send($request);
+
+        $this->parseResponse($response);
 
         return true;
     }
@@ -151,7 +153,9 @@ class Connector
             json_encode($data)
         );
 
-        self::httpClient()->send($request);
+        $response = self::httpClient()->send($request);
+
+        $this->parseResponse($response);
 
         return true;
     }
