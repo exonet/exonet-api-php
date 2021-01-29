@@ -5,7 +5,12 @@ All notable changes to `exonet-api-php` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Unreleased
-[Compare v2.4.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.4.0...master)
+[Compare v2.4.1 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.4.1...master)
+
+## [v2.4.1](https://github.com/exonet/exonet-api-php/releases/tag/v2.4.1) - 2021-01-29
+[Compare v2.4.0 - v2.4.1](https://github.com/exonet/exonet-api-php/compare/v2.4.0...v2.4.1)
+### Fixed
+- Parsing the response of a `DELETE` and `PATCH` requests will only validate the response.
 
 ## [v2.4.0](https://github.com/exonet/exonet-api-php/releases/tag/v2.4.0) - 2021-01-20
 [Compare v2.3.0 - v2.4.0](https://github.com/exonet/exonet-api-php/compare/v2.3.0...v2.4.0)
