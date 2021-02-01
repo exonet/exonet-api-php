@@ -128,7 +128,7 @@ class Connector
 
         $response = self::httpClient()->send($request);
 
-        $this->parseResponse($response);
+        $this->validateResponse($response);
 
         return true;
     }
@@ -155,7 +155,7 @@ class Connector
 
         $response = self::httpClient()->send($request);
 
-        $this->parseResponse($response);
+        $this->validateResponse($response);
 
         return true;
     }
@@ -174,9 +174,7 @@ class Connector
     {
         $this->apiClient()->log()->debug('Request completed', ['statusCode' => $response->getStatusCode()]);
 
-        if ($response->getStatusCode() >= 300) {
-            (new ResponseExceptionHandler($response))->handle();
-        }
+        $this->validateResponse($response);
 
         $contents = $response->getBody()->getContents();
 
@@ -193,6 +191,18 @@ class Connector
         }
 
         return new ApiResourceIdentifier($decodedContent->data->type, $decodedContent->data->id);
+    }
+
+    /**
+     * Validate a response. Check for validation errors.
+     *
+     * @param PsrResponse $response The call response.
+     */
+    private function validateResponse(PsrResponse $response)
+    {
+        if ($response->getStatusCode() >= 300) {
+            (new ResponseExceptionHandler($response))->handle();
+        }
     }
 
     /**

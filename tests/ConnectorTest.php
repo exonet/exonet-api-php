@@ -188,7 +188,7 @@ class ConnectorTest extends TestCase
     public function testDelete()
     {
         $apiCalls = [];
-        $mock = new MockHandler([new Response(201, [], json_encode($this->singleResource))]);
+        $mock = new MockHandler([new Response(204)]);
 
         $history = Middleware::history($apiCalls);
         $handler = HandlerStack::create($mock);
@@ -197,9 +197,7 @@ class ConnectorTest extends TestCase
         new Client(new PersonalAccessToken('test-token'));
         $connectorClass = new Connector($handler);
 
-        $payload = ['test' => 'demo'];
-
-        $result = $connectorClass->delete('url', $payload);
+        $result = $connectorClass->delete('url');
 
         $this->assertTrue($result);
         $this->assertCount(1, $apiCalls);
