@@ -9,8 +9,6 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
-    - docker pull php:7.1-cli
-    - docker pull php:7.2-cli
     - docker pull php:7.3-cli
     - docker pull php:7.4-cli
 

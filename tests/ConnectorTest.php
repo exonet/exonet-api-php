@@ -22,7 +22,7 @@ class ConnectorTest extends TestCase
     /*
      * Setup the the resources by using the setup method, because of the object typecasting.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->singleResource = (object) [
             'data' => [
