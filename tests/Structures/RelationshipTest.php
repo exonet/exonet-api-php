@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class RelationshipTest extends TestCase
 {
-    public function testConstruct()
+    public function testCall()
     {
         $relationshipClass = new Relationship(
             'something_related',
@@ -15,14 +15,8 @@ class RelationshipTest extends TestCase
             'ABC1'
         );
 
-        $this->assertAttributeEquals('something_related', 'name', $relationshipClass);
-        $this->assertAttributeInstanceOf(Request::class, 'request', $relationshipClass);
+        $result = $relationshipClass->filter('test');
 
-        // Test parsing url pattern to url.
-        $this->assertAttributeEquals(
-            '/test_resources/ABC1/relationships/something_related',
-            'url',
-            $relationshipClass
-        );
+        $this->assertInstanceOf(Request::class, $result);
     }
 }
