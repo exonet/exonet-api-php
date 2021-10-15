@@ -5,7 +5,18 @@ All notable changes to `exonet-api-php` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Unreleased
-[Compare v2.4.1 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v2.4.1...master)
+[Compare v3.0.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v3.0.0...master)
+
+## [v3.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v3.0.0) - 2021-10-18
+[Compare v2.4.1 - v3.0.0](https://github.com/exonet/exonet-api-php/compare/v2.4.1...v3.0.0)
+### Breaking
+- Dependency updates for:
+    - `php` from `7.1` to `7.3`
+    - `guzzlehttp/guzzle` from `~6.0` to `~7.3`
+    - `psr/log` from `^1.0` to `^1.1`
+
+### Changed
+- Updated dev dependencies.
 
 ## [v2.4.1](https://github.com/exonet/exonet-api-php/releases/tag/v2.4.1) - 2021-01-29
 [Compare v2.4.0 - v2.4.1](https://github.com/exonet/exonet-api-php/compare/v2.4.0...v2.4.1)
