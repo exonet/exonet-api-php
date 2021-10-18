@@ -34,13 +34,12 @@ class RelationshipTest extends TestCase
         $this->assertNull($resultJson);
     }
 
-
     public function testToJsonSingleRelation()
     {
         $relationshipClass = new Relationship(
             'something_related',
             'test_resources',
-            'ABC1'
+            'ABC1',
         );
 
         $relationshipClass->setResourceIdentifiers(new ApiResourceIdentifier('related', 'XYZ'));
