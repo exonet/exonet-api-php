@@ -62,7 +62,7 @@ class RelationshipTest extends TestCase
             [
                 'something_related',
                 'test_resources',
-                'ABC1'
+                'ABC1',
             ]
         )
         ->makePartial();
