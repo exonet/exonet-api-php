@@ -7,7 +7,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ## Unreleased
 [Compare v3.0.0 - Unreleased](https://github.com/exonet/exonet-api-php/compare/v3.0.0...master)
 
-## [v3.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v3.0.0) - 2021-10-18
+## [v3.0.0](https://github.com/exonet/exonet-api-php/releases/tag/v3.0.0) - 2021-10-19
 [Compare v2.4.1 - v3.0.0](https://github.com/exonet/exonet-api-php/compare/v2.4.1...v3.0.0)
 ### Breaking
 - Dependency updates for:
