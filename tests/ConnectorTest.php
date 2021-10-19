@@ -3,10 +3,9 @@
 namespace Exonet\Api;
 
 use Exonet\Api\Auth\PersonalAccessToken;
-use Exonet\Api\Exceptions\AuthenticationException;
-use Exonet\Api\Exceptions\ValidationException;
 use Exonet\Api\Structures\ApiResource;
 use Exonet\Api\Structures\ApiResourceSet;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -22,7 +21,7 @@ class ConnectorTest extends TestCase
     /*
      * Setup the the resources by using the setup method, because of the object typecasting.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->singleResource = (object) [
             'data' => [
@@ -125,8 +124,8 @@ class ConnectorTest extends TestCase
 
         $handler = HandlerStack::create($mock);
 
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('Unauthenticated');
+        $this->expectException(ClientException::class);
+        $this->expectExceptionMessage('Unauthorized');
 
         new Client(new PersonalAccessToken('test-token'));
         $connectorClass = new Connector($handler);
@@ -212,6 +211,9 @@ class ConnectorTest extends TestCase
 
     public function testInvalidPatch()
     {
+        $this->expectException(ClientException::class);
+        $this->expectExceptionCode(422);
+
         $apiCalls = [];
         $mock = new MockHandler([
             new Response(
@@ -229,19 +231,14 @@ class ConnectorTest extends TestCase
         $connectorClass = new Connector($handler);
 
         $payload = ['test' => 'demo'];
-
-        try {
-            $connectorClass->patch('url', $payload);
-        } catch (ValidationException $exception) {
-            $validationTested = true;
-            $this->assertSame($exception->getMessage(), 'There is 1 validation error.');
-            $this->assertCount(1, $exception->getFailedValidations());
-            $this->assertSame('Validation did not pass.', $exception->getFailedValidations()['generic'][0]);
-        }
+        $connectorClass->patch('url', $payload);
     }
 
     public function testInvalidDelete()
     {
+        $this->expectException(ClientException::class);
+        $this->expectExceptionCode(422);
+
         $apiCalls = [];
         $mock = new MockHandler([
             new Response(
@@ -259,14 +256,6 @@ class ConnectorTest extends TestCase
         $connectorClass = new Connector($handler);
 
         $payload = ['test' => 'demo'];
-
-        try {
-            $connectorClass->patch('url', $payload);
-        } catch (ValidationException $exception) {
-            $validationTested = true;
-            $this->assertSame($exception->getMessage(), 'There is 1 validation error.');
-            $this->assertCount(1, $exception->getFailedValidations());
-            $this->assertSame('Validation did not pass.', $exception->getFailedValidations()['generic'][0]);
-        }
+        $connectorClass->patch('url', $payload);
     }
 }

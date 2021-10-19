@@ -40,7 +40,7 @@ if [ "$#" -eq 1 ]; then
     run "$SET_PHP_VERSION"
 else
     # Run tests for different PHP 7 versions.
-    for phpversion in {1..4}; do
+    for phpversion in {3..4}; do
         run "7.$phpversion"
         RESULTS="$RESULTS\n"
     done
