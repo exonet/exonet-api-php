@@ -12,16 +12,6 @@ use Exonet\Api\Request;
 class ApiResourceIdentifier
 {
     /**
-     * @var string The resource type.
-     */
-    private $resourceType;
-
-    /**
-     * @var string The resource ID.
-     */
-    private $id;
-
-    /**
      * @var Request A request instance to make calls to the API.
      */
     protected $request;
@@ -35,6 +25,15 @@ class ApiResourceIdentifier
      * @var string[] Array to keep track of relationships that are changed.
      */
     protected $changedRelationships = [];
+    /**
+     * @var string The resource type.
+     */
+    private $resourceType;
+
+    /**
+     * @var string The resource ID.
+     */
+    private $id;
 
     /**
      * ApiResourceIdentifier constructor.
@@ -128,7 +127,7 @@ class ApiResourceIdentifier
      * @param string                                        $name     The name of the relationship.
      * @param ApiResourceIdentifier|ApiResourceIdentifier[] $resource
      *
-     * @return Relation|Relationship|$this The requested relation data or the current resource when setting a relation.
+     * @return $this|Relation|Relationship The requested relation data or the current resource when setting a relation.
      */
     public function relationship(string $name, $resource = null)
     {

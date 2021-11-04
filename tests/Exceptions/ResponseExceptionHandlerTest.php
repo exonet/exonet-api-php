@@ -8,6 +8,9 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @internal
+ */
 class ResponseExceptionHandlerTest extends TestCase
 {
     public function testHandle401Statuscode()
@@ -44,7 +47,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler->handle();
     }
 
-    public function testHandleValidationException_SingleError()
+    public function testHandleValidationExceptionSingleError()
     {
         $logMock = Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 422, 'contents' => '{"errors":[{"code":"102.10001","detail":"Validation Exception Test"}]}']])->once();
@@ -71,7 +74,7 @@ class ResponseExceptionHandlerTest extends TestCase
         }
     }
 
-    public function testHandleValidationException_MultipleErrors()
+    public function testHandleValidationExceptionMultipleErrors()
     {
         $client = new Client();
 
@@ -115,7 +118,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler->handle();
     }
 
-    public function testHandle_FromContent_NotFoundException()
+    public function testHandleFromContentNotFoundException()
     {
         // Status code is not 404, but error message code refers to a not found exception.
         $logMock = Mockery::mock(LoggerInterface::class);
@@ -133,7 +136,7 @@ class ResponseExceptionHandlerTest extends TestCase
         $exceptionHandler->handle();
     }
 
-    public function testHandle_FromStatusCode_NotFoundException()
+    public function testHandleFromStatusCodeNotFoundException()
     {
         $logMock = Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 404, 'contents' => '[]']])->once();

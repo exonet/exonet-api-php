@@ -21,6 +21,7 @@ $zones = $exonetApi->resource('dns_zones')->size(1)->get();
 // Show this message when there are no zones.
 if (empty($zones)) {
     echo 'There are no zones available.';
+
     exit();
 }
 $zone = $zones[0];
@@ -32,6 +33,7 @@ echo sprintf("\nDNS zone:\t%s\n", $zone->attribute('name'));
 echo sprintf("\nWARNING: this command will add a TXT record to the DNS zone %s, continue? [y/n] ", $zone->attribute('name'));
 if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
     echo 'Cancel.';
+
     exit();
 }
 
@@ -86,6 +88,7 @@ if ('Y' === strtoupper(trim(fgets(STDIN)))) {
 echo sprintf("\nDo you want to delete this record? [y/n] ");
 if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
     echo "\nDon't delete record\n";
+
     exit();
 }
 

@@ -6,6 +6,9 @@ use Exonet\Api\Request;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class RelationshipTest extends TestCase
 {
     public function testCall()
@@ -65,7 +68,7 @@ class RelationshipTest extends TestCase
                 'ABC1',
             ]
         )
-        ->makePartial();
+            ->makePartial();
 
         $relationshipClass->shouldReceive('getResourceIdentifiers')->andReturn([
             new ApiResourceIdentifier('related', 'XYZ'),

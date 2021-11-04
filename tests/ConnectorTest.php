@@ -12,15 +12,16 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ConnectorTest extends TestCase
 {
     private $singleResource;
 
     private $multiResource;
 
-    /*
-     * Setup the the resources by using the setup method, because of the object typecasting.
-     */
+    // Setup the the resources by using the setup method, because of the object typecasting.
     public function setUp(): void
     {
         $this->singleResource = (object) [

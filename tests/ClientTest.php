@@ -13,6 +13,8 @@ use Psr\Log\LoggerInterface;
  * instance is created at the start of each test.
  *
  * @runTestsInSeparateProcesses
+ *
+ * @internal
  */
 class ClientTest extends TestCase
 {
@@ -67,13 +69,13 @@ class ClientTest extends TestCase
         $client->getAuth()->getToken();
     }
 
-    public function testGetApiUrl_Default()
+    public function testGetApiUrlDefault()
     {
         $client = new Client();
         $this->assertSame('https://api.exonet.nl/', $client->getApiUrl());
     }
 
-    public function testGetApiUrl_Given()
+    public function testGetApiUrlGiven()
     {
         $client = new Client(null, Client::API_TEST_URL);
         $this->assertSame('https://test-api.exonet.nl/', $client->getApiUrl());

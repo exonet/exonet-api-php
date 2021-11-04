@@ -11,6 +11,9 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ApiResourceSetTest extends TestCase
 {
     private $resourceSetData = [

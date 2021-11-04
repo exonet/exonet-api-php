@@ -7,6 +7,9 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ApiResourceTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

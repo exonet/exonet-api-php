@@ -12,7 +12,7 @@ class PersonalAccessToken extends AbstractAuth
     /**
      * PersonalAccessToken constructor.
      *
-     * @param null|string $accessToken The access token to use.
+     * @param string|null $accessToken The access token to use.
      */
     public function __construct(?string $accessToken = null)
     {

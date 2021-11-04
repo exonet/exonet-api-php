@@ -20,6 +20,7 @@ $tickets = $exonetApi->resource('tickets')->size(1)->get();
 // Show this message when there are no tickets available.
 if (empty($tickets)) {
     echo 'There are no tickets available';
+
     exit();
 }
 

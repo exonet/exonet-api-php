@@ -31,7 +31,7 @@ class Relation
     private $request;
 
     /**
-     * @var ApiResourceSet|ApiResourceIdentifier The related resource identifier or a ApiResourceSet.
+     * @var ApiResourceIdentifier|ApiResourceSet The related resource identifier or a ApiResourceSet.
      */
     private $resourceIdentifiers;
 
@@ -64,7 +64,7 @@ class Relation
      * @param string $methodName The method to call.
      * @param array  $arguments  The method arguments.
      *
-     * @return Request|ApiResource|ApiResourceSet The request instance or retrieved resource (set).
+     * @return ApiResource|ApiResourceSet|Request The request instance or retrieved resource (set).
      */
     public function __call($methodName, $arguments)
     {
@@ -78,17 +78,17 @@ class Relation
     /**
      * Get the resource identifiers for this relation.
      *
-     * @return ApiResourceSet|ApiResourceIdentifier The resource identifier or a resource set.
+     * @return ApiResourceIdentifier|ApiResourceSet The resource identifier or a resource set.
      */
     public function getResourceIdentifiers()
     {
-        return  $this->resourceIdentifiers;
+        return $this->resourceIdentifiers;
     }
 
     /**
      * Replace the related resource identifiers with new data.
      *
-     * @param ApiResourceSet|ApiResourceIdentifier $newRelationship A new resource identifier or a new resource set.
+     * @param ApiResourceIdentifier|ApiResourceSet $newRelationship A new resource identifier or a new resource set.
      *
      * @return $this
      */
@@ -96,6 +96,6 @@ class Relation
     {
         $this->resourceIdentifiers = $newRelationship;
 
-        return  $this;
+        return $this;
     }
 }

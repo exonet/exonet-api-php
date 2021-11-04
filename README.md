@@ -42,7 +42,7 @@ This should make two API calls and print the ticket and email details for one of
 
 ## Change log
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [releases](link-releases) for more information on what has changed recently.
 
 ## Testing
 
@@ -52,7 +52,7 @@ $ composer test
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) and [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for details.
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) and [CODE_OF_CONDUCT](.github/CODE_OF_CONDUCT.md) for details.
 
 ## Security
 
@@ -77,4 +77,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-travis]: https://travis-ci.org/exonet/exonet-api-php
 [link-downloads]: https://packagist.org/packages/exonet/exonet-api-php
 [link-author]: https://github.com/exonet
+[link-releases]: https://github.com/exonet/exonet-api-php/releases
 [link-contributors]: ../../contributors

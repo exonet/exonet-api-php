@@ -121,36 +121,6 @@ class ApiResource extends ApiResourceIdentifier
     }
 
     /**
-     * Parse relationships found in the resource into related resource identifiers.
-     *
-     * @param string[] $relationships The relationship data.
-     *
-     * @return Relation[] The parsed relationships.
-     */
-    private function parseRelations(array $relationships): array
-    {
-        $parsedRelations = [];
-
-        foreach ($relationships as $relationName => $relation) {
-            $relationship = new Relationship($relationName, $this->type(), $this->id());
-
-            if (isset($relation['data']['type'])) {
-                $relationship->setResourceIdentifiers(
-                    new ApiResourceIdentifier($relation['data']['type'], $relation['data']['id'])
-                );
-            } elseif (!empty($relation['data'])) {
-                $relationship->setResourceIdentifiers(
-                    new ApiResourceSet($relation)
-                );
-            }
-
-            $parsedRelations[$relationName] = $relationship;
-        }
-
-        return $parsedRelations;
-    }
-
-    /**
      * Get the json representation of the resource.
      *
      * @param bool $onlyChangedAttributes When true, only return the attributes that are changed.
@@ -204,5 +174,35 @@ class ApiResource extends ApiResourceIdentifier
         }
 
         return $json;
+    }
+
+    /**
+     * Parse relationships found in the resource into related resource identifiers.
+     *
+     * @param string[] $relationships The relationship data.
+     *
+     * @return Relation[] The parsed relationships.
+     */
+    private function parseRelations(array $relationships): array
+    {
+        $parsedRelations = [];
+
+        foreach ($relationships as $relationName => $relation) {
+            $relationship = new Relationship($relationName, $this->type(), $this->id());
+
+            if (isset($relation['data']['type'])) {
+                $relationship->setResourceIdentifiers(
+                    new ApiResourceIdentifier($relation['data']['type'], $relation['data']['id'])
+                );
+            } elseif (!empty($relation['data'])) {
+                $relationship->setResourceIdentifiers(
+                    new ApiResourceSet($relation)
+                );
+            }
+
+            $parsedRelations[$relationName] = $relationship;
+        }
+
+        return $parsedRelations;
     }
 }
