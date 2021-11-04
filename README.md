@@ -77,4 +77,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-travis]: https://travis-ci.org/exonet/exonet-api-php
 [link-downloads]: https://packagist.org/packages/exonet/exonet-api-php
 [link-author]: https://github.com/exonet
+[link-releases]: https://github.com/exonet/exonet-api-php/releases
 [link-contributors]: ../../contributors
