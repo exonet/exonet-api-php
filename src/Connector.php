@@ -168,7 +168,7 @@ class Connector
      *
      * @throws ExonetApiException If there was a problem with the request.
      *
-     * @return ApiResourceIdentifier|ApiResource|ApiResourceSet The structured response.
+     * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The structured response.
      */
     private function parseResponse(PsrResponse $response)
     {

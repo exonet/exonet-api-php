@@ -6,6 +6,9 @@ use Exonet\Api\Exceptions\InvalidRequestException;
 use Exonet\Api\Request;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class RelationTest extends TestCase
 {
     public function testCall()

@@ -4,6 +4,9 @@ namespace Exonet\Api\Auth;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class PersonalAccessTokenTest extends TestCase
 {
     public function testSetTokenViaConstructor(): void

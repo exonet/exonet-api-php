@@ -37,7 +37,7 @@ class Request
     /**
      * Request constructor.
      *
-     * @param null|string    $resource  The resource to get.
+     * @param string|null    $resource  The resource to get.
      * @param Connector|null $connector Optional connector instance to use.
      */
     public function __construct(string $resource, ?Connector $connector = null)
@@ -61,7 +61,7 @@ class Request
     /**
      * Get the resource or, if specified, the resource that belongs to the ID.
      *
-     * @param null|string $id Optional ID to get a specific resource.
+     * @param string|null $id Optional ID to get a specific resource.
      *
      * @return ApiResource|ApiResourceSet The requested data transformed to a single or multiple resources.
      */
@@ -180,7 +180,7 @@ class Request
      * Prepare the URL for the resource, including (optional) ID and query string parameters. Remove
      * excessive slashes and add query string parameters.
      *
-     * @param null|string $id The resource ID to get.
+     * @param string|null $id The resource ID to get.
      *
      * @return string The fully prepared URL.
      */

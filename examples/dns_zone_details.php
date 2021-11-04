@@ -19,6 +19,7 @@ $zones = $exonetApi->resource('dns_zones')->size(1)->get();
 // Show this message when there are no zones.
 if (empty($zones)) {
     echo 'There are no zones available.';
+
     exit();
 }
 $zone = $zones[0];

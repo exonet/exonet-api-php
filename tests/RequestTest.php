@@ -7,6 +7,9 @@ use Exonet\Api\Structures\ApiResourceTest;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class RequestTest extends TestCase
 {
     public function testGetRequest()
