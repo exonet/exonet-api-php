@@ -31,10 +31,7 @@ jobs:
         uses: php-actions/composer@v6
 
       - name: 🧰 Run unit tests
-        uses: php-actions/phpunit@v9
-        with:
-          configuration: phpunit.xml
-          php_version: ${{ matrix.php }}
+        run: vendor/bin/phpunit
 
   check-code-style:
     name: 💅🏻 Check code style
