@@ -29,7 +29,13 @@ class ApiResource extends ApiResourceIdentifier
      */
     public function __construct(string $type, $contents = [], ?Request $request = null)
     {
-        $data = is_array($contents) ? $contents : json_decode($contents, true)['data'];
+        $data = $contents;
+
+        // If JSON is received, decode it.
+        if (!is_array($data)) {
+            $decoded = json_decode($data, true);
+            $data = $decoded['data'] ?? null;
+        }
 
         // If decoding of JSON has failed, assume the $contents is a hashid.
         if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
