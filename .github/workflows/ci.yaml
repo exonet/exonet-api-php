@@ -29,6 +29,8 @@ jobs:
 
       - name: 📦 Composer install
         uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php }}
 
       - name: 🧰 Run unit tests
         uses: php-actions/phpunit@v3.0.0
