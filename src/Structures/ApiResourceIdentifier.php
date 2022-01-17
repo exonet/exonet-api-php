@@ -25,6 +25,7 @@ class ApiResourceIdentifier
      * @var string[] Array to keep track of relationships that are changed.
      */
     protected $changedRelationships = [];
+
     /**
      * @var string The resource type.
      */
