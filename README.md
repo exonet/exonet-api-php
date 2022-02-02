@@ -2,7 +2,6 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 The Exonet API Client allows easy usage of the Exonet API.
@@ -70,11 +69,9 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [ico-version]: https://img.shields.io/packagist/v/exonet/exonet-api-php.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/exonet/exonet-api-php/master.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/exonet/exonet-api-php.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/exonet/exonet-api-php
-[link-travis]: https://travis-ci.org/exonet/exonet-api-php
 [link-downloads]: https://packagist.org/packages/exonet/exonet-api-php
 [link-author]: https://github.com/exonet
 [link-releases]: https://github.com/exonet/exonet-api-php/releases
