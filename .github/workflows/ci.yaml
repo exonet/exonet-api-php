@@ -6,12 +6,10 @@ on:
     branches:
       - master
   pull_request:
-    branches:
-      - master
 
 jobs:
-  run-tests:
-    name: 🪲 Run tests
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,34 +17,32 @@ jobs:
         php: ["7.3", "7.4", "8.0"]
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 📦 Composer install
+      - name: Composer install
         uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
 
-      - name: 🧰 Run unit tests
+      - name: Run unit tests
         uses: php-actions/phpunit@v3.0.0
         with:
           configuration: phpunit.xml
           php_version: ${{ matrix.php }}
 
-  check-code-style:
-    name: 💅🏻 Check code style
+  lint:
+    name: Check code style
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}
 
-      - name: 🛠 Run php-cs-fixer
+      - name: Run linters
         uses: docker://oskarstark/php-cs-fixer-ga
 
-      - name: 🤖 Apply php-cs-fixer changes
+      - name: Auto commit `php-cs-fixer` changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply php-cs-fixer changes
