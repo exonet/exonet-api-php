@@ -163,14 +163,10 @@ class Client implements LoggerAwareInterface
      * Set the logger instance to use.
      *
      * @param LoggerInterface $logger The log instance to use.
-     *
-     * @return self The current Client instance.
      */
-    public function setLogger(LoggerInterface $logger): self
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
-
-        return $this;
     }
 
     /**
