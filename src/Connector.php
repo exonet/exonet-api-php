@@ -216,7 +216,10 @@ class Connector
         $stackHash = spl_object_hash(self::$guzzleHandlerStack ?? new \stdClass());
         if (!isset(self::$httpClient[$stackHash])) {
             // Don't let Guzzle throw exceptions, as it is handled by this class.
-            self::$httpClient[$stackHash] = new GuzzleClient(['exceptions' => false, 'handler' => self::$guzzleHandlerStack]);
+            self::$httpClient[$stackHash] = new GuzzleClient([
+                'http_errors' => false,
+                'handler' => self::$guzzleHandlerStack,
+            ]);
         }
 
         return self::$httpClient[$stackHash];

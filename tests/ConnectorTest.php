@@ -3,9 +3,10 @@
 namespace Exonet\Api;
 
 use Exonet\Api\Auth\PersonalAccessToken;
+use Exonet\Api\Exceptions\AuthenticationException;
+use Exonet\Api\Exceptions\ValidationException;
 use Exonet\Api\Structures\ApiResource;
 use Exonet\Api\Structures\ApiResourceSet;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -125,8 +126,8 @@ class ConnectorTest extends TestCase
 
         $handler = HandlerStack::create($mock);
 
-        $this->expectException(ClientException::class);
-        $this->expectExceptionMessage('Unauthorized');
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Unauthenticated');
 
         new Client(new PersonalAccessToken('test-token'));
         $connectorClass = new Connector($handler);
@@ -212,7 +213,7 @@ class ConnectorTest extends TestCase
 
     public function testInvalidPatch()
     {
-        $this->expectException(ClientException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionCode(422);
 
         $apiCalls = [];
@@ -237,7 +238,7 @@ class ConnectorTest extends TestCase
 
     public function testInvalidDelete()
     {
-        $this->expectException(ClientException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionCode(422);
 
         $apiCalls = [];
