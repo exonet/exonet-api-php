@@ -136,7 +136,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return int The number of resources in this set.
      */
-    public function count()
+    public function count(): int
     {
         if (empty($this->resources)) {
             return 0;
