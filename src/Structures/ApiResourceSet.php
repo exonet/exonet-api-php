@@ -87,7 +87,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return bool true on success or false on failure.
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->resources[$offset]);
     }
@@ -99,7 +99,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return mixed Can return all value types.
      */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->resources[$offset];
     }
@@ -112,7 +112,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @throws ValidationException if the provided $value is not an ApiResource.
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (!$value instanceof ApiResource) {
             throw new ValidationException('Only ApiResources can be set.');
@@ -126,7 +126,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param mixed $offset The offset to unset.
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->resources[$offset]);
     }
