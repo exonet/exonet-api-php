@@ -1,5 +1,5 @@
 {
-    "name": "exonet/exonet-api-php",
+    "name": "antoineveldhoven/exonet-api-php",
     "type": "library",
     "description": "PHP implementation of the Exonet API.",
     "keywords": [
@@ -13,6 +13,11 @@
             "name": "Exonet",
             "email": "development@exonet.nl",
             "homepage": "https://exonet.nl",
+            "role": "Developer"
+        },
+        {
+            "name": "Antoine Veldhoven",
+            "email": "antoine@invitado.nl",
             "role": "Developer"
         }
     ],
