@@ -21,7 +21,7 @@ $tickets = $exonetApi->resource('tickets')->size(1)->get();
 if (empty($tickets)) {
     echo 'There are no tickets available';
 
-    exit();
+    exit;
 }
 
 $ticket = $tickets[0];

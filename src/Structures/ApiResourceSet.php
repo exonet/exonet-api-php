@@ -99,6 +99,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return mixed Can return all value types.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->resources[$offset];
@@ -136,6 +137,7 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return int The number of resources in this set.
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         if (empty($this->resources)) {

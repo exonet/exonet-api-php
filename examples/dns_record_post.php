@@ -22,7 +22,7 @@ $zones = $exonetApi->resource('dns_zones')->size(1)->get();
 if (empty($zones)) {
     echo 'There are no zones available.';
 
-    exit();
+    exit;
 }
 $zone = $zones[0];
 
@@ -34,7 +34,7 @@ echo sprintf("\nWARNING: this command will add a TXT record to the DNS zone %s, 
 if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
     echo 'Cancel.';
 
-    exit();
+    exit;
 }
 
 // Make the new DNS record that should be added to the zone.
@@ -89,7 +89,7 @@ echo sprintf("\nDo you want to delete this record? [y/n] ");
 if ('Y' !== strtoupper(trim(fgets(STDIN)))) {
     echo "\nDon't delete record\n";
 
-    exit();
+    exit;
 }
 
 echo 'Delete record';
