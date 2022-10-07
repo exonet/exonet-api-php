@@ -41,7 +41,7 @@ This should make two API calls and print the ticket and email details for one of
 
 ## Change log
 
-Please see [releases](link-releases) for more information on what has changed recently.
+Please see [releases][link-releases] for more information on what has changed recently.
 
 ## Testing
 
