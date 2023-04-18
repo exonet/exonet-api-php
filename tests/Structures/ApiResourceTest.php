@@ -3,7 +3,6 @@
 namespace Exonet\Api\Structures;
 
 use Exonet\Api\Request;
-use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -54,7 +53,7 @@ class ApiResourceTest extends TestCase
                 'relationships' => ['testRelation' => ['data' => ['type' => 'relationType', 'id' => 'relationId']]],
             ],
         ];
-        $request = Mockery::mock(Request::class);
+        $request = \Mockery::mock(Request::class);
         $request->shouldReceive('post')->with($postData)->once()->andReturn(self::SIMPLE_RESOURCE);
 
         $resource = new ApiResource('unitTest', [], $request);
@@ -68,7 +67,7 @@ class ApiResourceTest extends TestCase
         $postData = [
             'data' => ['type' => 'relationType', 'id' => 'relationId2'],
         ];
-        $request = Mockery::mock(Request::class);
+        $request = \Mockery::mock(Request::class);
         $request
             ->shouldReceive('post')
             ->with($postData, 'testId/relationships/testRelation')
@@ -85,7 +84,7 @@ class ApiResourceTest extends TestCase
         $patchAttribute = ['data' => ['type' => 'unitTest', 'id' => 'abc', 'attributes' => ['another' => 'attribute']]];
         $patchRelation = ['data' => ['type' => 'relationType', 'id' => 'relationId']];
         $patchMultiRelation = ['data' => [['type' => 'relationType1', 'id' => 'relationId1'], ['type' => 'relationType2', 'id' => 'relationId2']]];
-        $request = Mockery::mock(Request::class);
+        $request = \Mockery::mock(Request::class);
         $request->shouldReceive('patch')->with('abc', $patchAttribute)->once()->andReturnTrue();
         $request->shouldReceive('patch')->with('abc/relationships/testRelation', $patchRelation)->once()->andReturnTrue();
         $request->shouldReceive('patch')->with('abc/relationships/multiRelation', $patchMultiRelation)->once()->andReturnTrue();

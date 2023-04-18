@@ -3,7 +3,6 @@
 namespace Exonet\Api\Structures;
 
 use Exonet\Api\Request;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -60,7 +59,7 @@ class RelationshipTest extends TestCase
 
     public function testToJsonMultiRelation()
     {
-        $relationshipClass = Mockery::mock(
+        $relationshipClass = \Mockery::mock(
             Relationship::class.'[getResourceIdentifiers]',
             [
                 'something_related',

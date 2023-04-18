@@ -3,7 +3,6 @@
 namespace Exonet\Api\Structures;
 
 use Exonet\Api\Request;
-use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +23,7 @@ class ApiResourceIdentifierTest extends TestCase
 
     public function testGet()
     {
-        $requestMock = Mockery::mock(Request::class);
+        $requestMock = \Mockery::mock(Request::class);
         $requestMock->shouldReceive('get')
             ->once()
             ->withArgs(['xV42'])
@@ -37,7 +36,7 @@ class ApiResourceIdentifierTest extends TestCase
 
     public function testDeleteResource()
     {
-        $requestMock = Mockery::mock(Request::class);
+        $requestMock = \Mockery::mock(Request::class);
         $requestMock->shouldReceive('delete')
             ->once()
             ->withArgs(['xV42'])
@@ -50,7 +49,7 @@ class ApiResourceIdentifierTest extends TestCase
 
     public function testDeleteRelation()
     {
-        $requestMock = Mockery::mock(Request::class);
+        $requestMock = \Mockery::mock(Request::class);
         $requestMock->shouldReceive('delete')
             ->once()
             ->withArgs(['xV42/relationships/test', ['data' => ['type' => 'testRelation', 'id' => 'testId']]])

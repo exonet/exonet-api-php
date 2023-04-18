@@ -4,7 +4,6 @@ namespace Exonet\Api\Exceptions;
 
 use Exonet\Api\Client;
 use GuzzleHttp\Psr7\Response;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -15,7 +14,7 @@ class ResponseExceptionHandlerTest extends TestCase
 {
     public function testHandle401Statuscode()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 401, 'contents' => '{"content":"Unauthorized"}']])->once();
 
         $client = new Client();
@@ -32,7 +31,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleInvalidRequest()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 400, 'contents' => '{"errors":[{"code":"101.10001","detail":"Invalid Request Test"}]}']])->once();
 
         $client = new Client();
@@ -49,7 +48,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleValidationExceptionSingleError()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 422, 'contents' => '{"errors":[{"code":"102.10001","detail":"Validation Exception Test"}]}']])->once();
 
         $client = new Client();
@@ -103,7 +102,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleAuthorizationException()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 403, 'contents' => '{"errors":[{"code":"103.10001","detail":"Authorization Exception Test"}]}']])->once();
 
         $client = new Client();
@@ -121,7 +120,7 @@ class ResponseExceptionHandlerTest extends TestCase
     public function testHandleFromContentNotFoundException()
     {
         // Status code is not 404, but error message code refers to a not found exception.
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 400, 'contents' => '{"errors":[{"code":"104.10001","detail":"NotFound Exception Test"}]}']])->once();
 
         $client = new Client();
@@ -138,7 +137,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleFromStatusCodeNotFoundException()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 404, 'contents' => '[]']])->once();
 
         $client = new Client();
@@ -155,7 +154,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleUnknownException()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 500, 'contents' => '{"errors":[{"code":"501.10001","detail":"Unknown Exception Test"}]}']])->once();
 
         $client = new Client();
@@ -172,7 +171,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleNoError()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 500, 'contents' => '']])->once();
 
         $client = new Client();
@@ -189,7 +188,7 @@ class ResponseExceptionHandlerTest extends TestCase
 
     public function testHandleNoKnownError()
     {
-        $logMock = Mockery::mock(LoggerInterface::class);
+        $logMock = \Mockery::mock(LoggerInterface::class);
         $logMock->shouldReceive('error')->withArgs(['Request failed', ['statusCode' => 500, 'contents' => '{"errors":[{"code":"???.10001","detail":"Unknown Code Exception Test"}]}']])->once();
 
         $client = new Client();

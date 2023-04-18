@@ -4,7 +4,6 @@ namespace Exonet\Api;
 
 use Exonet\Api\Auth\PersonalAccessToken;
 use Exonet\Api\Exceptions\AuthenticationException;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -20,8 +19,8 @@ class ClientTest extends TestCase
 {
     public function testSingletonViaConstructor()
     {
-        $logger = Mockery::mock(LoggerInterface::class);
-        $auth = Mockery::mock(PersonalAccessToken::class);
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $auth = \Mockery::mock(PersonalAccessToken::class);
 
         $client = new Client($auth);
         $client->setLogger($logger);
@@ -32,8 +31,8 @@ class ClientTest extends TestCase
 
     public function testSingletonViaGetInstance()
     {
-        $logger = Mockery::mock(LoggerInterface::class);
-        $auth = Mockery::mock(PersonalAccessToken::class);
+        $logger = \Mockery::mock(LoggerInterface::class);
+        $auth = \Mockery::mock(PersonalAccessToken::class);
 
         Client::getInstance()->setAuth($auth);
         Client::getInstance()->setLogger($logger);
@@ -57,7 +56,7 @@ class ClientTest extends TestCase
 
     public function testAuthNotSet()
     {
-        $logger = Mockery::mock(LoggerInterface::class);
+        $logger = \Mockery::mock(LoggerInterface::class);
         $logger->shouldReceive('error')->withArgs(['No authentication method set.']);
 
         $client = new Client();
@@ -90,7 +89,7 @@ class ClientTest extends TestCase
 
     public function testLogger()
     {
-        $logger = Mockery::mock(LoggerInterface::class);
+        $logger = \Mockery::mock(LoggerInterface::class);
         $logger->shouldReceive('info')->withArgs(['Test line']);
 
         $client = new Client();

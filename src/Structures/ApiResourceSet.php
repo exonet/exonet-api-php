@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace Exonet\Api\Structures;
 
-use ArrayAccess;
-use ArrayIterator;
 use Countable;
 use Exonet\Api\Client;
 use Exonet\Api\Connector;
 use Exonet\Api\Exceptions\ValidationException;
-use IteratorAggregate;
 
 /**
  * An ApiResourceSet is a collection of several ApiResource instances that are retrieved from the API.
  */
-class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
+class ApiResourceSet implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**
      * @var ApiResource[] The returned resources.
@@ -73,11 +70,11 @@ class ApiResourceSet implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return the data when this class is called as array/in a loop.
      *
-     * @return ArrayIterator The array iterator.
+     * @return \ArrayIterator The array iterator.
      */
-    public function getIterator(): ArrayIterator
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator($this->resources ?? []);
+        return new \ArrayIterator($this->resources ?? []);
     }
 
     /**

@@ -7,7 +7,7 @@ namespace Exonet\Api\Exceptions;
 use Exception;
 use Throwable;
 
-class ExonetApiException extends Exception
+class ExonetApiException extends \Exception
 {
     /**
      * @var string|null The detailed error code.
@@ -22,13 +22,13 @@ class ExonetApiException extends Exception
     /**
      * ExonetApiException constructor.
      *
-     * @param string         $message    (Optional) The exception message to throw.
-     * @param int            $code       (Optional) The exception code.
-     * @param Throwable|null $previous   (Optional) The previous throwable used for the exception chaining.
-     * @param string|null    $detailCode (Optional) The detailed error code.
-     * @param array          $variables  (Optional) Array with detailed information if provided by the API.
+     * @param string          $message    (Optional) The exception message to throw.
+     * @param int             $code       (Optional) The exception code.
+     * @param \Throwable|null $previous   (Optional) The previous throwable used for the exception chaining.
+     * @param string|null     $detailCode (Optional) The detailed error code.
+     * @param array           $variables  (Optional) Array with detailed information if provided by the API.
      */
-    public function __construct($message = '', $code = 0, Throwable $previous = null, $detailCode = null, $variables = [])
+    public function __construct($message = '', $code = 0, \Throwable $previous = null, $detailCode = null, $variables = [])
     {
         parent::__construct($message, $code, $previous);
         $this->detailCode = $detailCode;
