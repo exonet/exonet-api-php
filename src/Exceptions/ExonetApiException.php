@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Exonet\Api\Exceptions;
 
-use Exception;
-use Throwable;
-
 class ExonetApiException extends \Exception
 {
     /**
