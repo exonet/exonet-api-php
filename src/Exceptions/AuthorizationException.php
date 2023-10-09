@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Exonet\Api\Exceptions;
 
-class AuthorizationException extends ExonetApiException
-{
-}
+class AuthorizationException extends ExonetApiException {}
