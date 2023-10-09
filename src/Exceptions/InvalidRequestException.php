@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Exonet\Api\Exceptions;
 
-class InvalidRequestException extends ExonetApiException
-{
-}
+class InvalidRequestException extends ExonetApiException {}
