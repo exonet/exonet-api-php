@@ -34,6 +34,8 @@ jobs:
   lint:
     name: Check code style
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -43,6 +45,6 @@ jobs:
         uses: docker://oskarstark/php-cs-fixer-ga
 
       - name: Auto commit `php-cs-fixer` changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply php-cs-fixer changes
