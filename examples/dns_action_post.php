@@ -1,6 +1,6 @@
 <?php
 
-// Run this script using: php examples/dns_record_post.php <YOUR-TOKEN>
+// Run this script using: php examples/dns_action_post.php <YOUR-TOKEN>
 
 use Exonet\Api\Structures\ApiResource;
 use Exonet\Api\Structures\ApiResourceIdentifier;
