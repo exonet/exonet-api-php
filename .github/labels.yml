@@ -54,6 +54,3 @@
 - name: "skip-changelog"
   color: fef2c0
   description: "This issue or PR is exempted from the release notes."
-- name: "automerge"
-  color: fef2c0
-  description: "Merge this PR automatically when there are no conflicts and all required checks are passed."
