@@ -5,6 +5,7 @@ namespace Exonet\Api\Structures;
 use Exonet\Api\Auth\PersonalAccessToken;
 use Exonet\Api\Client;
 use Exonet\Api\Connector;
+use Exonet\Api\Exceptions\ValidationException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -114,7 +115,7 @@ class ApiResourceSetTest extends TestCase
     {
         $resourceSetClass = new ApiResourceSet(json_encode($this->resourceSetData));
 
-        $this->expectException(\Exonet\Api\Exceptions\ValidationException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Only ApiResources can be set.');
 
         // Try to set something other than an ApiResource.
