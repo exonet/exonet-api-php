@@ -2,14 +2,16 @@
 
 // Run this script using: php examples/tickets.php <YOUR-TOKEN>
 
+use Exonet\Api\Auth\PersonalAccessToken;
+use Exonet\Api\Client;
 use Exonet\Api\Structures\ApiResourceSet;
 
 require __DIR__.'/../vendor/autoload.php';
 
-$authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
+$authentication = new PersonalAccessToken($argv[1]);
 
 // Make an Exonet API client that connects to the test API.
-$exonetApi = new Exonet\Api\Client($authentication, Exonet\Api\Client::API_TEST_URL);
+$exonetApi = new Client($authentication, Client::API_TEST_URL);
 
 // Show all tickets, limited to 10.
 $allTickets = $exonetApi->resource('tickets')->size(10)->get();

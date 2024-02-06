@@ -1,13 +1,16 @@
 <?php
 
+use Exonet\Api\Auth\PersonalAccessToken;
+use Exonet\Api\Client;
+
 // Run this script using: php examples/dns_zones.php <YOUR-TOKEN>
 
 require __DIR__.'/../vendor/autoload.php';
 
-$authentication = new Exonet\Api\Auth\PersonalAccessToken($argv[1]);
+$authentication = new PersonalAccessToken($argv[1]);
 
 // Make an Exonet API client that connects to the test API.
-$exonetApi = new Exonet\Api\Client($authentication, Exonet\Api\Client::API_TEST_URL);
+$exonetApi = new Client($authentication, Client::API_TEST_URL);
 
 // Get all DNS zones, limited to 20.
 $zones = $exonetApi->resource('dns_zones')->size(20)->get();
