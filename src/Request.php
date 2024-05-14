@@ -88,7 +88,7 @@ class Request
      *
      * @return ApiResource|ApiResourceIdentifier|ApiResourceSet The parsed response transformed to resources.
      */
-    public function post(array $payload, string $appendUrl = null)
+    public function post(array $payload, ?string $appendUrl = null)
     {
         return $this->connector->post(
             trim($this->resource, '/').'/'.$appendUrl,

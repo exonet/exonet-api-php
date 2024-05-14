@@ -42,7 +42,7 @@ class Relation
      * @param string $originType   The resource type of the origin resource.
      * @param string $originId     The resource ID of the origin resource.
      */
-    public function __construct(string $relationName, string $originType = null, string $originId = null)
+    public function __construct(string $relationName, ?string $originType = null, ?string $originId = null)
     {
         $this->name = $relationName;
 

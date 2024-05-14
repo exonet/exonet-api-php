@@ -41,7 +41,7 @@ class ApiResourceSet implements \IteratorAggregate, \ArrayAccess, \Countable
      * @param Connector|null $connector The connector used for pagination requests. If null, the default connect will be
      *                                  used.
      */
-    public function __construct($resources, Connector $connector = null)
+    public function __construct($resources, ?Connector $connector = null)
     {
         $this->connector = $connector ?? new Connector();
 
