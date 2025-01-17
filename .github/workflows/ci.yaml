@@ -39,6 +39,7 @@ jobs:
           configuration: phpunit.xml
           version: ${{ matrix.versions.phpunit }}
           php_version: ${{ matrix.versions.php }}
+          test_suffix: Test.php
 
   lint:
     name: Check code style
