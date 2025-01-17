@@ -32,6 +32,6 @@ jobs:
           sed -i "s/CLIENT_VERSION = 'v.*';/CLIENT_VERSION = '${{ needs.update-release-draft.outputs.draft-version }}';/g" src/Client.php
 
       - name: Apply version changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
           commit_message: Auto update drafter version in CLIENT_VERSION
