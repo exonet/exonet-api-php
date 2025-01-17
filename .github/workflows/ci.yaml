@@ -19,6 +19,9 @@ jobs:
           { php: "7.4", phpunit: "9" },
           { php: "8.0", phpunit: "9" },
           { php: "8.1", phpunit: "10" },
+          { php: "8.2", phpunit: "11" },
+          { php: "8.3", phpunit: "11" },
+          { php: "8.4", phpunit: "11" },
         ]
 
     steps:
