@@ -29,7 +29,7 @@ jobs:
 
       - name: Update `src/Client.php` with draft version
         run: |
-          sed -i "s/CLIENT_VERSION = 'v.*';/CLIENT_VERSION = '${{ needs.update-release-draft.outputs.draft-version }}';/g" src/Client.php
+          sed -i "s/CLIENT_VERSION = 'v.*';/CLIENT_VERSION = '${{ needs.update-release-draft.outputs.tag_name }}';/g" src/Client.php
 
       - name: Apply version changes
         uses: stefanzweifel/git-auto-commit-action@v5.1.0
