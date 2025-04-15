@@ -32,6 +32,7 @@ class Request
             'number' => null,
         ],
         'filter' => [],
+        'sort' => null,
     ];
 
     /**
@@ -172,6 +173,21 @@ class Request
         }
 
         $this->queryStringParameters['filter'][$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set the sortorder for the request.
+     *
+     * @param string $name  The name to sort on.
+     * @param mixed  $value The filter value. Default: true.
+     *
+     * @return self This current Request instance.
+     */
+    public function sort(string $name, string $order = 'ASC'): self
+    {
+        $this->queryStringParameters['sort'] = $order === 'DESC' ? '-'.$name : $name;
 
         return $this;
     }
