@@ -17,6 +17,9 @@ $certificatesRequest->size(10);
 
 // Set the page to get:
 $certificatesRequest->page(2);
+
+// Order by expiry date, descending:
+$certificatesRequest->sort('expires_at', 'DESC');
 ```
 
 After setting the parameters you can call the `->get()` method to retrieve the resources:
