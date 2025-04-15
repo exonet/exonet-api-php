@@ -18,14 +18,13 @@ class RequestTest extends TestCase
         $connectorMock = \Mockery::mock(Connector::class);
         $connectorMock
             ->shouldReceive('get')
-            ->withArgs(['test?page%5Bsize%5D=1&page%5Bnumber%5D=2&filter%5Bunit%5D=test&filter%5Btest%5D=1&filter%5Bmulti%5D=a%2Cb%2Cc'])
+            ->withArgs(['test?page%5Bsize%5D=1&page%5Bnumber%5D=2&filter%5Bunit%5D=test&filter%5Btest%5D=1&filter%5Bmulti%5D=a%2Cb%2Cc&sort=-multi'])
             ->once()
             ->andReturn($response);
 
         $requestClass = new Request('/test', $connectorMock);
 
-        $result = $requestClass->size(1)->page(2)->filter('unit', 'test')->filter('test')->filter('multi', ['a', 'b', 'c'])->get();
-
+        $result = $requestClass->size(1)->page(2)->filter('unit', 'test')->filter('test')->filter('multi', ['a', 'b', 'c'])->sort('multi', 'DESC')->get();
         $this->assertSame($response, $result);
     }
 
