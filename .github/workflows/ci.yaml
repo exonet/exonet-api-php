@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Composer install
         uses: php-actions/composer@v6.1.2
@@ -50,6 +52,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Run linters
         uses: docker://oskarstark/php-cs-fixer-ga
