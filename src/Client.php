@@ -19,7 +19,7 @@ class Client implements LoggerAwareInterface
     /**
      * The version of this package. Used in the user-agent header.
      */
-    public const CLIENT_VERSION = 'v3.2.3';
+    public const CLIENT_VERSION = 'v3.3.0';
 
     /**
      * The API base URL.
