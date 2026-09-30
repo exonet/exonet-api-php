@@ -9,5 +9,17 @@
   ],
   "labels": [
     "dependencies"
+  ],
+  "packageRules": [
+    {
+      "description": "The supported PHP range follows the CI test matrix and is updated by hand.",
+      "matchManagers": [
+        "composer"
+      ],
+      "matchDepNames": [
+        "php"
+      ],
+      "enabled": false
+    }
   ]
 }
