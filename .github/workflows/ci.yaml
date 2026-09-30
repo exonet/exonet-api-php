@@ -55,7 +55,7 @@ jobs:
       contents: read
 
     env:
-      IS_FORK: ${{ (github.event.pull_request.head.repo.full_name || github.repository) != github.repository }}
+      CAN_COMMIT: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
 
     steps:
       - name: Checkout repository
@@ -69,21 +69,21 @@ jobs:
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
         with:
           php-version: '8.4'
-          tools: php-cs-fixer:3
+          tools: php-cs-fixer:3.95.27
           coverage: none
 
       - name: Run php-cs-fixer
         run: php-cs-fixer fix
 
-      # Secrets aren't available to pull requests from a fork, so fail on style
-      # violations there instead of committing the fixes.
+      # Pull requests from a fork get no secrets, and master only takes changes
+      # through a pull request. Both fail on style violations instead.
       - name: Check for `php-cs-fixer` changes
-        if: env.IS_FORK == 'true'
+        if: env.CAN_COMMIT == 'false'
         run: git diff --exit-code
 
       - name: Generate app token
         id: app-token
-        if: env.IS_FORK == 'false'
+        if: env.CAN_COMMIT == 'true'
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
@@ -91,7 +91,7 @@ jobs:
           permission-contents: write
 
       - name: Apply php-cs-fixer changes
-        if: env.IS_FORK == 'false'
+        if: env.CAN_COMMIT == 'true'
         uses: ./.github/actions/commit-changes
         with:
           token: ${{ steps.app-token.outputs.token }}
