@@ -2,14 +2,22 @@
 name: Release Drafter
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
+
+permissions:
+  contents: read
 
 jobs:
   update-release-draft:
     name: Update
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
 
     outputs:
       tag_name: ${{ steps.drafter.outputs.tag_name }}
@@ -17,26 +25,41 @@ jobs:
     steps:
       - id: drafter
         name: Run release drafter
-        uses: release-drafter/release-drafter@v6.4.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
 
   update-client-version:
     name: Update CLIENT_VERSION with draft version
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: update-release-draft
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: master
+          persist-credentials: false
 
       - name: Update `src/Client.php` with draft version
         run: |
           sed -i "s/CLIENT_VERSION = '.*';/CLIENT_VERSION = '${{ needs.update-release-draft.outputs.tag_name }}';/g" src/Client.php
 
-      - name: Apply version changes
-        uses: stefanzweifel/git-auto-commit-action@v6.0.1
+      # master only accepts verified commits made through a pull request. The
+      # app's API commit is verified and the app is a bypass actor on the ruleset.
+      - name: Generate app token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          commit_message: Auto update drafter version in CLIENT_VERSION
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Apply version changes
+        uses: ./.github/actions/commit-changes
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          message: Auto update drafter version in CLIENT_VERSION
+          branch: master
+          paths: src/Client.php
