@@ -28,8 +28,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Composer install
         uses: php-actions/composer@v6.1.2
@@ -54,12 +52,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.head_ref }}
 
       - name: Run linters
         uses: docker://oskarstark/php-cs-fixer-ga
 
+      # The GITHUB_TOKEN can't push to a fork, so fail on style violations instead of fixing them.
+      - name: Check for `php-cs-fixer` changes
+        if: (github.event.pull_request.head.repo.full_name || github.repository) != github.repository
+        run: git diff --exit-code
+
       - name: Auto commit `php-cs-fixer` changes
+        if: (github.event.pull_request.head.repo.full_name || github.repository) == github.repository
         uses: stefanzweifel/git-auto-commit-action@v6.0.1
         with:
           commit_message: Apply php-cs-fixer changes
