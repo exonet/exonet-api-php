@@ -11,6 +11,9 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
 
     strategy:
       matrix:
@@ -27,15 +30,17 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Composer install
-        uses: php-actions/composer@v6.1.2
+        uses: php-actions/composer@8a65f0d3c6a1d17ca4800491a40b5756a4c164f3 # v6.1.2
         with:
           php_version: ${{ matrix.versions.php }}
 
       - name: Run unit tests
-        uses: php-actions/phpunit@v4
+        uses: php-actions/phpunit@1789d1964b1bfda259b1cb42a72b65299c2cae35 # v4
         with:
           configuration: phpunit.xml
           version: ${{ matrix.versions.phpunit }}
@@ -45,26 +50,54 @@ jobs:
   lint:
     name: Check code style
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
-      contents: write
+      contents: read
+
+    env:
+      IS_FORK: ${{ (github.event.pull_request.head.repo.full_name || github.repository) != github.repository }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.head_ref || github.ref_name }}
+          persist-credentials: false
 
-      - name: Run linters
-        uses: docker://oskarstark/php-cs-fixer-ga
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        with:
+          php-version: '8.4'
+          tools: php-cs-fixer:3
+          coverage: none
 
-      # The GITHUB_TOKEN can't push to a fork, so fail on style violations instead of fixing them.
+      - name: Run php-cs-fixer
+        run: php-cs-fixer fix
+
+      # Secrets aren't available to pull requests from a fork, so fail on style
+      # violations there instead of committing the fixes.
       - name: Check for `php-cs-fixer` changes
-        if: (github.event.pull_request.head.repo.full_name || github.repository) != github.repository
+        if: env.IS_FORK == 'true'
         run: git diff --exit-code
 
-      - name: Auto commit `php-cs-fixer` changes
-        if: (github.event.pull_request.head.repo.full_name || github.repository) == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v7.2.0
+      - name: Generate app token
+        id: app-token
+        if: env.IS_FORK == 'false'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          commit_message: Apply php-cs-fixer changes
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Apply php-cs-fixer changes
+        if: env.IS_FORK == 'false'
+        uses: ./.github/actions/commit-changes
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          message: Apply php-cs-fixer changes
+          branch: ${{ github.head_ref || github.ref_name }}
+          paths: |
+            src
+            tests
+            examples

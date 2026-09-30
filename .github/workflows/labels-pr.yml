@@ -1,0 +1,71 @@
+---
+name: PR Labels
+
+# This workflow runs on pull_request_target and therefore has write access
+# to the base repository. Never add a checkout of the PR code here.
+on:
+  pull_request_target:
+    types: [opened, labeled, unlabeled, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  auto-add-hotfix-label:
+    name: Auto-add label to hotfixes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+
+    steps:
+      # No-op unless the PR targets a vMAJOR.MINOR.x hotfix branch.
+      - name: Automatically add labels to hotfixes
+        if: endsWith(github.event.pull_request.base.ref, '.x')
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: ['hotfix'],
+            });
+
+  pr-labels:
+    name: Verify
+    needs: auto-add-hotfix-label
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: read
+
+    steps:
+      - name: Verify PR has a valid label
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          VALID_LABELS: >-
+            breaking-change,bugfix,hotfix,documentation,enhancement,refactor,
+            performance,new-feature,maintenance,ci,dependencies,security,
+            skip-changelog
+        with:
+          script: |
+            const validLabels = process.env.VALID_LABELS
+              .split(',')
+              .map((label) => label.trim())
+              .filter(Boolean);
+            // Read labels live from the API rather than the webhook payload:
+            // the auto-add-hotfix-label job may have just added a label, and the
+            // frozen `context.payload` would not reflect that within this run.
+            const { data } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+            const labels = data.map((label) => label.name);
+            const matched = labels.filter((label) => validLabels.includes(label));
+            if (matched.length === 0) {
+              core.setFailed(`PR is missing a valid label. Valid labels: ${validLabels.join(', ')}`);
+              return;
+            }
+            core.info(`Valid label(s) found: ${matched.join(', ')}`);
