@@ -124,8 +124,10 @@ class ResponseExceptionHandler
         }
 
         // Create the exception.
+        $errorStatus = $errorList[0]['status'] ?? 422;
+        $errorCode = $errorList[0]['code'] ?? '102.10001';
         $exceptionMessage = $errorCount === 1 ? 'There is %d validation error.' : 'There are %d validation errors.';
-        $exception = new ValidationException(sprintf($exceptionMessage, $errorCount), 422, null, '102.10001');
+        $exception = new ValidationException(sprintf($exceptionMessage, $errorCount), $errorStatus, null, $errorCode);
 
         // Add each failed validation error to the exception.
         foreach ($errorList as $error) {
