@@ -100,6 +100,72 @@ class ResponseExceptionHandlerTest extends TestCase
         }
     }
 
+    public function testHandleValidationExceptionDetailCode()
+    {
+        $client = new Client();
+
+        $response = new Response(422, [], json_encode(['errors' => [
+            ['status' => '422', 'code' => '102.10004', 'detail' => 'Validation Exception Test', 'variables' => ['field' => 'name']],
+        ]]));
+        $exceptionHandler = new ResponseExceptionHandler($response, $client);
+
+        $validationTested = false;
+
+        try {
+            $exceptionHandler->handle();
+        } catch (ValidationException $exception) {
+            $validationTested = true;
+            $this->assertSame(422, $exception->getCode());
+            $this->assertSame('102.10004', $exception->getDetailCode());
+            $this->assertSame(['name' => ['102.10004']], $exception->getFailedValidationCodes());
+        }
+
+        if (!$validationTested) {
+            $this->fail('Expected exception is not thrown.');
+        }
+    }
+
+    public function testHandleValidationExceptionMultipleDetailCodes()
+    {
+        $client = new Client();
+
+        $response = new Response(422, [], json_encode(['errors' => [
+            ['code' => '102.10001', 'detail' => 'Validation Exception Test'],
+            ['code' => '102.10005', 'detail' => 'Validation Exception Test 2', 'variables' => ['field' => 'unitTest']],
+            ['detail' => 'Validation Exception Test 3', 'variables' => ['field' => 'unitTest']],
+        ]]));
+        $exceptionHandler = new ResponseExceptionHandler($response, $client);
+
+        $validationTested = false;
+
+        try {
+            $exceptionHandler->handle();
+        } catch (ValidationException $exception) {
+            $validationTested = true;
+            $this->assertSame('102.10001', $exception->getDetailCode());
+            $this->assertSame(
+                ['generic' => ['102.10001'], 'unitTest' => ['102.10005', null]],
+                $exception->getFailedValidationCodes()
+            );
+        }
+
+        if (!$validationTested) {
+            $this->fail('Expected exception is not thrown.');
+        }
+    }
+
+    public function testHandleValidationExceptionWithoutErrors()
+    {
+        $client = new Client();
+
+        $response = new Response(422, [], json_encode(['message' => 'Unprocessable Entity']));
+
+        $this->expectException(UnknownException::class);
+
+        $exceptionHandler = new ResponseExceptionHandler($response, $client);
+        $exceptionHandler->handle();
+    }
+
     public function testHandleAuthorizationException()
     {
         $logMock = \Mockery::mock(LoggerInterface::class);
