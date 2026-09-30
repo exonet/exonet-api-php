@@ -46,8 +46,7 @@ jobs:
         run: |
           sed -i "s/CLIENT_VERSION = '.*';/CLIENT_VERSION = '${{ needs.update-release-draft.outputs.tag_name }}';/g" src/Client.php
 
-      # master requires verified commits, which the app's API commit satisfies
-      # and a GITHUB_TOKEN push doesn't.
+      # master only accepts verified commits, and a GITHUB_TOKEN push isn't verified.
       - name: Generate app token
         id: app-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0

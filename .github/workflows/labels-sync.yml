@@ -36,9 +36,8 @@ jobs:
         with:
           persist-credentials: false
 
-      # skip-delete keeps the sync additive: deleting a label also strips it from
-      # every issue/PR that has it, so pruning only happens on an explicit
-      # `prune: true` dispatch.
+      # Deleting a label also strips it from every issue and PR that has it. The
+      # sync therefore only prunes on a manual `prune: true` dispatch.
       - name: Run Label Syncer
         uses: crazy-max/ghaction-github-labeler@548a7c3603594ec17c819e1239f281a3b801ab4d # v6.0.0
         with:
